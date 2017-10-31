@@ -1,0 +1,30 @@
+{
+  "name": "TestGen",
+  "version": "0.0.1",
+  "description": "A test generator app.",
+  "main": "index.html",
+  "keywords": [
+    "Seed",
+    "App"
+  ],
+  "authors": [
+    "ASP"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.6.6",
+    "bootstrap": "3",
+    "angular-ui-router": "1.0.8",
+    "fontawesome": "4.7.0",
+    "jquery": "3.2.1",
+    "requirejs": "2.3.5"
+  }
+}
