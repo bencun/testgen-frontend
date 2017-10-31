@@ -14,6 +14,12 @@ define([], function() {
                 module: 'home',
                 controller: 'HomeViewController'
             },
+            'home.list.added': {
+                templateUrl: '/scripts/home/views/home.list.added.html',
+                url: '/added',
+                module: 'home',
+                controller: 'HomeViewController'
+            },
             'aboutme': {
                 url: '/about/me',
                 templateUrl: '/scripts/about/views/about.html',

@@ -30,6 +30,7 @@ define([
                 service    : $provide.service
             };*/
 
+            //register as controllerProvider, directive compileProvider, filterProvider and factory/service provider
             app.controller = $controllerProvider.register,
             app.directive  = $compileProvider.directive,
             app.filter     = $filterProvider.register,
