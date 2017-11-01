@@ -170,3 +170,4 @@ node_modules/
 logs/
 .sass-cache/
 app/vendor/
+tmp/
