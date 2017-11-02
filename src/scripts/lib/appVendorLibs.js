@@ -1,6 +1,6 @@
 define([
     'jquery',
+    'bootstrap',
     'angular',
-    'angular-ui-router',
-    'bootstrap'
+    'angular-ui-router'
 ], function() {});

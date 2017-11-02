@@ -28,6 +28,7 @@
     "gulp-jshint": "^2.0.4",
     "gulp-less": "^3.3.2",
     "gulp-minifier": "^0.2.2",
+    "gulp-minify": "^1.0.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
     "http-proxy-middleware": "^0.9.1",

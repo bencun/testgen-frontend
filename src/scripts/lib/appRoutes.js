@@ -3,34 +3,22 @@ define([], function() {
         defaultRoutePath: 'home',
         routes: {
             'home': {
-                templateUrl: '/scripts/home/views/home.html',
+                templateUrl: '/scripts/sections/home/views/home.html',
                 url: '/',
                 module: 'home',
                 controller: 'HomeViewController'
             },
             'home.list': {
-                templateUrl: '/scripts/home/views/home.list.html',
+                templateUrl: '/scripts/sections/home/views/home.list.html',
                 url: 'list',
                 module: 'home',
                 controller: 'HomeViewController'
             },
             'home.list.added': {
-                templateUrl: '/scripts/home/views/home.list.added.html',
+                templateUrl: '/scripts/sections/home/views/home.list.added.html',
                 url: '/added',
                 module: 'home',
                 controller: 'HomeViewController'
-            },
-            'aboutme': {
-                url: '/about/me',
-                templateUrl: '/scripts/about/views/about.html',
-                module: 'about',
-                controller: 'AboutViewController'
-            },
-            'contact': {
-                url: '/contact',
-                templateUrl: 'scripts/contact/views/contact.html',
-                module: 'contact',
-                controller: 'ContactViewController'
             }
         }
     };

@@ -37,7 +37,7 @@ require(['lib/appVendorLibs'], function(){
     */
     require([
         'lib/appModule'
-    ], function(app) {
-        angular.bootstrap(document, [app.name]);
+    ], function(appModule) {
+        angular.bootstrap(document, [appModule.name]);
     });
 });

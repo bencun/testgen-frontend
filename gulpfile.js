@@ -2,17 +2,23 @@ var gulp = require('gulp'),
     frep = require('gulp-frep'),
     del = require('del'),
     concat = require('gulp-concat'),
-    minifyCSS = require('gulp-minify-css');
-    less = require('gulp-less');
+    minifyCSS = require('gulp-minify-css'),
+    less = require('gulp-less'),
+    jshint = require('gulp-jshint'),
+    minifyJS = require('gulp-minify'),
     requirejs = require('requirejs');
 
 var paths = {
     css: [
         "tmp/vendor/bootstrap/dist/css/bootstrap.min.css",
+        "tmp/vendor/fontawesome/css/font-awesome.min.css",
         "tmp/styles/**/*.css"
     ],
     less: [
         'tmp/styles/less/**/*.less'
+    ],
+    fonts:[
+        'src/vendor/fontawesome/fonts/*'
     ]
 };
 
@@ -31,11 +37,13 @@ gulp.task('buildcore', function(cb){
 		removeCombined: true,
 		findNestedDependencies: true,
 		optimizeCss: 'none',
-		dir: 'tmp/',
-		uglify: {
+        dir: 'tmp/',
+        optimize: 'none',
+        preserveFiles: true,
+		/*uglify: {
 			// needed as angular libs explode with mangled var/func
 			no_mangle: true
-        },
+        },*/
         modules: [
 			{
 				name: 'lib/appBootstrap',
@@ -94,13 +102,57 @@ gulp.task('deletecssless', ['buildcss'], function(){
 });
 
 
-//copy the necessary fontawesome files
+//copy the necessary font files
+gulp.task('buildfonts', ['buildcore'], function(){
+    return gulp.src(paths.fonts)
+    .pipe(gulp.dest('tmp/fonts/'));
+});
+
+//jshint
+gulp.task('buildjshint', function(){
+    return gulp.src('src/scripts/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
 
 //minify js
+gulp.task('buildminify', ['buildcore', 'buildrequire'], function(){
+    return gulp.src('tmp/scripts/**/*.js', {base: './'})
+        .pipe(minifyJS({
+            ext:{
+                src: '.js',
+                min: '.js'
+            }
+        }))
+        .pipe(gulp.dest('./'));
+});
 
 //TODO karma-jasmine unit tests
 
-//remove the vendor folder
+gulp.task('build', ['buildcore', 'buildrequire', 'buildhtml', 'buildless', 'buildcss', 'deletecssless', 'buildjshint', 'buildminify', 'buildfonts'], function(){
+    //remove the vendor folder
+    console.log("Removing the tmp/vendor folder...")
+    del('tmp/vendor');
+});
 
+gulp.task('builddist', ['build'], function(){
+    console.log('Build done. Moving to dist...');
+});
 
-gulp.task('build', ['buildcore', 'buildrequire', 'buildhtml', 'buildless', 'buildcss', 'deletecssless'], function(){});
+//for development purposes
+gulp.task('buildnominify', ['buildcore', 'buildrequire', 'buildhtml', 'buildless', 'buildcss', 'buildjshint', 'buildfonts'], function(){
+    //remove the vendor folder
+    console.log("Removing the tmp/vendor folder...")
+    del('tmp/vendor');
+});
+
+gulp.task('watcher', function(){
+    console.log('Watching js files...');
+    gulp.watch('src/**/*.js', ['buildnominify']);
+    console.log('Watching css files...');
+    gulp.watch('src/**/*.css', ['buildcss']);
+    console.log('Watching less files...');
+    gulp.watch('src/**/*.less', ['buildless', 'buildcss']);
+    console.log('Watching html files...');
+    gulp.watch('src/**/*.html', ['buildnominify']);
+});

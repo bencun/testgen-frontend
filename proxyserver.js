@@ -5,12 +5,14 @@ var vhost = require('vhost');
 var app = express();
 var Config = {lport:3000};
 
+var rootPath = '/tmp/';
+
 // your domain name
 var domainname = 'localhost';
 var lport = Config.lport;
 // proxy base rules
-app.use(vhost('localhost', express.static(__dirname +  "/tmp/" )));
-app.use(vhost('127.0.0.1', express.static(__dirname +  "/tmp/" )));
+app.use(vhost('localhost', express.static(__dirname +  rootPath )));
+app.use(vhost('127.0.0.1', express.static(__dirname +  rootPath )));
 
 //proxy config
 var proxyOptions = {
@@ -22,7 +24,7 @@ var proxyOptions = {
 };
 app.use(proxyMiddleware('/api', proxyOptions));	
 app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/tmp/index.html');
+    res.sendFile(__dirname + rootPath + 'index.html');
 });
 	
 app.listen(lport);

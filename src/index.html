@@ -3,19 +3,16 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="/styles/styles.css"/>
-        <title>AngularJS Lazy Loading Seed</title>
+        <title>AngularJS Lazy Loading Seeed</title>
         <base href="/">
     </head>
     <body>
-        <div id="wrap">
-            <div id="header">
-                <a ui-sref="home">Home</a>
-                <a ui-sref="aboutme">About</a>
-                <a ui-sref="contact">Contact</a>
-            </div>
+            <a ui-sref="home">Home</a>
+            <a ui-sref="aboutme">About</a>
+            <a ui-sref="contact">Contact</a>
             <!-- Main Content Container -->
-            <div id="main" class="container" ui-view></div>
-            <div id="push"></div>
+            <p ng-bind="testObject.text"></p>
+            <div ui-view></div>
         </div>
        <script src="/vendor/requirejs/require.js" data-main="/scripts/lib/appBootstrap.js"></script>
     </body>
