@@ -1,4 +1,5 @@
 define([
-    './controllers/HomeViewController'
+    './controllers/HomeViewController',
+    './TestFactory'
 ], function(angular, HomeViewController, routeConfig){
 });
