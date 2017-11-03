@@ -1,12 +1,12 @@
 define([
     'angular',
     'lib/appRoutes',
-    'lib/services/dependencyResolverFor',
-    'lib/appController'
+    'lib/services/dependencyResolverFor'
 ], function(angular, routeConfig, dependencyResolverFor, appController) {
     var app = angular.module('app', ['ui.router']);
+    app.controller('appController', appController);
 
-    /*app.config([
+    app.config([
         '$stateProvider',
         '$urlRouterProvider',
         '$locationProvider',
@@ -34,26 +34,13 @@ define([
             $locationProvider.html5Mode(true);
 
             //default way of the injection regarding the original code, not dynamic enough
-            /*if(routeConfig.routes !== undefined) {
+            if(routeConfig.routes !== undefined) {
                 angular.forEach(routeConfig.routes, function(routeProperties, routeName) {
                     $stateProvider.state(routeName, {
                         url: routeProperties.url,
                         templateUrl: routeProperties.templateUrl,
                         resolve: dependencyResolverFor(routeProperties.module),
                         controller: routeProperties.controller
-                    });
-                });
-            }*/
-            
-            //replace this loop with a module injection loop?
-            //works but locally, module.config of the injected module is never invoked
-            /*if(routeConfig.routes !== undefined) {
-                angular.forEach(routeConfig.routes, function(routeProperties, routeName) {
-                    $stateProvider.state(routeName, {
-                        url: routeProperties.url,
-                        templateUrl: routeProperties.templateUrl,
-                        resolve: dependencyResolverFor(routeProperties.module)
-                        //controller: routeProperties.controller
                     });
                 });
             }
@@ -63,9 +50,6 @@ define([
             }
             $urlRouterProvider.when('', '/');
         }
-    ]);*/
-    
-    app.controller('appController', appController);
-
+    ]);
     return app;
 });

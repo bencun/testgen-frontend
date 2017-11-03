@@ -1,17 +1,12 @@
-define([], function() {
-
-    console.log('Creating home module controller.');
+define(['angular'], function(angular) {
 
     var HomeViewController = function($scope){
-        console.log('Executing home module controller.');
-
         $scope.page = {
             heading: 'Welcome'
         };
         $scope.items = ["A", "List", "Of", "Items"];
-
-        console.log($scope);
     };
+    HomeViewController.$inject = ['$scope'];
 
-    return ['$scope', HomeViewController];
+    angular.module('app').controller('HomeViewController', HomeViewController);
 });
