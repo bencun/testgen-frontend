@@ -3,9 +3,9 @@ var proxyMiddleware = require('http-proxy-middleware');
 var vhost = require('vhost');
 
 var app = express();
-var Config = {lport:3000};
+var Config = {lport:3050};
 
-var rootPath = '/tmp/';
+var rootPath = '/src/';
 
 // your domain name
 var domainname = 'localhost';

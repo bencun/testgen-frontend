@@ -2,10 +2,6 @@
 require.config({
     baseUrl: '/',
     paths: {
-        //'appVendorLibs' : 'lib/appVendorLibs',
-        //'appBootstrap' : 'lib/appBootstrap',
-        //'appModule' : 'lib/appModule',
-        //'appRoutes' : 'lib/appRoutes',
         'lib' : 'scripts/lib',
 
         'jquery' : 'vendor/jquery/dist/jquery.min',
@@ -38,6 +34,6 @@ require(['lib/appVendorLibs'], function(){
     require([
         'lib/appModule'
     ], function(appModule) {
-        angular.bootstrap(document, [appModule.name]);
+        return angular.bootstrap(document, [appModule.name]);
     });
 });
