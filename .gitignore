@@ -171,4 +171,6 @@ logs/
 .sass-cache/
 src/vendor/
 src/vendor
+coverage
+coverage/
 tmp/
