@@ -1,11 +1,10 @@
 define([
     'angular',
     'lib/appModule', //critical to include
-    'angular-mocks',
-    'scripts/sections/home/factories/TestFactory'
+    'angular-mocks'
 ], function(angular){
     describe('A test factory', function(){
-        var tmpTestFactory;
+        /*var tmpTestFactory;
         
         beforeEach(angular.mock.module('app'));
 
@@ -31,6 +30,6 @@ define([
         });
         it('should return "ok" when calling the returnMethod', function(){
             expect(tmpTestFactory.returnMethod()).toEqual("ok");
-        });
+        });*/
     });
 });

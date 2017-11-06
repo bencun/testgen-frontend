@@ -3,15 +3,38 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="/styles/styles.css"/>
-        <title>AngularJS Lazy Loading Seeed</title>
+        <title>TestGen App</title>
         <base href="/">
     </head>
     <body>
-        <a ui-sref="home">Home</a>
-        <a ui-sref="aboutme">About</a>
-        <a ui-sref="contact">Contact</a>
-           <!-- Main Content Container -->
-            <div ui-view></div>
+        <!-- Top navigation -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-target" aria-expanded="false">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TestGen</a>
+                </div>
+                      
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="navbar-collapse-target">
+                    <ul class="nav navbar-nav">
+                        <li><a ui-sref="home">Home</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </nav>
+        <!-- Main Content Container -->
+        <div ui-view class="container"></div>
         </div>
        <script src="/vendor/requirejs/require.js" data-main="/scripts/lib/appBootstrap.js"></script>
     </body>

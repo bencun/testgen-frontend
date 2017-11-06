@@ -1,0 +1,30 @@
+<div class="row">
+    <!-- Controls -->
+    <button class="btn btn-default" ng-click="pager('prev');">Previous</button>
+    <span ng-bind="currentPage"></span>
+    <span>/</span>
+    <span ng-bind="totalPages"></span>
+    <button class="btn btn-default" ng-click="pager('next');">Next</button>
+</div>
+<div class="row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Category name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items">
+                <td><input type="checkbox"></td>
+                <td ng-bind="item.name"></td>
+                <td>
+                    <button class="btn btn-default">View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Nested View -->
+<div ui-view></div>
