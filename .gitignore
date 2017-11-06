@@ -169,5 +169,8 @@ pip-log.txt
 node_modules/
 logs/
 .sass-cache/
-app/vendor/
+src/vendor/
+src/vendor
+coverage
+coverage/
 tmp/
