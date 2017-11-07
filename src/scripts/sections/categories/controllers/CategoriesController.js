@@ -20,16 +20,17 @@ define([
 
         $scope.pager();
 
-        $scope.viewCategory = function(cat){
-            $state.go('app.admin.questions', {categoryId: cat.id, categoryName: cat.name});
-        };
-        
-        $scope.editCategory = function(cat){
-            $state.go('app.admin.category', {categoryId: cat.id});
-        };
-
-        $scope.deleteCategory = function(){
-            //TODO
+        $scope.actions = {
+            viewCategory : function(cat){
+                $state.go('app.admin.questions', {categoryId: cat.id, categoryName: cat.name});
+            },        
+            editCategory : function(cat){
+                $state.go('app.admin.category', {categoryId: cat.id});
+            },
+            deleteCategory : function(cat){
+                DataFactory.categories.delete(cat.id);
+                $scope.pager('refresh');
+            },
         };
 
         $scope.$on('pagerNext', function(e){

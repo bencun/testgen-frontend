@@ -169,6 +169,7 @@ pip-log.txt
 node_modules/
 logs/
 .sass-cache/
+.vscode/
 src/vendor/
 src/vendor
 coverage

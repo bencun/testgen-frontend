@@ -104,6 +104,9 @@ define(['angular'], function(angular) {
                 if(dir == null) {
                     start = 1;
                 }
+                if(dir == 'refresh'){
+                    start = start;
+                }
                 if(dir == 'next'){
                     if(f.currentPage < f.totalPages)
                         start = ((f.currentPage) * f.perPage) + 1;
@@ -140,6 +143,7 @@ define(['angular'], function(angular) {
                     //if remote update successful update local
                 },
                 read: function(id){
+                    //grab data from the local array
                     var results = $.grep(fakeData.categories, function(e){
                         return e.id === id;
                     });
@@ -158,13 +162,26 @@ define(['angular'], function(angular) {
                     if(results){
                         var index = fakeData.categories.indexOf(results[0]);
                         if(index >= 0){
-                            fakeData.categories[index] = cat;                            
+                            fakeData.categories[index] = cat;
+                            return true;
                         }
                     }
+                    return false;
                 },
                 delete: function(id){
                     //update remote
                     //if remote update successful update local
+                    var results = $.grep(fakeData.categories, function(e){
+                        return e.id === id;
+                    });
+                    if(results){
+                        var index = fakeData.categories.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.categories.splice(index, 1);
+                            return true;
+                        }
+                    }
+                    return false;
                 }
             }
         };

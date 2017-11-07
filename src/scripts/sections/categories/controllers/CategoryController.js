@@ -12,8 +12,11 @@ define([
         
         $scope.data = {
             catData: DataFactory.categories.read(categoryId),
-            update : function(){
+            update: function(){
                 DataFactory.categories.update($scope.data.catData);
+            },
+            cancel: function(){
+                //TODO
             }
         };
     };

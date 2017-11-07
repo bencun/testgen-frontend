@@ -16,9 +16,9 @@
                 <td ng-bind="item.name"></td>
                 <td ng-bind="item.description"></td>
                 <td>
-                    <button class="btn btn-default" ng-click="viewCategory(item);">View</button>
-                    <button class="btn btn-primary" ng-click="editCategory(item);">Edit</button>
-                    <button class="btn btn-danger" ng-click="deleteCategory(item);">Delete</button>
+                    <button class="btn btn-default" ng-click="actions.viewCategory(item);">View</button>
+                    <button class="btn btn-primary" ng-click="actions.editCategory(item);">Edit</button>
+                    <button class="btn btn-danger" ng-click="actions.deleteCategory(item);">Delete</button>
                 </td>
             </tr>
         </tbody>
