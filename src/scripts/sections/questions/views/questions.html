@@ -1,0 +1,23 @@
+<div class="row">
+    <h2 class="col-xs-12">Category: <span ng-bind="categoryName"></span></h2>
+</div>
+
+<div class="row">
+    <table class="table table-responsive table-hover table-v-center">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items">
+                <td ng-bind="item.question"></td>
+                <td>
+                    <button class="btn btn-primary" ng-click="editQuestion(item);">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteQuestion(item);">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

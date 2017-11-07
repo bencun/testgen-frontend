@@ -16,7 +16,7 @@ define([
                     //success
                     function(response){
                         console.log(response);
-                        $state.go('app.categories');
+                        $state.go('app.admin.categories');
                     },
                     //failure
                     function(response){
@@ -29,7 +29,7 @@ define([
                     //success
                     function(response){
                         console.log(response);
-                        $state.go('app.categories');
+                        $state.go('app.admin.categories');
                     },
                     //failure
                     function(response){

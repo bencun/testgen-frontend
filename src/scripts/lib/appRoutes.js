@@ -8,22 +8,38 @@ define([], function() {
                 module: 'login',
                 controller: 'LoginController'
             },
-            'app.categories': {
+            'app.admin.categories': {
                 templateUrl: '/scripts/sections/categories/views/categories.html',
                 url: '/categories',
                 module: 'categories',
                 controller: 'CategoriesController'
             },
-            'app.categories.category': {
+            'app.admin.category': {
                 templateUrl: '/scripts/sections/categories/views/category.html',
                 url: '/categories/:categoryId',
+                params: {
+                    categoryId: null
+                },
                 module: 'categories',
                 controller: 'CategoryController'
-            },            
-            'app.categories.category.question': {
-                templateUrl: '/scripts/sections/categories/views/question.html',
-                url: '/categories/:categoryId/:questionId',
-                module: 'categories',
+            },
+            'app.admin.questions': {
+                templateUrl: '/scripts/sections/questions/views/questions.html',
+                url: '/questions/:categoryId',
+                params: {
+                    categoryId: null
+                },
+                module: 'questions',
+                controller: 'QuestionsController'
+            },
+            'app.admin.question': {
+                templateUrl: '/scripts/sections/questions/views/question.html',
+                url: '/question/:questionId',
+                params: {
+                    categoryId: null,
+                    questionId: null
+                },
+                module: 'questions',
                 controller: 'QuestionController'
             }
         }

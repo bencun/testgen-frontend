@@ -1,0 +1,63 @@
+#bs-override .table-v-center td{
+    vertical-align: middle;
+}
+
+#bs-override .form-category input{
+    width: 100%;
+}
+
+#bs-override .col-padding{
+    padding-top: 8px;
+}
+
+#bs-override textarea{
+    resize: vertical;
+}
+
+/* animations */
+@keyframes fade-in{
+	from{
+        
+        opacity: 0;
+	}
+	to{
+        
+        opacity: 1;
+	}
+}
+
+@keyframes fade-out{
+	from{
+		opacity: 1;
+	}
+	to{
+		opacity: 0;
+	}
+}
+
+.container{
+    position: relative;
+}
+
+ui-view, [ui-view]{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+ui-view.ng-leave,
+[ui-view].ng-leave{
+    position: absolute;
+    top: 0;
+    display: block;
+    animation: 0.25s fade-out;
+}
+ui-view.ng-enter,
+[ui-view].ng-enter{
+    position: absolute;
+    top: 0;
+    display: block;
+    animation: 0.25s fade-in;
+}

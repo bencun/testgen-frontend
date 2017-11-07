@@ -4,7 +4,7 @@ define([
     'lib/services/dependencyResolverFor',
     'lib/factories/module'
 ], function(angular, routeConfig, dependencyResolverFor) {
-    var app = angular.module('app', ['ui.router', 'app.factories']);
+    var app = angular.module('app', ['ui.router', 'ngAnimate','app.factories']);
     
     app.config([
         '$stateProvider',
@@ -36,6 +36,12 @@ define([
             $stateProvider.state('app', {
                 abstract: true
             });
+            $stateProvider.state('app.admin', {
+                abstract: true
+            });
+            $stateProvider.state('app.user', {
+                abstract: true
+            });
 
             //default way of the injection regarding the original code, not dynamic enough
             if(routeConfig.routes !== undefined) {
@@ -43,6 +49,7 @@ define([
                     $stateProvider.state(routeName, {
                         url: routeProperties.url,
                         templateUrl: routeProperties.templateUrl,
+                        params: (routeProperties.params != null) ? routeProperties.params : null,
                         resolve: dependencyResolverFor(routeProperties.module),
                         controller: routeProperties.controller
                     });
@@ -64,7 +71,26 @@ define([
         '$state',
         function($rootScope, $trace, AuthFactory, $transitions, $state){
             $trace.enable('TRANSITION');
-            $transitions.onBefore( { to: 'app.**' }, function(transition) {
+            //ui settings
+            $rootScope.UI = {
+                pagerVisible: false,
+                searchVisible: false,
+                pager:{
+                    currentPage: 0,
+                    totalPages: 0
+                }
+            };
+            $rootScope.UI.pagerTrigger = function(dir){
+                if(dir == 'next')
+                    $rootScope.$broadcast('pagerNext');
+                if(dir == 'prev')
+                    $rootScope.$broadcast('pagerPrev');
+            };
+            $rootScope.UI.goBack = function(){
+                window.history.back();
+            };
+            //admin restriction
+            $transitions.onBefore( { to: 'app.admin.**' }, function(transition) {
                 var AuthFactory = transition.injector().get('AuthFactory');
                 // If the function returns false, the transition is cancelled.
                 AuthFactory.checkAuth().then(
@@ -72,7 +98,27 @@ define([
                     //...as we're using it to update the navbar
                     function(response){
                         console.log("Auth OK.");
-                        $rootScope.currentState = transition.to().name;
+                        //$rootScope.currentState = transition.to().name;
+                        return true;
+                    },
+                    //failure, go back to login screen
+                    function(response){
+                        console.log("Auth failed.");
+                        console.log(response);
+                        $state.go('login');
+                        return false;
+                    }
+                );
+              });
+              //user restriction
+              $transitions.onBefore( { to: 'app.user.**' }, function(transition) {
+                var AuthFactory = transition.injector().get('AuthFactory');
+                // If the function returns false, the transition is cancelled.
+                AuthFactory.checkAuth().then(
+                    //success, proceed with the transition and update the current status name
+                    //...as we're using it to update the navbar
+                    function(response){
+                        console.log("Auth OK.");
                         return true;
                     },
                     //failure, go back to login screen

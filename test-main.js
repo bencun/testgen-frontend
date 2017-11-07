@@ -26,6 +26,7 @@ require.config({
     'bootstrap' : 'vendor/bootstrap/dist/js/bootstrap.min',
     'angular' : 'vendor/angular/angular.min',
     'angular-ui-router' : 'vendor/angular-ui-router/release/angular-ui-router.min',
+    'angular-animate' : 'vendor/angular-animate/angular-animate.min',
 
     'angular-mocks' : '../node_modules/angular-mocks/angular-mocks'
 
