@@ -13,9 +13,12 @@ define([
 
         $scope.pager = function(dir){
             var currentData = DataFactory.load(dir);
-            $scope.items = currentData.items;
             $rootScope.UI.pager.currentPage = currentData.currentPage;
             $rootScope.UI.pager.totalPages = currentData.totalPages;
+            $scope.data = {
+                items: currentData.items
+            };
+            
         };
 
         $scope.pager();

@@ -21,6 +21,8 @@ define(['angular'], function(angular) {
                     categoryId: 1,
                     difficulty: 2,
                     question: "What are the opening and the closing tag of the PHP file?",
+                    note: "There are multiple correct answers.",
+                    multiselect: true,
                     options:[
                         {
                             option: "<!php",
@@ -40,6 +42,30 @@ define(['angular'], function(angular) {
                         }
                     ]
                 }
+            ],
+            tests:[
+                {
+                    id: 1,
+                    name: "Junior full stack developer",
+                    description: "This template is used during the full stack developer interview.",
+                    timed: true,
+                    timedTotal: true,
+                    timedTotalTime: 45,
+                    timedPerQuestion: true,
+                    timedPerQuestionTime: 60,
+                    categories:[
+                        {
+                            id: 1,
+                            minDiff: 2,
+                            maxDiff: 7
+                        },
+                        {
+                            id: 2,
+                            minDiff: 3,
+                            maxDiff: 8
+                        }
+                    ]
+                }
             ]
         };
         for(var i=3; i<=31; i++){
@@ -55,6 +81,8 @@ define(['angular'], function(angular) {
                 categoryId: 1,
                 difficulty: i % 10,
                 question: "Dummy question #" + i,
+                note: "There are multiple correct answers.",
+                multiselect: true,
                 options: [
                     {
                         option: "Option 1",
@@ -68,7 +96,31 @@ define(['angular'], function(angular) {
                         option: "Option 3",
                         correct: true
                     }
-                ]                
+                ]
+            });
+        }
+        for(i=2; i<=15; i++){
+            fakeData.tests.push({
+                id: 1,
+                name: "Dummy test template #" + i,
+                description: "This template is a dummy template.",
+                timed: true,
+                timedTotal: false,
+                timedTotalTime: i*3,
+                timedPerQuestion: true,
+                timedPerQuestionTime: (i*10)%60,
+                categories:[
+                    {
+                        id: 1,
+                        minDiff: 2,
+                        maxDiff: 7
+                    },
+                    {
+                        id: 2,
+                        minDiff: 3,
+                        maxDiff: 8
+                    }
+                ]
             });
         }
         console.log(fakeData);
@@ -97,7 +149,7 @@ define(['angular'], function(angular) {
             targets:{
                 categories: 'categories',
                 questions: 'questions',
-                templates: 'templates',
+                tests: 'tests',
                 users: 'users'
             },
             load: function(dir){
@@ -178,6 +230,100 @@ define(['angular'], function(angular) {
                         var index = fakeData.categories.indexOf(results[0]);
                         if(index >= 0){
                             fakeData.categories.splice(index, 1);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            },
+            questions:{
+                create: function(q){
+                    //update remote
+                    //if remote update successful update local
+                },
+                read: function(id){
+                    //grab data from the local array
+                    var results = $.grep(fakeData.questions, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length)
+                        if(results.length > 0)
+                            return angular.copy(results[0], {});
+                    //otherwise return false
+                    return false;
+                },
+                update: function(q){
+                    //update remote
+                    //if remote update successful update local
+                    var results = $.grep(fakeData.questions, function(e){
+                        return e.id === q.id;
+                    });
+                    if(results){
+                        var index = fakeData.questions.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.questions[index] = q;
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                delete: function(id){
+                    //update remote
+                    //if remote update successful update local
+                    var results = $.grep(fakeData.questions, function(e){
+                        return e.id === id;
+                    });
+                    if(results){
+                        var index = fakeData.questions.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.questions.splice(index, 1);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            },
+            tests:{
+                create: function(t){
+                    //update remote
+                    //if remote update successful update local
+                },
+                read: function(id){
+                    //grab data from the local array
+                    var results = $.grep(fakeData.tests, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length)
+                        if(results.length > 0)
+                            return angular.copy(results[0], {});
+                    //otherwise return false
+                    return false;
+                },
+                update: function(t){
+                    //update remote
+                    //if remote update successful update local
+                    var results = $.grep(fakeData.tests, function(e){
+                        return e.id === t.id;
+                    });
+                    if(results){
+                        var index = fakeData.tests.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.tests[index] = t;
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                delete: function(id){
+                    //update remote
+                    //if remote update successful update local
+                    var results = $.grep(fakeData.tests, function(e){
+                        return e.id === id;
+                    });
+                    if(results){
+                        var index = fakeData.tests.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.tests.splice(index, 1);
                             return true;
                         }
                     }

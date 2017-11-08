@@ -10,8 +10,20 @@
     padding-top: 8px;
 }
 
+#bs-override .row-v-center {
+    display: flex;
+    align-items: center;
+}
+
 #bs-override textarea{
     resize: vertical;
+}
+
+.hor-separator{
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #cfcfcf;
+    height: 16px;
 }
 
 /* animations */

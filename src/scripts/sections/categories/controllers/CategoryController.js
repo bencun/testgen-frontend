@@ -11,12 +11,14 @@ define([
         var categoryId = parseInt($stateParams.categoryId, 10);
         
         $scope.data = {
-            catData: DataFactory.categories.read(categoryId),
+            catData: DataFactory.categories.read(categoryId)
+        };
+        $scope.actions = {
             update: function(){
                 DataFactory.categories.update($scope.data.catData);
             },
             cancel: function(){
-                //TODO
+                $rootScope.UI.goBack();
             }
         };
     };

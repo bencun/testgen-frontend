@@ -36,11 +36,25 @@ define([], function() {
                 templateUrl: '/scripts/sections/questions/views/question.html',
                 url: '/question/:questionId',
                 params: {
-                    categoryId: null,
                     questionId: null
                 },
                 module: 'questions',
                 controller: 'QuestionController'
+            },
+            'app.admin.tests': {
+                templateUrl: '/scripts/sections/tests/views/tests.html',
+                url: '/tests',
+                module: 'tests',
+                controller: 'TestsController'
+            },
+            'app.admin.test': {
+                templateUrl: '/scripts/sections/tests/views/test.html',
+                url: '/test/:testId',
+                params: {
+                    testId: null
+                },
+                module: 'tests',
+                controller: 'TestController'
             }
         }
     };

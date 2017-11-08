@@ -11,12 +11,13 @@ define([
         
         //checks if user is authenticated
         $scope.tryLogin = function(useCredentials){
+            //login
             if(useCredentials === true){
                 AuthFactory.checkAuth().then(
                     //success
                     function(response){
                         console.log(response);
-                        $state.go('app.admin.categories');
+                        $state.go('app.admin.tests');
                     },
                     //failure
                     function(response){
@@ -24,12 +25,13 @@ define([
                     }
                 );
             }
+            //existing auth
             else{
                 AuthFactory.checkAuth().then(
                     //success
                     function(response){
                         console.log(response);
-                        $state.go('app.admin.categories');
+                        $state.go('app.admin.tests');
                     },
                     //failure
                     function(response){

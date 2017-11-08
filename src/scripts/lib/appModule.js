@@ -2,14 +2,16 @@ define([
     'angular',
     'lib/appRoutes',
     'lib/services/dependencyResolverFor',
-    'lib/factories/module'
+    'lib/factories/module',
+    'lib/directives/module'
 ], function(angular, routeConfig, dependencyResolverFor) {
-    var app = angular.module('app', ['ui.router', 'ngAnimate','app.factories']);
+    var app = angular.module('app', ['ui.router', 'ngAnimate', 'ui-notification', 'app.factories', 'app.directives']);
     
     app.config([
         '$stateProvider',
         '$urlRouterProvider',
         '$locationProvider',
+        'NotificationProvider',
         '$controllerProvider',
         '$compileProvider',
         '$filterProvider',
@@ -19,6 +21,7 @@ define([
             $stateProvider,
             $urlRouterProvider,
             $locationProvider,
+            NotificationProvider,
             $controllerProvider,
             $compileProvider,
             $filterProvider,
@@ -60,6 +63,14 @@ define([
                 $urlRouterProvider.otherwise(routeConfig.defaultRoutePath);
             }
             $urlRouterProvider.when('', '/');
+
+            //config the notification provider
+            NotificationProvider.setOptions({
+                positionX: 'center',
+                positionY: 'bottom',
+                verticalSpacing: 4,
+                maxCount: 3
+            });
         }
     ]);
 
@@ -75,6 +86,7 @@ define([
             $rootScope.UI = {
                 pagerVisible: false,
                 searchVisible: false,
+                adminMode: true,
                 pager:{
                     currentPage: 0,
                     totalPages: 0

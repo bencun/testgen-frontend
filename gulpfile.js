@@ -12,6 +12,7 @@ var paths = {
     css: [
         "tmp/vendor/bootstrap/dist/css/bootstrap.min.css",
         "tmp/vendor/fontawesome/css/font-awesome.min.css",
+        "tmp/vendor/angular-ui-notification/dist/angular-ui-notification.min.css",
         "tmp/styles/app.css",
         "tmp/styles/**/*.css"
     ],

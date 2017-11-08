@@ -1,18 +1,51 @@
-<div class="row">
-    <h2 class="col-xs-12">Edit the question<span ng-bind="categoryName"></span></h2>
-    <form class="col-xs-12 form-inline form-category">
-        <div class="row">
-            <div class="form-group col-xs-12 col-sm-6">
-                <label for="catName">Category Name</label>
-                <input type="text" class="form-control" placeholder="Name" id="catName">
+<div class="container-fluid">
+    <div class="row">
+        <form class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-horizontal">
+            <h2>Edit the question</h2>
+
+            <div class="form-group">
+                <label for="question">Question</label>
+                <input type="text" class="form-control" placeholder="Name" id="question" ng-model="data.questionData.question">
             </div>
-            <div class="form-group col-xs-12 col-sm-6">
-                <label for="catDesc">Category Description</label>
-                <input type="text" class="form-control" placeholder="Description" id="catDesc">
+            <div class="form-group">
+                <label for="note">Note</label>
+                <input type="text" class="form-control" placeholder="Name" id="note" ng-model="data.questionData.note">
             </div>
-            <div class="form-group col-xs-12 col-sm-4 col-sm-offset-4 col-padding">
-                <button class="btn btn-primary btn-block" ng-click="tryLogin();">Update</button>
+            <div class="form-group">
+                <label for="difficulty">Question difficulty [1-10]</label>
+                <select class="form-control" id="difficulty" ng-model="data.questionData.difficulty" ng-options="diff for diff in data.difficultyScale"></select>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="data.questionData.multiselect">This question has multiple correct answers
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="btnadd">Answers</label>
+                <button class="btn btn-primary" id="btnadd" ng-click="actions.addOption()"><span class="fa fa-plus"></span>Add</button>
+            </div>
+            <div class="form-group" ng-repeat="option in data.questionData.options">
+                <div class="col-xs-8 col-sm-10">
+                    <input type="text" class="form-control" placeholder="Answer" ng-model="option.option">
+                </div>
+                <div class="col-xs-1 col-sm-1">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="option.correct">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-1 col-sm-1">
+                    <button class="btn btn-primary" ng-click="actions.removeOption(option)"><span class="fa fa-trash"></span></button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="actions.update()">Update</button>
+                <button class="btn btn-warning" ng-click="actions.cancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
 </div>

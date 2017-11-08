@@ -1,23 +1,30 @@
-<div class="row">
-    <h2 class="col-xs-12">Category: <span ng-bind="categoryName"></span></h2>
-</div>
+<div class="container-fluid">
+    <div class="row">
+        <h2 class="col-xs-12">Category:
+            <span ng-bind="data.catData.name"></span>
+        </h2>
+    </div>
 
-<div class="row">
-    <table class="table table-responsive table-hover table-v-center">
-        <thead>
-            <tr>
-                <th>Question</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="item in items">
-                <td ng-bind="item.question"></td>
-                <td>
-                    <button class="btn btn-primary" ng-click="editQuestion(item);">Edit</button>
-                    <button class="btn btn-danger" ng-click="deleteQuestion(item);">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <table class="table table-hover table-v-center">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in data.items">
+                    <td ng-bind="item.question"></td>
+                    <td class="text-nowrap">
+                        <button class="btn btn-primary hidden-xs" ng-click="actions.editQuestion(item);">Edit</button>
+                        <button class="btn btn-danger hidden-xs" ng-click="actions.deleteQuestion(item);">Delete</button>
+
+                        <button class="btn btn-primary visible-xs-inline" ng-click="actions.editQuestion(item);"><span class="fa fa-pencil"></span></button>
+                        <button class="btn btn-danger visible-xs-inline" ng-click="actions.deleteQuestion(item);"><span class="fa fa-trash"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

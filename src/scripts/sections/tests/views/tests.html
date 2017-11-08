@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row">
+        <h2 class="col-xs-12">Test templates</h2>
+    </div>
+
+    <div class="row">
+        <table class="table table-hover table-v-center">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in data.items">
+                    <td ng-bind="item.name"></td>
+                    <td ng-bind="item.description"></td>
+                    <td class="text-nowrap">
+                        <button class="btn btn-primary hidden-xs" ng-click="actions.editTest(item);">Edit</button>
+                        <button class="btn btn-danger hidden-xs" ng-click="actions.deleteTest(item);">Delete</button>
+
+                        <button class="btn btn-primary visible-xs-inline" ng-click="actions.editTest(item);"><span class="fa fa-pencil"></span></button>
+                        <button class="btn btn-danger visible-xs-inline" ng-click="actions.deleteTest(item);"><span class="fa fa-trash"></span></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
