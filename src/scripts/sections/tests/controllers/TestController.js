@@ -13,7 +13,8 @@ define([
         $scope.data = {
             testData: (testId > 0) ? DataFactory.tests.read(testId) : DataFactory.tests.new(),
             allCategories: DataFactory.categories.getAll(),
-            difficultyScale: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            difficultyScale: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            questionCount: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         };
         //get categories, merge the simple ones with the real ones
         for(var i=0; i<$scope.data.testData.categories.length; i++){
@@ -25,6 +26,7 @@ define([
                 //TODO
                 cat.minDiff = 1;
                 cat.maxDiff = 10;
+                cat.count = 1;
                 $scope.data.testData.categories.unshift(cat);
             },
             removeCategory: function(cat){

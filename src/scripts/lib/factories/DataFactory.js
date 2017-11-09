@@ -57,12 +57,14 @@ define(['angular'], function(angular) {
                         {
                             id: 1,
                             minDiff: 2,
-                            maxDiff: 7
+                            maxDiff: 7,
+                            count: 3
                         },
                         {
                             id: 2,
                             minDiff: 3,
-                            maxDiff: 8
+                            maxDiff: 8,
+                            count: 2
                         }
                     ]
                 }
@@ -113,12 +115,14 @@ define(['angular'], function(angular) {
                     {
                         id: 1,
                         minDiff: 2,
-                        maxDiff: 7
+                        maxDiff: 7,
+                        count: i % 5
                     },
                     {
                         id: 2,
                         minDiff: 3,
-                        maxDiff: 8
+                        maxDiff: 8,
+                        count: i % 5
                     }
                 ]
             });
