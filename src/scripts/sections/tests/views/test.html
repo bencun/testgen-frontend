@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <form class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-horizontal">
+        <form class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 form-horizontal">
             <h2>Edit the test</h2>
 
             <div class="form-group">
@@ -75,6 +75,10 @@
                             </div>
                         <div class="panel-body">
                             <div class="form-group">
+                                <div class="col-xs-12">
+                                    <label for="count">Number of questions</label>
+                                    <select class="form-control" id="count" ng-model="category.count" ng-options="diff for diff in data.questionCount"></select>
+                                </div>
                                 <div class="col-xs-12 col-sm-6">
                                     <label for="minDiff">Minimum question difficulty level</label>
                                     <select class="form-control" id="minDiff" ng-model="category.minDiff" ng-options="diff for diff in data.difficultyScale"></select>
