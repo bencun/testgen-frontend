@@ -1,5 +1,6 @@
 define([
     './controllers/CategoriesController',
-    './controllers/CategoryController'
+    './controllers/CategoryController',
+    './controllers/CategoriesSearchController'
 ], function(){
 });

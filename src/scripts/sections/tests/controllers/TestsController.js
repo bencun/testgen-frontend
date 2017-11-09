@@ -24,14 +24,23 @@ define([
         $scope.pager();
 
         $scope.actions = {
+            addTest: function(){
+                $state.go('app.admin.test', {
+                    testId: 0
+                });
+            },
             editTest: function(test){
                 $state.go('app.admin.test', {
                     testId: test.id
                 });
             },
             deleteTest: function(test){
-                DataFactory.tests.delete(test);
+                DataFactory.tests.delete(test.id);
                 $scope.pager('refresh');
+                $scope.$broadcast('searchStart');
+            },
+            closeSearch: function(){
+                $state.go('app.admin.tests');
             }
         };
 
@@ -41,6 +50,14 @@ define([
         });
         $scope.$on('pagerPrev', function(e){
             $scope.pager('prev');
+        });
+        $scope.$on('searchStart', function(e){
+            if($rootScope.UI.search.query.trim().length > 0)
+                $state.go('app.admin.tests.search',
+                {searchQuery: $rootScope.UI.search.query},
+                {reload: 'app.admin.tests.search'});
+            else
+                $scope.actions.closeSearch();
         });
     };
     TestsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];

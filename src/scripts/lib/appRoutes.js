@@ -14,6 +14,15 @@ define([], function() {
                 module: 'categories',
                 controller: 'CategoriesController'
             },
+            'app.admin.categories.search': {
+                templateUrl: '/scripts/sections/categories/views/search.html',
+                url: '/search/:searchQuery',
+                params: {
+                    searchQuery : null
+                },
+                module: 'categories',
+                controller: 'CategoriesSearchController'
+            },
             'app.admin.category': {
                 templateUrl: '/scripts/sections/categories/views/category.html',
                 url: '/categories/:categoryId',
@@ -32,11 +41,21 @@ define([], function() {
                 module: 'questions',
                 controller: 'QuestionsController'
             },
+            'app.admin.questions.search': {
+                templateUrl: '/scripts/sections/questions/views/search.html',
+                url: '/questions/search/:searchQuery',
+                params: {
+                    searchQuery : null
+                },
+                module: 'questions',
+                controller: 'QuestionsSearchController'
+            },
             'app.admin.question': {
                 templateUrl: '/scripts/sections/questions/views/question.html',
                 url: '/question/:questionId',
                 params: {
-                    questionId: null
+                    questionId: null,
+                    categoryId: null
                 },
                 module: 'questions',
                 controller: 'QuestionController'
@@ -46,6 +65,15 @@ define([], function() {
                 url: '/tests',
                 module: 'tests',
                 controller: 'TestsController'
+            },
+            'app.admin.tests.search': {
+                templateUrl: '/scripts/sections/tests/views/search.html',
+                url: '/tests/search/:searchQuery',
+                params: {
+                    searchQuery: null
+                },
+                module: 'tests',
+                controller: 'TestsSearchController'
             },
             'app.admin.test': {
                 templateUrl: '/scripts/sections/tests/views/test.html',

@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var TestController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification){
+    var TestController = function($scope, $rootScope, $state, $stateParams, DataFactory, NotificationExtended){
         console.log("Question controller is alive.");
 
         $rootScope.UI.pagerVisible = false;
@@ -11,7 +11,8 @@ define([
         var testId = parseInt($stateParams.testId, 10);
         
         $scope.data = {
-            testData: DataFactory.tests.read(testId),
+            testData: (testId > 0) ? DataFactory.tests.read(testId) : DataFactory.tests.new(),
+            allCategories: DataFactory.categories.getAll(),
             difficultyScale: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         };
         //get categories, merge the simple ones with the real ones
@@ -19,15 +20,12 @@ define([
             angular.merge($scope.data.testData.categories[i],
                 DataFactory.categories.read($scope.data.testData.categories[i].id));
         }
-        console.log($scope.data.testData);
         $scope.actions = {
-            addCategory: function(){
+            addCategory: function(cat){
                 //TODO
-                $scope.data.testData.categories.push({
-                    id: null,
-                    minDiff: 1,
-                    maxDiff: 10
-                });
+                cat.minDiff = 1;
+                cat.maxDiff = 10;
+                $scope.data.testData.categories.unshift(cat);
             },
             removeCategory: function(cat){
                 $scope.data.testData.categories.splice(
@@ -41,7 +39,7 @@ define([
             }
         };
     };
-    TestController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'Notification'];
+    TestController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'NotificationExtended'];
 
     angular.module('app').controller('TestController', TestController);
 });

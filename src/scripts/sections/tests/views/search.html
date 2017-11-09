@@ -1,17 +1,15 @@
 <div class="container-fluid">
-    <!-- for search results -->
-    <ui-view></ui-view>
-    <!-- normal view -->
+
     <div class="row">
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="row row-v-center">
                     <div class="col-xs-8 text-left">
-                        Test templates
+                        Search results (top 10)
                     </div>
                     <div class="col-xs-4 text-right">
-                        <button class="btn btn-sm btn-primary" ng-click="actions.addTest();">
-                            <span class="fa fa-plus"></span>
+                        <button class="btn btn-sm btn-danger" ng-click="actions.closeSearch();">
+                            <span class="fa fa-times"></span>
                         </button>
                     </div>
                 </div>
@@ -26,13 +24,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in data.items">
+                        <tr ng-if="!data.searchItems || !data.searchItems.length">
+                            <td>No results have been found.</td>
+                        </tr>
+                        <tr ng-repeat="item in data.searchItems ">
                             <td ng-bind="item.name"></td>
                             <td ng-bind="item.description"></td>
                             <td class="text-nowrap">
                                 <button class="btn btn-primary hidden-xs" ng-click="actions.editTest(item);">Edit</button>
                                 <button class="btn btn-danger hidden-xs" ng-click="actions.deleteTest(item);">Delete</button>
-
                                 <button class="btn btn-primary visible-xs-inline" ng-click="actions.editTest(item);">
                                     <span class="fa fa-pencil"></span>
                                 </button>

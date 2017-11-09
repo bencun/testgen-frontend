@@ -1,0 +1,13 @@
+<div class="ui-notification custom-template">
+    <div class="message" ng-bind-html="message"></div>
+    <div class="message">
+        <div class="row">
+            <div class="col-xs-6 text-center">
+                <button class="btn btn-sm btn-warning" ng-click="temporaryActions.resolve();">Confirm</button>
+            </div>
+            <div class="col-xs-6 text-center">
+                <button class="btn btn-sm btn-primary" ng-click="temporaryActions.reject();">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

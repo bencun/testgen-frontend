@@ -1,4 +1,5 @@
 define([
     './controllers/TestsController',
-    './controllers/TestController'
+    './controllers/TestController',
+    './controllers/TestsSearchController'
 ], function() {});

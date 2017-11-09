@@ -13,6 +13,7 @@
             </div>
             <!-- Contorl to set if test is timed -->
             <div class="form-group">
+                <label>Test timing settings</label>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" ng-model="data.testData.timed">This test is timed
@@ -49,31 +50,45 @@
                     </label>
                 </div>
             </div>
+
+            
             <!-- Categories to include when generating the test -->
-            <h3>Categories</h3>
             <div class="row">
-                <div class="panel panel-default" ng-repeat="category in data.testData.categories">
-                    <div class="panel-heading">
-                        <span class="panel-title" ng-bind="category.name"></span>
-                        <button class="btn btn-sm btn-danger" ng-click="actions.removeCategory(category);"><span class="fa fa-trash"></span></button>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-6">
-                                <label for="minDiff">Minimum question difficulty level [1-10]</label>
-                                <select class="form-control" id="minDiff" ng-model="category.minDiff" ng-options="diff for diff in data.difficultyScale"></select>
+                <label>Test categories</label>
+                <!-- Pick the categories to add -->
+                <div class="col-xs-12">
+                    <filtered-picker fp-array="data.allCategories" fp-target-array="data.testData.categories" fp-push-method="actions.addCategory(arg);" fp-id-property="id" fp-filter-property="name" fp-title="Add categories"></filtered-picker>
+                </div>
+                <div class="col-xs-12">
+                    <div class="panel panel-default" ng-repeat="category in data.testData.categories">
+                        <div class="panel-heading">
+                                <div class="row row-v-center">
+                                    <div class="col-xs-8 text-left">
+                                        <span class="panel-title" ng-bind="category.name"></span>
+                                    </div>
+                                    <div class="col-xs-4 text-right">
+                                        <button class="btn btn-sm btn-danger" ng-click="actions.removeCategory(category);">
+                                            <span class="fa fa-trash"></span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xs-12 col-sm-6">
-                                <label for="maxDiff">Maximum question difficulty level [1-10]</label>
-                                <select class="form-control" id="maxDiff" ng-model="category.maxDiff" ng-options="diff for diff in data.difficultyScale"></select>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-6">
+                                    <label for="minDiff">Minimum question difficulty level</label>
+                                    <select class="form-control" id="minDiff" ng-model="category.minDiff" ng-options="diff for diff in data.difficultyScale"></select>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <label for="maxDiff">Maximum question difficulty level</label>
+                                    <select class="form-control" id="maxDiff" ng-model="category.maxDiff" ng-options="diff for diff in data.difficultyScale"></select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Pick the categories to add -->
-            <div filtered-picker></div>
             
             <div class="form-group">
                 <button class="btn btn-primary" ng-click="actions.update()">Update</button>

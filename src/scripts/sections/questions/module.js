@@ -1,5 +1,6 @@
 define([
     './controllers/QuestionsController',
-    './controllers/QuestionController'
+    './controllers/QuestionController',
+    './controllers/QuestionsSearchController'
 ], function(){
 });

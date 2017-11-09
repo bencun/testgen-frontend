@@ -152,9 +152,9 @@ gulp.task('watcher', function(){
     console.log('Watching js files...');
     gulp.watch('src/**/*.js', ['buildnominify']);
     console.log('Watching css files...');
-    gulp.watch('src/**/*.css', ['buildcss']);
+    gulp.watch('src/**/*.css', ['buildcss', 'buildfonts']);
     console.log('Watching less files...');
-    gulp.watch('src/**/*.less', ['buildless', 'buildcss']);
+    gulp.watch('src/**/*.less', ['buildless', 'buildcss', 'buildfonts']);
     console.log('Watching html files...');
     gulp.watch('src/**/*.html', ['buildnominify']);
 });

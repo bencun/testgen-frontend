@@ -19,11 +19,33 @@
     resize: vertical;
 }
 
+#bs-override .panel-heading btn{
+    margin-left: 4px;
+}
+
+body{
+    padding-top: 70px;
+}
+
 .hor-separator{
     display: block;
     width: 100%;
     border-bottom: 1px solid #cfcfcf;
     height: 16px;
+}
+
+.filtered-picker .well{
+    min-height: 200px;
+}
+.filtered-picker-item{
+    display: inline-block;
+    margin: 1px;
+}
+.filtered-picker-subtext{
+    margin: 0;
+    padding: 1px 0px;
+    font-style: italic;
+    color: #cfcfcf;
 }
 
 /* animations */
@@ -52,24 +74,15 @@
 }
 
 ui-view, [ui-view]{
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: 4px;
-    margin-right: 4px;
+    
 }
 
 ui-view.ng-leave,
 [ui-view].ng-leave{
-    position: absolute;
-    top: 0;
-    display: block;
-    animation: 0.25s fade-out;
+    display: none;
 }
 ui-view.ng-enter,
 [ui-view].ng-enter{
-    position: absolute;
-    top: 0;
     display: block;
     animation: 0.25s fade-in;
 }

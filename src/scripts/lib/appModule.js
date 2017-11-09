@@ -90,6 +90,10 @@ define([
                 pager:{
                     currentPage: 0,
                     totalPages: 0
+                },
+                search:{
+                    count: 10,
+                    query: null
                 }
             };
             $rootScope.UI.pagerTrigger = function(dir){
@@ -100,6 +104,9 @@ define([
             };
             $rootScope.UI.goBack = function(){
                 window.history.back();
+            };
+            $rootScope.UI.search.start = function(){
+                $rootScope.$broadcast('searchStart');
             };
             //admin restriction
             $transitions.onBefore( { to: 'app.admin.**' }, function(transition) {
@@ -126,7 +133,7 @@ define([
               $transitions.onBefore( { to: 'app.user.**' }, function(transition) {
                 var AuthFactory = transition.injector().get('AuthFactory');
                 // If the function returns false, the transition is cancelled.
-                AuthFactory.checkAuth().then(
+                return AuthFactory.checkAuth().then(
                     //success, proceed with the transition and update the current status name
                     //...as we're using it to update the navbar
                     function(response){

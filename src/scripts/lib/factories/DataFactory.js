@@ -1,6 +1,6 @@
 define(['angular'], function(angular) {
     
-    var createFactory = function($q, $http){
+    var createFactory = function($q, $http, $filter){
         //fake data for testing purposes
         var fakeData = {
             categories:[
@@ -101,7 +101,7 @@ define(['angular'], function(angular) {
         }
         for(i=2; i<=15; i++){
             fakeData.tests.push({
-                id: 1,
+                id: i,
                 name: "Dummy test template #" + i,
                 description: "This template is a dummy template.",
                 timed: true,
@@ -179,7 +179,7 @@ define(['angular'], function(angular) {
                             totalPages: f.totalPages
                         };
                 }
-                //console.log("start is " + start);
+                //array.slice also creates a new array with new objects and references!
                 f.currentArray = fakeData[f.target].slice(start-1, start-1+f.perPage); //start-1 because of the dummy data array
                 f.currentPage = Math.floor(start / f.perPage) + 1;
                 f.totalPages = Math.floor(fakeData[f.target].length / f.perPage) + ((fakeData[f.target].length % f.perPage) > 0 ? 1 : 0);
@@ -190,6 +190,23 @@ define(['angular'], function(angular) {
                 };
             },
             categories:{
+                getAll: function(){
+                    return fakeData.categories;
+                },
+                search: function(query, count){
+                    var filtered = $filter('filter')(fakeData.categories, query);
+                    filtered = $filter('orderBy')(filtered, '+name');
+                    filtered = $filter('limitTo')(filtered, count);
+                    return filtered;
+                    
+                },
+                new: function(){
+                    return {
+                        id: 0,
+                        name: "",
+                        description: ""
+                    };
+                },
                 create: function(cat){
                     //update remote
                     //if remote update successful update local
@@ -237,6 +254,24 @@ define(['angular'], function(angular) {
                 }
             },
             questions:{
+                search: function(query, count){
+                    var filtered = $filter('filter')(fakeData.questions, query);
+                    filtered = $filter('orderBy')(filtered, '+name');
+                    filtered = $filter('limitTo')(filtered, count);
+                    return filtered;
+                    
+                },
+                new: function(categoryId){
+                    return {
+                        id: 0,
+                        categoryId: categoryId,
+                        difficulty: 5,
+                        question: "",
+                        note: "",
+                        multiselect: false,
+                        options:[]
+                    };
+                },
                 create: function(q){
                     //update remote
                     //if remote update successful update local
@@ -284,6 +319,26 @@ define(['angular'], function(angular) {
                 }
             },
             tests:{
+                search: function(query, count){
+                    var filtered = $filter('filter')(fakeData.tests, query);
+                    filtered = $filter('orderBy')(filtered, '+name');
+                    filtered = $filter('limitTo')(filtered, count);
+                    return filtered;
+                    
+                },
+                new: function(){
+                    return {
+                        id: 0,
+                        name: "",
+                        description: "",
+                        timed: false,
+                        timedTotal: false,
+                        timedTotalTime: 45,
+                        timedPerQuestion: false,
+                        timedPerQuestionTime: 30,
+                        categories:[]
+                    };
+                },
                 create: function(t){
                     //update remote
                     //if remote update successful update local
@@ -333,7 +388,7 @@ define(['angular'], function(angular) {
         };
         return f;
     };
-    createFactory.$inject = ['$q', '$http'];
+    createFactory.$inject = ['$q', '$http', '$filter'];
 
     return createFactory;
 });

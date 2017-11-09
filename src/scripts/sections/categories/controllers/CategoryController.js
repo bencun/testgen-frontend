@@ -11,7 +11,7 @@ define([
         var categoryId = parseInt($stateParams.categoryId, 10);
         
         $scope.data = {
-            catData: DataFactory.categories.read(categoryId)
+            catData: (categoryId > 0) ? DataFactory.categories.read(categoryId) : DataFactory.categories.new()
         };
         $scope.actions = {
             update: function(){

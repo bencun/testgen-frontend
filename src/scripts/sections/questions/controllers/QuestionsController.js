@@ -26,6 +26,12 @@ define([
         $scope.pager();
 
         $scope.actions = {
+            addQuestion: function(){
+                $state.go('app.admin.question', {
+                    categoryId: categoryId,
+                    questionId: 0
+                });
+            },
             editQuestion: function(question){
                 $state.go('app.admin.question', {
                     categoryId: categoryId,
@@ -35,6 +41,10 @@ define([
             deleteQuestion: function(q){
                 DataFactory.questions.delete(q.id);
                 $scope.pager('refresh');
+                $scope.$broadcast('searchStart');
+            },
+            closeSearch: function(){
+                $state.go('app.admin.questions');
             }
         };
 
@@ -44,6 +54,14 @@ define([
         });
         $scope.$on('pagerPrev', function(e){
             $scope.pager('prev');
+        });
+        $scope.$on('searchStart', function(e){
+            if($rootScope.UI.search.query.trim().length > 0)
+                $state.go('app.admin.questions.search',
+                {searchQuery: $rootScope.UI.search.query},
+                {reload: 'app.admin.questions.search'});
+            else
+                $scope.actions.closeSearch();
         });
     };
     QuestionsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];
