@@ -83,6 +83,30 @@ define([], function() {
                 },
                 module: 'tests',
                 controller: 'TestController'
+            },
+            'app.admin.users': {
+                templateUrl: '/scripts/sections/users/views/users.html',
+                url: '/users',
+                module: 'users',
+                controller: 'UsersController'
+            },
+            'app.admin.users.search': {
+                templateUrl: '/scripts/sections/users/views/search.html',
+                url: '/users/search/:searchQuery',
+                params: {
+                    searchQuery: null
+                },
+                module: 'users',
+                controller: 'UsersSearchController'
+            },
+            'app.admin.user': {
+                templateUrl: '/scripts/sections/users/views/user.html',
+                url: '/user/:userId',
+                params: {
+                    userId: null
+                },
+                module: 'users',
+                controller: 'UserController'
             }
         }
     };

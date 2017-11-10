@@ -56,12 +56,17 @@ define([
             $scope.pager('prev');
         });
         $scope.$on('searchStart', function(e){
-            if($rootScope.UI.search.query.trim().length > 0)
-                $state.go('app.admin.questions.search',
-                {searchQuery: $rootScope.UI.search.query},
-                {reload: 'app.admin.questions.search'});
-            else
-                $scope.actions.closeSearch();
+            if($rootScope.UI.search.query){
+                if($rootScope.UI.search.query.trim().length > 0){
+                    $state.go('app.admin.questions.search',
+                    {searchQuery: $rootScope.UI.search.query},
+                    {reload: 'app.admin.questions.search'});
+                }
+                else{
+                    $scope.actions.closeSearch();
+                }
+            }
+            else $scope.actions.closeSearch();
         });
     };
     QuestionsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];

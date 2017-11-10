@@ -1,0 +1,50 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row row-v-center">
+                    <div class="col-xs-8 text-left">
+                        Search results (top 10)
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <button class="btn btn-sm btn-danger" ng-click="actions.closeSearch();">
+                            <span class="fa fa-times"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-v-center">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="!data.searchItems || !data.searchItems.length">
+                            <td>No results have been found.</td>
+                        </tr>
+                        <tr ng-repeat="item in data.searchItems ">
+                            <td ng-bind="item.name"></td>
+                            <td ng-bind="item.details"></td>
+                            <td class="text-nowrap">
+                                <button class="btn btn-primary hidden-xs" ng-click="actions.editUser(item);">Edit</button>
+                                <button class="btn btn-danger hidden-xs" ng-click="actions.deleteUser(item);">Delete</button>
+                                <button class="btn btn-primary visible-xs-inline" ng-click="actions.editUser(item);">
+                                    <span class="fa fa-pencil"></span>
+                                </button>
+                                <button class="btn btn-danger visible-xs-inline" ng-click="actions.deleteUser(item);">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

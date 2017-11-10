@@ -68,6 +68,22 @@ define(['angular'], function(angular) {
                         }
                     ]
                 }
+            ],
+            users:[
+                {
+                    id: 1,
+                    name: "Peter Peterson",
+                    details: "This user is a full stack developer.",
+                    admin: false,
+                    tests:[
+                        {
+                            id: 1
+                        },
+                        {
+                            id: 2
+                        }
+                    ]
+                }
             ]
         };
         for(var i=3; i<=31; i++){
@@ -123,6 +139,22 @@ define(['angular'], function(angular) {
                         minDiff: 3,
                         maxDiff: 8,
                         count: i % 5
+                    }
+                ]
+            });
+        }
+        for(i=2; i<=15; i++){
+            fakeData.users.push({
+                id: i,
+                name: "Dummy Dummyslav #" + i,
+                details: "This user is a dummy user.",
+                admin: false,
+                tests:[
+                    {
+                        id: i % 10
+                    },
+                    {
+                        id: i % 11
                     }
                 ]
             });
@@ -260,7 +292,7 @@ define(['angular'], function(angular) {
             questions:{
                 search: function(query, count){
                     var filtered = $filter('filter')(fakeData.questions, query);
-                    filtered = $filter('orderBy')(filtered, '+name');
+                    filtered = $filter('orderBy')(filtered, '+question');
                     filtered = $filter('limitTo')(filtered, count);
                     return filtered;
                     
@@ -323,6 +355,9 @@ define(['angular'], function(angular) {
                 }
             },
             tests:{
+                getAll: function(){
+                    return fakeData.tests;
+                },
                 search: function(query, count){
                     var filtered = $filter('filter')(fakeData.tests, query);
                     filtered = $filter('orderBy')(filtered, '+name');
@@ -383,6 +418,71 @@ define(['angular'], function(angular) {
                         var index = fakeData.tests.indexOf(results[0]);
                         if(index >= 0){
                             fakeData.tests.splice(index, 1);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            },
+            users:{
+                search: function(query, count){
+                    var filtered = $filter('filter')(fakeData.users, query);
+                    filtered = $filter('orderBy')(filtered, '+name');
+                    filtered = $filter('limitTo')(filtered, count);
+                    return filtered;
+                    
+                },
+                new: function(){
+                    return {
+                        id: 0,
+                        name: "",
+                        details: "",
+                        password: "",
+                        passwordConfirm: "",
+                        admin: false,
+                        tests:[]
+                    };
+                },
+                create: function(u){
+                    //update remote
+                    //if remote update successful update local
+                },
+                read: function(id){
+                    //grab data from the local array
+                    var results = $.grep(fakeData.users, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length)
+                        if(results.length > 0)
+                            return angular.copy(results[0], {});
+                    //otherwise return false
+                    return false;
+                },
+                update: function(u){
+                    //update remote
+                    //if remote update successful update local
+                    var results = $.grep(fakeData.users, function(e){
+                        return e.id === u.id;
+                    });
+                    if(results){
+                        var index = fakeData.users.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.users[index] = u;
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                delete: function(id){
+                    //update remote
+                    //if remote update successful update local
+                    var results = $.grep(fakeData.users, function(e){
+                        return e.id === id;
+                    });
+                    if(results){
+                        var index = fakeData.users.indexOf(results[0]);
+                        if(index >= 0){
+                            fakeData.users.splice(index, 1);
                             return true;
                         }
                     }
