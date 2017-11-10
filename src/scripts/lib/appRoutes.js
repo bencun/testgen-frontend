@@ -107,7 +107,31 @@ define([], function() {
                 },
                 module: 'users',
                 controller: 'UserController'
-            }
+            },
+            'app.user.userTests': {
+                templateUrl: '/scripts/sections/userTests/views/userTests.html',
+                url: '/userTests',
+                module: 'userTests',
+                controller: 'UserTestsController'
+            },
+            'app.user.userTests.search': {
+                templateUrl: '/scripts/sections/userTests/views/search.html',
+                url: '/userTests/search/:searchQuery',
+                params: {
+                    searchQuery: null
+                },
+                module: 'userTests',
+                controller: 'UserTestsSearchController'
+            },
+            'app.user.userTest': {
+                templateUrl: '/scripts/sections/userTests/views/userTest.html',
+                url: '/userTest/:testId',
+                params: {
+                    testId: null
+                },
+                module: 'userTests',
+                controller: 'UserTestController'
+            },
         }
     };
 });

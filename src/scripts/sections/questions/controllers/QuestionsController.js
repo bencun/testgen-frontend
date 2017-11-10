@@ -8,6 +8,8 @@ define([
 
         $rootScope.UI.pagerVisible = true;
         $rootScope.UI.searchVisible = true;
+        $rootScope.UI.navigationVisible = true;
+        
         var categoryId = parseInt($stateParams.categoryId, 10);
         
         DataFactory.setTarget(DataFactory.targets.questions);

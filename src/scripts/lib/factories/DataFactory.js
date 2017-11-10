@@ -84,6 +84,76 @@ define(['angular'], function(angular) {
                         }
                     ]
                 }
+            ],
+            userTests:[
+                {
+                    id: 1,
+                    name: "Junior full stack developer",
+                    description: "This template is used during the full stack developer interview.",
+                    timed: true,
+                    timedTotal: true,
+                    timedTotalTime: 1,
+                    timedPerQuestion: true,
+                    timedPerQuestionTime: 15,
+                    questions:[
+                        {
+                            id: 1,
+                            question: "What are the opening and the closing tag of the PHP file?",
+                            note: "There are multiple correct answers.",
+                            multiselect: true,
+                            options:[
+                                {
+                                    option: "<!php",
+                                    correct: false
+                                },
+                                {
+                                    option: "<?php",
+                                    correct: false
+                                },
+                                {
+                                    option: "?>",
+                                    correct: false
+                                },
+                                {
+                                    option: ">>",
+                                    correct: false
+                                }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            question: "Do global variables exist in Javascript?",
+                            note: "Select one option.",
+                            multiselect: false,
+                            options:[
+                                {
+                                    option: "Yes",
+                                    correct: false
+                                },
+                                {
+                                    option: "No",
+                                    correct: false
+                                }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            question: "How are you feeling?",
+                            note: "Select one option.",
+                            multiselect: false,
+                            options:[
+                                {
+                                    option: "Great",
+                                    correct: false
+                                },
+                                {
+                                    option: "Awesome",
+                                    correct: false
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
         };
         for(var i=3; i<=31; i++){
@@ -159,6 +229,56 @@ define(['angular'], function(angular) {
                 ]
             });
         }
+        for(i=2; i<=4; i++){
+            fakeData.userTests.push({
+                id: i,
+                name: "Dummy test #" + i,
+                description: "A dummy test description.",
+                timed: true,
+                timedTotal: true,
+                timedTotalTime: 45,
+                timedPerQuestion: false,
+                timedPerQuestionTime: 60,
+                questions:[
+                    {
+                        id: 1,
+                        question: "Dummy question",
+                        note: "There are multiple dummy answers.",
+                        multiselect: true,
+                        options:[
+                            {
+                                option: "Dummy 1",
+                                correct: false
+                            },
+                            {
+                                option: "Dummy 2",
+                                correct: false
+                            },
+                            {
+                                option: "Dummy 3",
+                                correct: false
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        question: "Another dummy question",
+                        note: "Select one dummy.",
+                        multiselect: false,
+                        options:[
+                            {
+                                option: "Yes",
+                                correct: false
+                            },
+                            {
+                                option: "No",
+                                correct: false
+                            }
+                        ]
+                    }
+                ]
+            });
+        }
         console.log(fakeData);
 
         //an actual factory
@@ -186,7 +306,8 @@ define(['angular'], function(angular) {
                 categories: 'categories',
                 questions: 'questions',
                 tests: 'tests',
-                users: 'users'
+                users: 'users',
+                userTests: 'userTests'
             },
             load: function(dir){
                 if(dir == null) {
@@ -487,6 +608,33 @@ define(['angular'], function(angular) {
                         }
                     }
                     return false;
+                }
+            },
+            userTests:{
+                getAll: function(){
+                    return fakeData.userTests;
+                },
+                search: function(query, count){
+                    var filtered = $filter('filter')(fakeData.userTests, query);
+                    filtered = $filter('orderBy')(filtered, '+name');
+                    filtered = $filter('limitTo')(filtered, count);
+                    return filtered;
+                    
+                },
+                read: function(id){
+                    //grab data from the local array
+                    var results = $.grep(fakeData.userTests, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length)
+                        if(results.length > 0)
+                            return angular.copy(results[0], {});
+                    //otherwise return false
+                    return false;
+                },
+                update: function(t){
+                    //update remote
+                    //if remote update successful update local data
                 }
             }
         };

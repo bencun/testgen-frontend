@@ -3,7 +3,12 @@ define([
 ], function(
     angular) {
 
-    var LoginController = function($scope, $state, AuthFactory){
+    var LoginController = function($rootScope, $scope, $state, AuthFactory, Notification){
+        
+        $rootScope.UI.pagerVisible = false;
+        $rootScope.UI.searchVisible = false;
+        $rootScope.UI.navigationVisible = false;
+
         $scope.userData = {
             username: "",
             password: ""
@@ -11,40 +16,37 @@ define([
         
         //checks if user is authenticated
         $scope.tryLogin = function(useCredentials){
-            //login
             if(useCredentials === true){
-                AuthFactory.checkAuth().then(
-                    //success
-                    function(response){
-                        console.log(response);
-                        $state.go('app.admin.tests');
-                    },
-                    //failure
-                    function(response){
-                        console.log(response);
-                    }
-                );
+                //mock the login
+                AuthFactory.loggedIn = true;
             }
+
+            //real login
+            //TODO
+            
             //existing auth
-            else{
-                AuthFactory.checkAuth().then(
-                    //success
-                    function(response){
-                        console.log(response);
+            AuthFactory.checkAuth().then(
+                //success
+                function(response){
+                    console.log(response);
+                    $rootScope.UI.goBackVisible = true;
+                    if(response.permAdmin){
                         $state.go('app.admin.tests');
-                    },
-                    //failure
-                    function(response){
-                        console.log(response);
                     }
-                );
-            }
+                    else{
+                        $state.go('app.user.userTests');
+                    }
+                },
+                //failure
+                function(response){
+                    Notification.warning('You are not logged in!');
+                }
+            );
         };
-        
         //check if user is already authenticated
         $scope.tryLogin(false);
     };
-    LoginController.$inject = ['$scope', '$state', 'AuthFactory'];
+    LoginController.$inject = ['$rootScope', '$scope', '$state', 'AuthFactory', 'Notification'];
 
     angular.module('app').controller('LoginController', LoginController);
 });

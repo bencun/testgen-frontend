@@ -9,23 +9,29 @@ define(['angular', 'angular-ui-notification'], function(angular, angularUiNotifi
                 var tempScope = $rootScope.$new(true, $rootScope);
                 tempScope.temporaryActions = {
                     resolve: function(){
+                        nt.$$state.value.kill();
                         deferred.resolve();
                     },
                     reject: function(){
+                        nt.$$state.value.kill();
                         deferred.reject();
                     }
                 };
                 //function to destroy the scope when notification is closed
                 var destroyScope = function(e){
+                    //if the message has closed by itself that should reject a promise
+                    if(deferred.promise.$$state.status === 0){
+                        deferred.reject();
+                    }
                     tempScope.$destroy();
                 };
                 //create a custom notification
-                Notification.primary({
+                var nt = Notification.primary({
                     message: question,
                     templateUrl: "/scripts/lib/factories/templates/NotificationExtended.html",
                     scope: tempScope,
                     onClose: destroyScope,
-                    closeOnClick: true
+                    closeOnClick: false
                 });
                 //return a promise
                 return deferred.promise;

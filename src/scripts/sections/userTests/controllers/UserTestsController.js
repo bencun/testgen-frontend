@@ -3,14 +3,14 @@ define([
 ], function(
     angular) {
 
-    var UsersController = function($scope, $rootScope, $state, $stateParams, DataFactory){
-        console.log("Users controller is alive.");
+    var UserTestsController = function($scope, $rootScope, $state, $stateParams, DataFactory){
+        console.log("Tests controller is alive.");
 
         $rootScope.UI.pagerVisible = true;
         $rootScope.UI.searchVisible = true;
-        $rootScope.UI.navigationVisible = true;
+        $rootScope.UI.navigationVisible = false;
                 
-        DataFactory.setTarget(DataFactory.targets.users);
+        DataFactory.setTarget(DataFactory.targets.userTests);
 
         $scope.pager = function(dir){
             var currentData = DataFactory.load(dir);
@@ -25,23 +25,13 @@ define([
         $scope.pager();
 
         $scope.actions = {
-            addUser: function(){
-                $state.go('app.admin.user', {
-                    userId: 0
+            startTest: function(test){
+                $state.go('app.user.userTest', {
+                    testId: test.id
                 });
-            },
-            editUser: function(user){
-                $state.go('app.admin.user', {
-                    userId: user.id
-                });
-            },
-            deleteUser: function(user){
-                DataFactory.users.delete(user.id);
-                $scope.pager('refresh');
-                $scope.$broadcast('searchStart');
             },
             closeSearch: function(){
-                $state.go('app.admin.users');
+                $state.go('app.user.userTests');
             }
         };
 
@@ -55,9 +45,9 @@ define([
         $scope.$on('searchStart', function(e){
             if($rootScope.UI.search.query){
                 if($rootScope.UI.search.query.trim().length > 0){
-                    $state.go('app.admin.users.search',
+                    $state.go('app.user.userTests.search',
                     {searchQuery: $rootScope.UI.search.query},
-                    {reload: 'app.admin.users.search'});
+                    {reload: 'app.user.userTests.search'});
                 }
                 else{
                     $scope.actions.closeSearch();
@@ -66,7 +56,7 @@ define([
             else $scope.actions.closeSearch();
         });
     };
-    UsersController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];
+    UserTestsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];
 
-    angular.module('app').controller('UsersController', UsersController);
+    angular.module('app').controller('UserTestsController', UserTestsController);
 });

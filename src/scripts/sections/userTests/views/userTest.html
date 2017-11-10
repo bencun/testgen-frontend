@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    
+    <!-- timedTotal timer -->
+    <div class="total-time-block bg-success"
+    ng-class="{'bg-success': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) > 0.2, 'bg-danger': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) <= 0.2}"
+    ng-if="data.totalTimeLeft > 0"
+    ng-style="{'left': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%', 'right': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%'}">
+        <span ng-if="data.totalTimeLeft > 3600">{{ data.totalTimeLeft | timefilter:'h' }}h</span>
+        <span ng-if="data.totalTimeLeft > 60">{{ data.totalTimeLeft | timefilter:'m' }}m</span>
+        <span ng-if="data.totalTimeLeft > 0">{{ data.totalTimeLeft | timefilter:'s' }}s</span>
+    </div>
+
+    <div class="row">
+        <!-- timedPerQuestion timer -->
+        <div class="col-xs-12">
+            Time left:
+            <span>{{ data.questionTimeLeft }}</span>
+        </div>
+
+        <!-- Question -->
+        <div ng-if="data.currentQuestion != null" class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <div class="panel panel-info question" ng-repeat="question in data.testData.questions" ng-if="(question == data.currentQuestion) || data.testData.timedPerQuestion === false">
+                <div class="panel-heading">
+                    <div class="row row-v-center">
+                        <div class="col-xs-12 text-left">
+                            {{ 'Question #' + ($index+1) + ' of ' + data.testData.questions.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="question-question" ng-bind="question.question"></p>
+                    <p class="question-note" ng-bind="question.note"></p>
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="option in question.options" ng-click="actions.selectOption(option);" ng-class="{'question-option-selected' : option.correct}">
+                            <div class="row row-v-center">
+                                <div class="col-xs-9">
+                                    <p ng-bind="option.option"></p>
+                                </div>
+                                <div class="col-xs-3 text-center question-check">
+                                    <span class="fa fa-circle-o" ng-if="!option.correct"></span>
+                                    <span class="fa fa-check-circle-o" ng-if="option.correct"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <button ng-if="question.multiselect === true && data.testData.timedPerQuestion === true" class="btn btn-block btn-lg btn-success btn-next" ng-click="actions.nextQuestion();">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

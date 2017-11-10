@@ -8,6 +8,7 @@ define([
 
         $rootScope.UI.pagerVisible = true;
         $rootScope.UI.searchVisible = true;
+        $rootScope.UI.navigationVisible = true;
                 
         DataFactory.setTarget(DataFactory.targets.tests);
 

@@ -3,9 +3,10 @@ define([
     'lib/appRoutes',
     'lib/services/dependencyResolverFor',
     'lib/factories/module',
-    'lib/directives/module'
+    'lib/directives/module',
+    'lib/filters/module'
 ], function(angular, routeConfig, dependencyResolverFor) {
-    var app = angular.module('app', ['ui.router', 'ngAnimate', 'ui-notification', 'app.factories', 'app.directives']);
+    var app = angular.module('app', ['ui.router', 'ngAnimate', 'ui-notification', 'app.factories', 'app.directives', 'app.filters']);
     
     app.config([
         '$stateProvider',
@@ -80,12 +81,15 @@ define([
         'AuthFactory',
         '$transitions',
         '$state',
-        function($rootScope, $trace, AuthFactory, $transitions, $state){
+        'Notification',
+        function($rootScope, $trace, AuthFactory, $transitions, $state, Notification){
             $trace.enable('TRANSITION');
             //ui settings
             $rootScope.UI = {
                 pagerVisible: false,
                 searchVisible: false,
+                navigationVisible: false,
+                goBackVisible: false,
                 adminMode: true,
                 pager:{
                     currentPage: 0,
@@ -111,18 +115,12 @@ define([
             //admin restriction
             $transitions.onBefore( { to: 'app.admin.**' }, function(transition) {
                 var AuthFactory = transition.injector().get('AuthFactory');
-                // If the function returns false, the transition is cancelled.
-                AuthFactory.checkAuth().then(
-                    //success, proceed with the transition and update the current status name
-                    //...as we're using it to update the navbar
+                AuthFactory.checkAuthAdmin().then(
                     function(response){
-                        console.log("Auth OK.");
-                        //$rootScope.currentState = transition.to().name;
-                        return true;
+                        console.log("[app.admin] Admin auth OK.");
                     },
-                    //failure, go back to login screen
                     function(response){
-                        console.log("Auth failed.");
+                        console.log("Admin auth failed.");
                         console.log(response);
                         $state.go('login');
                         return false;
@@ -132,17 +130,12 @@ define([
               //user restriction
               $transitions.onBefore( { to: 'app.user.**' }, function(transition) {
                 var AuthFactory = transition.injector().get('AuthFactory');
-                // If the function returns false, the transition is cancelled.
-                return AuthFactory.checkAuth().then(
-                    //success, proceed with the transition and update the current status name
-                    //...as we're using it to update the navbar
+                return AuthFactory.checkAuthUser().then(
                     function(response){
-                        console.log("Auth OK.");
-                        return true;
+                        console.log("[app.user] User auth OK.");
                     },
-                    //failure, go back to login screen
                     function(response){
-                        console.log("Auth failed.");
+                        console.log("User auth failed.");
                         console.log(response);
                         $state.go('login');
                         return false;
