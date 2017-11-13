@@ -19,6 +19,7 @@ define([
             if(useCredentials === true){
                 //mock the login
                 AuthFactory.loggedIn = true;
+                AuthFactory.permAdmin = true;
             }
 
             //real login

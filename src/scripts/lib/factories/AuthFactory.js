@@ -2,7 +2,7 @@ define(['angular'], function(angular) {
     
     var createFactory = function($q){
         var f = {
-            loggedIn: true,
+            loggedIn: false,
             permAdmin: false,
 
             checkAuth: function(){
