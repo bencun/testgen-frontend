@@ -21,16 +21,16 @@
                 </div>
             </div>
             <!-- Password editing options -->
-            <div ng-if="data.userData.id === 0">
-                <div class="form-group">
-                    <label for="pass1">Password</label>
-                    <input type="password" class="form-control" placeholder="Password" id="pass1" ng-model="data.userData.password">
-                </div>
-                <div class="form-group">
-                    <label for="pass2">Repeat password</label>
-                    <input type="password" class="form-control" placeholder="Password" id="pass2" ng-model="data.userData.passwordConfirm">
-                </div>
+            
+            <div class="form-group">
+                <label for="pass1">Password</label>
+                <input type="password" class="form-control" placeholder="Password" id="pass1" ng-model="data.userData.password">
             </div>
+            <div class="form-group">
+                <label for="pass2">Repeat password</label>
+                <input type="password" class="form-control" placeholder="Password" id="pass2" ng-model="data.userData.passwordConfirm">
+            </div>
+            
             
             <!-- Test templates to assign to this user -->
             <div class="row">
