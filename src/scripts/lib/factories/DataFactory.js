@@ -559,7 +559,7 @@ define(['angular'], function(angular) {
                         name: "",
                         details: "",
                         password: "",
-                        passwordConfirm: "",
+                        passwordConfirmation: "",
                         admin: false,
                         tests:[]
                     };
