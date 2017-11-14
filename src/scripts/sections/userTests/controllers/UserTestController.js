@@ -65,7 +65,7 @@ define([
                 }
             },
             selectOption: function(option){
-                option.correct = !option.correct;
+                option.selected = !option.selected;
                 if($scope.data.currentQuestion.multiselect != true){
                     $scope.actions.nextQuestion();
                 }
