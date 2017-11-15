@@ -6,7 +6,7 @@ define([
     'lib/directives/module',
     'lib/filters/module'
 ], function(angular, routeConfig, dependencyResolverFor) {
-    var app = angular.module('app', ['ui.router', 'ngAnimate', 'ui-notification', 'app.factories', 'app.directives', 'app.filters']);
+    var app = angular.module('app', ['ui.router', 'ngAnimate', 'ngStorage', 'ui-notification', 'app.factories', 'app.directives', 'app.filters']);
     
     app.config([
         '$stateProvider',

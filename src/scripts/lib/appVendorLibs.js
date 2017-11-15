@@ -4,5 +4,6 @@ define([
     'angular',
     'angular-ui-router',
     'angular-animate',
-    'angular-ui-notification'
+    'angular-ui-notification',
+    'ngStorage'
 ], function() {});

@@ -28,6 +28,7 @@ require.config({
     'angular-ui-router' : 'vendor/angular-ui-router/release/angular-ui-router.min',
     'angular-animate' : 'vendor/angular-animate/angular-animate.min',
     'angular-ui-notification' : 'vendor/angular-ui-notification/dist/angular-ui-notification',
+    'ngStorage' : 'vendor/ngstorage/ngStorage',
 
     'angular-mocks' : '../node_modules/angular-mocks/angular-mocks'
 
