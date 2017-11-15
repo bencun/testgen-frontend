@@ -15,11 +15,11 @@ define([
         //fake data for testing purposes
         var fakeData = {};
         //mock data
-        fakeData.categories = CategoriesFactory.getAll();
-        fakeData.questions = QuestionsFactory.getAll();
-        fakeData.tests = TestsFactory.getAll();
-        fakeData.users = UsersFactory.getAll();
-        fakeData.userTests = UserTestsFactory.getAll();
+        //fakeData.categories = CategoriesFactory.getAll();
+        //fakeData.questions = QuestionsFactory.getAll();
+        //fakeData.tests = TestsFactory.getAll();
+        //fakeData.users = UsersFactory.getAll();
+        //fakeData.userTests = UserTestsFactory.getAll();
        
         //an actual factory
         var f = {
