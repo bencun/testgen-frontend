@@ -12,7 +12,10 @@ define([
         '$stateProvider',
         '$urlRouterProvider',
         '$locationProvider',
+        '$httpProvider',
+
         'NotificationProvider',
+
         '$controllerProvider',
         '$compileProvider',
         '$filterProvider',
@@ -22,7 +25,10 @@ define([
             $stateProvider,
             $urlRouterProvider,
             $locationProvider,
+            $httpProvider,
+
             NotificationProvider,
+
             $controllerProvider,
             $compileProvider,
             $filterProvider,
@@ -59,7 +65,7 @@ define([
                     });
                 });
             }
-
+            //defalut routes config
             if(routeConfig.defaultRoutePath !== undefined) {
                 $urlRouterProvider.otherwise(routeConfig.defaultRoutePath);
             }
@@ -72,6 +78,28 @@ define([
                 verticalSpacing: 4,
                 maxCount: 3
             });
+            
+            //add the $http interceptor for the auth purposes
+            $httpProvider.interceptors.push([
+                '$q', '$location', '$localStorage',
+                function ($q, $location, $localStorage) {
+                    return {
+                        request: function (config) {
+                            config.headers = config.headers || {};
+                            var token = $localStorage.authToken;
+                            if (token) {
+                                config.headers.Authorization = 'Bearer ' + token;
+                            }
+                            return config;
+                        },
+                        response: function (response) {
+                            return response;
+                        },
+                        responseError: function(response) {
+                          return $q.reject(response);
+                        }
+                    };
+             }]);
         }
     ]);
 
@@ -91,6 +119,7 @@ define([
                 navigationVisible: false,
                 goBackVisible: false,
                 adminMode: true,
+                logoutVisible: true,
                 pager:{
                     currentPage: 0,
                     totalPages: 0
@@ -108,6 +137,18 @@ define([
             };
             $rootScope.UI.goBack = function(){
                 window.history.back();
+            };
+            $rootScope.UI.logout = function(){
+                AuthFactory.logout().then(
+                    function(){
+                        $state.go('login');
+                        Notification.primary("You have been logged out.");
+                    },
+                    function(){
+                        $state.go('login');
+                        Notification.warning("You are not even logged in!");
+                    }
+                );
             };
             $rootScope.UI.search.start = function(){
                 $rootScope.$broadcast('searchStart');

@@ -8,41 +8,64 @@ define([
         $rootScope.UI.pagerVisible = false;
         $rootScope.UI.searchVisible = false;
         $rootScope.UI.navigationVisible = false;
+        $rootScope.UI.logoutVisible = false;
 
         $scope.userData = {
             username: "",
             password: ""
         };
         
-        //checks if user is authenticated
+        //helper functions
+        var redirectUser = function(){
+            console.debug("Redirecting to user state...");
+            $rootScope.UI.goBackVisible = true;
+            $rootScope.UI.logoutVisible = true;
+            $state.go('app.user.userTests');
+        };
+        var redirectAdmin = function(){
+            console.debug("Redirecting to admin state...");
+            $rootScope.UI.goBackVisible = true;
+            $rootScope.UI.logoutVisible = true;
+            $state.go('app.admin.tests');
+        };
+        //login the user
         $scope.tryLogin = function(useCredentials){
+            //try to login with name:pass
             if(useCredentials === true){
-                //mock the login
-                AuthFactory.loggedIn = true;
-                AuthFactory.permAdmin = true;
+                var letsTest = AuthFactory.login($scope.userData.username, $scope.userData.password).then(
+                    function(data){
+                        if(data.admin === true){
+                            redirectAdmin();
+                        }
+                        else{
+                            redirectUser();
+                        }
+                    },
+                    function(data){
+                        console.log(data);
+                        Notification.warning(data.message);
+                    }
+                );
             }
-
-            //real login
-            //TODO
-            
-            //existing auth
-            AuthFactory.checkAuth().then(
-                //success
-                function(response){
-                    console.log(response);
-                    $rootScope.UI.goBackVisible = true;
-                    if(response.permAdmin){
-                        $state.go('app.admin.tests');
+            //else check for the existing auth
+            else{
+                //check for existing auth
+                AuthFactory.checkAuth().then(
+                    //success
+                    function(response){
+                        if(response.permAdmin === true){
+                            redirectAdmin();
+                        }
+                        else{
+                            redirectUser();
+                        }
+                    },
+                    //failure
+                    function(response){
+                        Notification.warning('You are not logged in!');
                     }
-                    else{
-                        $state.go('app.user.userTests');
-                    }
-                },
-                //failure
-                function(response){
-                    Notification.warning('You are not logged in!');
-                }
-            );
+                );
+            }
         };
         //check if user is already authenticated
         $scope.tryLogin(false);

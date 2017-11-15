@@ -64,6 +64,13 @@
                         <a ui-sref="app.admin.users">Users</a>
                     </li>
                 </ul>
+                <form class="navbar-form navbar-right" ng-show="UI.logoutVisible">
+                    <button class="btn btn-default" ng-click="UI.logout();">
+                        <span class="fa fa-sign-out"></span>
+                        Logout
+                    </button>
+                </form>
+                    
             </div>
             <!-- /.navbar-collapse -->
         </div>
