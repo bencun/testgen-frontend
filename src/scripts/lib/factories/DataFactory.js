@@ -1,403 +1,26 @@
-define(['angular'], function(angular) {
+define([
+    'angular'
+], function(
+    angular) {
     
-    var createFactory = function($q, $http, $filter){
+    var createFactory = function(
+        $q,
+        $http,
+        $filter,
+        CategoriesFactory,
+        QuestionsFactory,
+        TestsFactory,
+        UsersFactory,
+        UserTestsFactory){
         //fake data for testing purposes
-        var fakeData = {
-            categories:[
-                {
-                    id: 1,
-                    name: "PHP",
-                    description: "Questions about PHP."
-                },
-                {
-                    id: 2,
-                    name: "Javascript",
-                    description: "Questions about Javascript."
-                }
-            ],
-            questions:[
-                {
-                    id: 1,
-                    categoryId: 1,
-                    difficulty: 2,
-                    question: "What are the opening and the closing tag of the PHP file?",
-                    note: "There are multiple correct answers.",
-                    multiselect: true,
-                    options:[
-                        {
-                            option: "<!php",
-                            correct: false
-                        },
-                        {
-                            option: "<?php",
-                            correct: true
-                        },
-                        {
-                            option: "?>",
-                            correct: true
-                        },
-                        {
-                            option: ">>",
-                            correct: false
-                        }
-                    ]
-                }
-            ],
-            tests:[
-                {
-                    id: 1,
-                    name: "Junior full stack developer",
-                    description: "This template is used during the full stack developer interview.",
-                    timed: true,
-                    timedTotal: true,
-                    timedTotalTime: 45,
-                    timedPerQuestion: true,
-                    timedPerQuestionTime: 60,
-                    categories:[
-                        {
-                            id: 1,
-                            minDiff: 2,
-                            maxDiff: 7,
-                            count: 3
-                        },
-                        {
-                            id: 2,
-                            minDiff: 3,
-                            maxDiff: 8,
-                            count: 2
-                        }
-                    ]
-                }
-            ],
-            users:[
-                {
-                    id: 1,
-                    name: "Peter Peterson",
-                    details: "This user is a full stack developer.",
-                    admin: false,
-                    tests:[
-                        {
-                            id: 1
-                        },
-                        {
-                            id: 2
-                        }
-                    ]
-                }
-            ],
-            userTests:[
-                {
-                    name: "Junior full stack developer",
-                    description: "This template is used during the full stack developer interview.",
-                    timed: true,
-                    timedTotal: true,
-                    timedTotalTime: 45,
-                    timedPerQuestion: true,
-                    timedPerQuestionTime: 60,
-                    user_id: 2,
-                    questions: [
-                        {
-                            id: 1,
-                            question: "What are the opening and the closing tag of the PHP file?",
-                            note: "There are multiple correct answers.",
-                            category: "Vanilla PHP",
-                            difficulty: 3,
-                            multiselect: true,
-                            options: [
-                                {
-                                    option: "<!php",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "<?php",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "?>",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: ">>",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 37,
-                            question: "Dummy question 36",
-                            note: "Dummy question note, category 1 and difficulty 7",
-                            category: "Vanilla PHP",
-                            difficulty: 7,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 25,
-                            question: "Dummy question 24",
-                            note: "Dummy question note, category 1 and difficulty 5",
-                            category: "Vanilla PHP",
-                            difficulty: 5,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 5,
-                            question: "Dummy question 4",
-                            note: "Dummy question note, category 2 and difficulty 5",
-                            category: "Vanilla JS",
-                            difficulty: 5,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 14,
-                            question: "Dummy question 13",
-                            note: "Dummy question note, category 2 and difficulty 4",
-                            category: "Vanilla JS",
-                            difficulty: 4,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 33,
-                            question: "Dummy question 32",
-                            note: "Dummy question note, category 3 and difficulty 3",
-                            category: "Laravel 5.x",
-                            difficulty: 3,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 42,
-                            question: "Dummy question 41",
-                            note: "Dummy question note, category 3 and difficulty 2",
-                            category: "Laravel 5.x",
-                            difficulty: 2,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        },
-                        {
-                            id: 12,
-                            question: "Dummy question 11",
-                            note: "Dummy question note, category 3 and difficulty 2",
-                            category: "Laravel 5.x",
-                            difficulty: 2,
-                            multiselect: false,
-                            options: [
-                                {
-                                    option: "Dummy option 1",
-                                    correct: false,
-                                    selected: false
-                                },
-                                {
-                                    option: "Dummy option 2",
-                                    correct: false,
-                                    selected: false
-                                }
-                            ]
-                        }
-                    ],
-                    updated_at: "2017-11-14 11:50:34",
-                    created_at: "2017-11-14 11:50:34",
-                    id: 8
-                }
-            ]
-        };
-        for(var i=3; i<=31; i++){
-            fakeData.categories.push({
-                id: i,
-                name: "Dummy category #" + i,
-                description: "Dummy description of the dummy category #" + i
-            });
-        }
-        for(i=2; i<=15; i++){
-            fakeData.questions.push({
-                id: i,
-                categoryId: 1,
-                difficulty: i % 10,
-                question: "Dummy question #" + i,
-                note: "There are multiple correct answers.",
-                multiselect: true,
-                options: [
-                    {
-                        option: "Option 1",
-                        correct: false
-                    },
-                    {
-                        option: "Option 2",
-                        correct: true
-                    },
-                    {
-                        option: "Option 3",
-                        correct: true
-                    }
-                ]
-            });
-        }
-        for(i=2; i<=15; i++){
-            fakeData.tests.push({
-                id: i,
-                name: "Dummy test template #" + i,
-                description: "This template is a dummy template.",
-                timed: true,
-                timedTotal: false,
-                timedTotalTime: i*3,
-                timedPerQuestion: true,
-                timedPerQuestionTime: (i*10)%60,
-                categories:[
-                    {
-                        id: 1,
-                        minDiff: 2,
-                        maxDiff: 7,
-                        count: i % 5
-                    },
-                    {
-                        id: 2,
-                        minDiff: 3,
-                        maxDiff: 8,
-                        count: i % 5
-                    }
-                ]
-            });
-        }
-        for(i=2; i<=15; i++){
-            fakeData.users.push({
-                id: i,
-                name: "Dummy Dummyslav #" + i,
-                details: "This user is a dummy user.",
-                admin: false,
-                tests:[
-                    {
-                        id: i % 10
-                    },
-                    {
-                        id: i % 11
-                    }
-                ]
-            });
-        }
-        for(i=2; i<=4; i++){
-            fakeData.userTests.push({
-                id: i,
-                name: "Dummy test #" + i,
-                description: "A dummy test description.",
-                timed: true,
-                timedTotal: true,
-                timedTotalTime: 45,
-                timedPerQuestion: false,
-                timedPerQuestionTime: 60,
-                questions:[
-                    {
-                        id: 1,
-                        question: "Dummy question",
-                        note: "There are multiple dummy answers.",
-                        multiselect: true,
-                        options:[
-                            {
-                                option: "Dummy 1",
-                                correct: false
-                            },
-                            {
-                                option: "Dummy 2",
-                                correct: false
-                            },
-                            {
-                                option: "Dummy 3",
-                                correct: false
-                            }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        question: "Another dummy question",
-                        note: "Select one dummy.",
-                        multiselect: false,
-                        options:[
-                            {
-                                option: "Yes",
-                                correct: false
-                            },
-                            {
-                                option: "No",
-                                correct: false
-                            }
-                        ]
-                    }
-                ]
-            });
-        }
-        console.log(fakeData);
-
+        var fakeData = {};
+        //mock data
+        fakeData.categories = CategoriesFactory.getAll();
+        fakeData.questions = QuestionsFactory.getAll();
+        fakeData.tests = TestsFactory.getAll();
+        fakeData.users = UsersFactory.getAll();
+        fakeData.userTests = UserTestsFactory.getAll();
+       
         //an actual factory
         var f = {
             currentArray: [],
@@ -427,6 +50,7 @@ define(['angular'], function(angular) {
                 userTests: 'userTests'
             },
             load: function(dir){
+                //paging logic
                 if(dir == null) {
                     start = 1;
                 }
@@ -465,299 +89,118 @@ define(['angular'], function(angular) {
             },
             categories:{
                 getAll: function(){
-                    return fakeData.categories;
+                    return CategoriesFactory.getAll();
                 },
                 search: function(query, count){
-                    var filtered = $filter('filter')(fakeData.categories, query);
-                    filtered = $filter('orderBy')(filtered, '+name');
-                    filtered = $filter('limitTo')(filtered, count);
-                    return filtered;
+                    return CategoriesFactory.search(query, count);
                     
                 },
                 new: function(){
-                    return {
-                        id: 0,
-                        name: "",
-                        description: ""
-                    };
+                    return CategoriesFactory.new();
                 },
                 create: function(cat){
-                    //update remote
-                    //if remote update successful update local
+                    return CategoriesFactory.create(cat);
                 },
                 read: function(id){
-                    //grab data from the local array
-                    var results = $.grep(fakeData.categories, function(e){
-                        return e.id === id;
-                    });
-                    if(results.length)
-                        if(results.length > 0)
-                            return angular.copy(results[0], {});
-                    //otherwise return false
-                    return false;
+                    return CategoriesFactory.read(id);
                 },
                 update: function(cat){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.categories, function(e){
-                        return e.id === cat.id;
-                    });
-                    if(results){
-                        var index = fakeData.categories.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.categories[index] = cat;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return CategoriesFactory.update(cat);
                 },
                 delete: function(id){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.categories, function(e){
-                        return e.id === id;
-                    });
-                    if(results){
-                        var index = fakeData.categories.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.categories.splice(index, 1);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return CategoriesFactory.delete(id);
                 }
             },
             questions:{
                 search: function(query, count){
-                    var filtered = $filter('filter')(fakeData.questions, query);
-                    filtered = $filter('orderBy')(filtered, '+question');
-                    filtered = $filter('limitTo')(filtered, count);
-                    return filtered;
-                    
+                    return QuestionsFactory.search(query, count);
                 },
                 new: function(categoryId){
-                    return {
-                        id: 0,
-                        categoryId: categoryId,
-                        difficulty: 5,
-                        question: "",
-                        note: "",
-                        multiselect: false,
-                        options:[]
-                    };
+                    return QuestionsFactory.new(categoryId);
                 },
                 create: function(q){
-                    //update remote
-                    //if remote update successful update local
+                    return QuestionsFactory.create(q);
                 },
                 read: function(id){
-                    //grab data from the local array
-                    var results = $.grep(fakeData.questions, function(e){
-                        return e.id === id;
-                    });
-                    if(results.length)
-                        if(results.length > 0)
-                            return angular.copy(results[0], {});
-                    //otherwise return false
-                    return false;
+                    return QuestionsFactory.read(id);
                 },
                 update: function(q){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.questions, function(e){
-                        return e.id === q.id;
-                    });
-                    if(results){
-                        var index = fakeData.questions.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.questions[index] = q;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return QuestionsFactory.update(q);
                 },
                 delete: function(id){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.questions, function(e){
-                        return e.id === id;
-                    });
-                    if(results){
-                        var index = fakeData.questions.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.questions.splice(index, 1);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return QuestionsFactory.delete(id);
                 }
             },
             tests:{
                 getAll: function(){
-                    return fakeData.tests;
+                    return TestsFactory.getAll();
                 },
                 search: function(query, count){
-                    var filtered = $filter('filter')(fakeData.tests, query);
-                    filtered = $filter('orderBy')(filtered, '+name');
-                    filtered = $filter('limitTo')(filtered, count);
-                    return filtered;
-                    
+                    return TestsFactory.search(query, count);
                 },
                 new: function(){
-                    return {
-                        id: 0,
-                        name: "",
-                        description: "",
-                        timed: false,
-                        timedTotal: false,
-                        timedTotalTime: 45,
-                        timedPerQuestion: false,
-                        timedPerQuestionTime: 30,
-                        categories:[]
-                    };
+                    return TestsFactory.new();
                 },
                 create: function(t){
-                    //update remote
-                    //if remote update successful update local
+                    return TestsFactory.create(t);
                 },
                 read: function(id){
-                    //grab data from the local array
-                    var results = $.grep(fakeData.tests, function(e){
-                        return e.id === id;
-                    });
-                    if(results.length)
-                        if(results.length > 0)
-                            return angular.copy(results[0], {});
-                    //otherwise return false
-                    return false;
+                    return TestsFactory.read(id);
                 },
                 update: function(t){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.tests, function(e){
-                        return e.id === t.id;
-                    });
-                    if(results){
-                        var index = fakeData.tests.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.tests[index] = t;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return TestsFactory.update(t);
                 },
                 delete: function(id){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.tests, function(e){
-                        return e.id === id;
-                    });
-                    if(results){
-                        var index = fakeData.tests.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.tests.splice(index, 1);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return TestsFactory.delete(id);
                 }
             },
             users:{
                 search: function(query, count){
-                    var filtered = $filter('filter')(fakeData.users, query);
-                    filtered = $filter('orderBy')(filtered, '+name');
-                    filtered = $filter('limitTo')(filtered, count);
-                    return filtered;
-                    
+                    return UsersFactory.search(query, count);
                 },
                 new: function(){
-                    return {
-                        id: 0,
-                        name: "",
-                        details: "",
-                        password: "",
-                        passwordConfirmation: "",
-                        admin: false,
-                        tests:[]
-                    };
+                    return UsersFactory.new();
                 },
                 create: function(u){
-                    //update remote
-                    //if remote update successful update local
+                    return UsersFactory.create(u);
                 },
                 read: function(id){
-                    //grab data from the local array
-                    var results = $.grep(fakeData.users, function(e){
-                        return e.id === id;
-                    });
-                    if(results.length)
-                        if(results.length > 0)
-                            return angular.copy(results[0], {});
-                    //otherwise return false
-                    return false;
+                    return UsersFactory.read(id);
                 },
                 update: function(u){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.users, function(e){
-                        return e.id === u.id;
-                    });
-                    if(results){
-                        var index = fakeData.users.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.users[index] = u;
-                            return true;
-                        }
-                    }
-                    return false;
+                    return UsersFactory.update(u);
                 },
                 delete: function(id){
-                    //update remote
-                    //if remote update successful update local
-                    var results = $.grep(fakeData.users, function(e){
-                        return e.id === id;
-                    });
-                    if(results){
-                        var index = fakeData.users.indexOf(results[0]);
-                        if(index >= 0){
-                            fakeData.users.splice(index, 1);
-                            return true;
-                        }
-                    }
-                    return false;
+                    return UsersFactory.delete(id);
                 }
             },
             userTests:{
                 getAll: function(){
-                    return fakeData.userTests;
+                    return UserTestsFactory.getAll();
                 },
                 search: function(query, count){
-                    var filtered = $filter('filter')(fakeData.userTests, query);
-                    filtered = $filter('orderBy')(filtered, '+name');
-                    filtered = $filter('limitTo')(filtered, count);
-                    return filtered;
-                    
+                    return UserTestsFactory.search(query, count);
                 },
                 read: function(id){
-                    //grab data from the local array
-                    var results = $.grep(fakeData.userTests, function(e){
-                        return e.id === id;
-                    });
-                    if(results.length)
-                        if(results.length > 0)
-                            return angular.copy(results[0], {});
-                    //otherwise return false
-                    return false;
+                    return UserTestsFactory.read(id);
                 },
                 update: function(t){
-                    //update remote
-                    //if remote update successful update local data
+                    return UserTestsFactory.update(t);
                 }
             }
         };
         return f;
     };
-    createFactory.$inject = ['$q', '$http', '$filter'];
+    createFactory.$inject = [
+        '$q',
+        '$http',
+        '$filter',
+        'CategoriesFactory',
+        'QuestionsFactory',
+        'TestsFactory',
+        'UsersFactory',
+        'UserTestsFactory'
+    ];
 
     return createFactory;
 });
