@@ -12,14 +12,8 @@ define([
         TestsFactory,
         UsersFactory,
         UserTestsFactory){
-        //fake data for testing purposes
-        var fakeData = {};
-        //mock data
-        //fakeData.categories = CategoriesFactory.getAll();
-        //fakeData.questions = QuestionsFactory.getAll();
-        //fakeData.tests = TestsFactory.getAll();
-        //fakeData.users = UsersFactory.getAll();
-        //fakeData.userTests = UserTestsFactory.getAll();
+        
+        var pagingArray = [];
        
         //an actual factory
         var f = {
@@ -28,19 +22,26 @@ define([
             currentPage: 0,
             totalPages: 0,
             target: '',
+            targetLoader: undefined,
             setTarget: function(t){
+                //empty the data array - next load function will fill it
+                pagingArray = [];
                 f.target = t;
-            },
-            setTargetandLoad: function(t){
-                f.target = t;
-                return f.load();
-            },
-            setTargetAPI: function(t){
-                f.target = '/api/'+t;
-            },
-            setTargetAPIandLoad: function(t){
-                f.target = '/api/'+t;
-                return f.load();
+                if(t == f.targets.categories){
+                    f.targetLoader = f.categories.getAll;
+                }
+                if(t == f.targets.questions){
+                    f.targetLoader = f.questions.getAll;
+                }
+                if(t == f.targets.tests){
+                    f.targetLoader = f.tests.getAll;
+                }
+                if(t == f.targets.users){
+                    f.targetLoader = f.users.getAll;
+                }
+                if(t == f.targets.userTests){
+                    f.targetLoader = f.userTests.getAll;
+                }
             },
             targets:{
                 categories: 'categories',
@@ -50,43 +51,80 @@ define([
                 userTests: 'userTests'
             },
             load: function(dir){
-                //paging logic
-                if(dir == null) {
-                    start = 1;
+                //prepare stuff
+                var deferred = $q.defer();
+                //check if f.targetLoader is even set
+                if(f.targetLoader == undefined){
+                    deferred.reject("No targetLoader set.");
+                    return;
                 }
-                if(dir == 'refresh'){
-                    start = start;
-                }
-                if(dir == 'next'){
-                    if(f.currentPage < f.totalPages)
-                        start = ((f.currentPage) * f.perPage) + 1;
-                    else
-                        return {
-                            items: f.currentArray,
-                            currentPage: f.currentPage,
-                            totalPages: f.totalPages
-                        };
-                }
-                if(dir == 'prev'){
-                    if(f.currentPage > 1)
-                        start = ((f.currentPage-2) * f.perPage) + 1;
-                    else
-                        return {
-                            items: f.currentArray,
-                            currentPage: f.currentPage,
-                            totalPages: f.totalPages
-                        };
-                }
-                //array.slice also creates a new array with new objects and references!
-                f.currentArray = fakeData[f.target].slice(start-1, start-1+f.perPage); //start-1 because of the dummy data array
-                f.currentPage = Math.floor(start / f.perPage) + 1;
-                f.totalPages = Math.floor(fakeData[f.target].length / f.perPage) + ((fakeData[f.target].length % f.perPage) > 0 ? 1 : 0);
-                return {
-                    items: f.currentArray,
-                    currentPage: f.currentPage,
-                    totalPages: f.totalPages
+
+                //main pager logic when data is available;                
+                var pagerLogic = function(){
+                    //paging logic
+                    if(dir == null) {
+                        start = 1;
+                    }
+                    if(dir == 'refresh'){
+                        start = start;
+                    }
+                    if(dir == 'next'){
+                        if(f.currentPage < f.totalPages)
+                            start = ((f.currentPage) * f.perPage) + 1;
+                        else{
+                            deferred.resolve({
+                                items: f.currentArray,
+                                currentPage: f.currentPage,
+                                totalPages: f.totalPages
+                            });
+                            return;
+                        }
+                    }
+                    if(dir == 'prev'){
+                        if(f.currentPage > 1)
+                            start = ((f.currentPage-2) * f.perPage) + 1;
+                        else{
+                            deferred.resolve({
+                                items: f.currentArray,
+                                currentPage: f.currentPage,
+                                totalPages: f.totalPages
+                            });
+                            return;
+                        }
+                    }
+                    //array.slice also creates a new array with new objects and references!
+                    f.currentArray = pagingArray.slice(start-1, start-1+f.perPage); //start-1 because of the dummy data array
+                    f.currentPage = Math.floor(start / f.perPage) + 1;
+                    f.totalPages = Math.floor(pagingArray.length / f.perPage) + ((pagingArray.length % f.perPage) > 0 ? 1 : 0);
+                    deferred.resolve({
+                        items: f.currentArray,
+                        currentPage: f.currentPage,
+                        totalPages: f.totalPages
+                    });
+                    return;
                 };
-            },
+                
+                //check if we got the data or we need to fetch it
+                if(pagingArray.length < 1){
+                    //all potential targetLoaders tie in to the other factories' functions...
+                    //...and all of those return a promise
+                    f.targetLoader().then(
+                        function(response){
+                            pagingArray = response;
+                            pagerLogic();
+                        },
+                        function(response){
+                            console.debug("Fetching data from targetLoader failed miserably.");
+                            deferred.reject(response);
+                        }
+                    );
+                }
+                else{
+                    pagerLogic();
+                }
+                //return the promise
+                return deferred.promise;
+            },  //load
             categories:{
                 getAll: function(){
                     return CategoriesFactory.getAll();

@@ -6,19 +6,30 @@ define([
     var CategoriesController = function($scope, $rootScope, $state, DataFactory){
         console.log("Categories controller is alive.");
 
-        $rootScope.UI.pagerVisible = true;
-        $rootScope.UI.searchVisible = true;
-        $rootScope.UI.navigationVisible = true;
-
+        
         DataFactory.setTarget(DataFactory.targets.categories);
-
+        
+        $scope.data = {
+            items: []
+        };
         $scope.pager = function(dir){
-            var currentData = DataFactory.load(dir);
-            $rootScope.UI.pager.currentPage = currentData.currentPage;
-            $rootScope.UI.pager.totalPages = currentData.totalPages;
-            $scope.data = {
-                items: currentData.items
-            };
+            DataFactory.load(dir).then(
+                function(currentData){
+                    $rootScope.UI.pager.currentPage = currentData.currentPage;
+                    $rootScope.UI.pager.totalPages = currentData.totalPages;
+                    $scope.data = {
+                        items: currentData.items
+                    };
+                    console.log($scope.data.items);
+
+                    $rootScope.UI.pagerVisible = true;
+                    $rootScope.UI.searchVisible = true;
+                    $rootScope.UI.navigationVisible = true;
+                },
+                function(response){
+                    console.debug("Fetching categories from DataFactory failed miserably.");
+                }
+            );
             
         };
 
