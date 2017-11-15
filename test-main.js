@@ -29,6 +29,7 @@ require.config({
     'angular-animate' : 'vendor/angular-animate/angular-animate.min',
     'angular-ui-notification' : 'vendor/angular-ui-notification/dist/angular-ui-notification',
     'ngStorage' : 'vendor/ngstorage/ngStorage',
+    'angular-loading-bar' : 'vendor/angular-loading-bar/build/loading-bar',
 
     'angular-mocks' : '../node_modules/angular-mocks/angular-mocks'
 

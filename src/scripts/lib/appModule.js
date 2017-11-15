@@ -6,7 +6,13 @@ define([
     'lib/directives/module',
     'lib/filters/module'
 ], function(angular, routeConfig, dependencyResolverFor) {
-    var app = angular.module('app', ['ui.router', 'ngAnimate', 'ngStorage', 'ui-notification', 'app.factories', 'app.directives', 'app.filters']);
+    var app = angular.module('app', [
+        'ui.router',
+        'ngAnimate',
+        'ngStorage',
+        'ui-notification',
+        'angular-loading-bar',
+        'app.factories', 'app.directives', 'app.filters']);
     
     app.config([
         '$stateProvider',
@@ -15,6 +21,7 @@ define([
         '$httpProvider',
 
         'NotificationProvider',
+        'cfpLoadingBarProvider',
 
         '$controllerProvider',
         '$compileProvider',
@@ -28,6 +35,7 @@ define([
             $httpProvider,
 
             NotificationProvider,
+            $cfpLoadingBarProvider,
 
             $controllerProvider,
             $compileProvider,
@@ -78,6 +86,9 @@ define([
                 verticalSpacing: 4,
                 maxCount: 3
             });
+
+            //config the loading bar
+            $cfpLoadingBarProvider.includeSpinner = false;
             
             //add the $http interceptor for the auth purposes
             $httpProvider.interceptors.push([
