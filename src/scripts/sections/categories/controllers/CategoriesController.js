@@ -20,7 +20,6 @@ define([
                     $scope.data = {
                         items: currentData.items
                     };
-                    console.log($scope.data.items);
 
                     $rootScope.UI.pagerVisible = true;
                     $rootScope.UI.searchVisible = true;
@@ -48,9 +47,15 @@ define([
                 $state.go('app.admin.category', {categoryId: cat.id});
             },
             deleteCategory : function(cat){
-                DataFactory.categories.delete(cat.id);
-                $scope.pager('refresh');
-                $scope.$broadcast('searchStart');
+                DataFactory.categories.delete(cat.id).then(
+                    function(response){
+                        $scope.pager('refresh');
+                        $scope.actions.closeSearch();
+                    },
+                    function(response){
+                        
+                    }
+                );
             },
             closeSearch: function(){
                 $state.go('app.admin.categories');

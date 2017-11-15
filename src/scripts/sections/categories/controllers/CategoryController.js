@@ -14,8 +14,25 @@ define([
             catData: (categoryId > 0) ? DataFactory.categories.read(categoryId) : DataFactory.categories.new()
         };
         $scope.actions = {
+            create: function(){
+                DataFactory.categories.create($scope.data.catData).then(
+                    function(){
+                        $scope.actions.cancel();
+                    },
+                    function(){
+                        
+                    }
+                );
+            },
             update: function(){
-                DataFactory.categories.update($scope.data.catData);
+                DataFactory.categories.update($scope.data.catData).then(
+                    function(){
+                        
+                    },
+                    function(){
+                        
+                    }
+                );
             },
             cancel: function(){
                 $rootScope.UI.goBack();

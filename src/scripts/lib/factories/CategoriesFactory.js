@@ -2,7 +2,7 @@ define(['angular'], function(angular) {
     
     var createFactory = function($q, $http, $filter){
         //local data array
-        var localData = {};
+        var localData = [];
         //an actual factory
         var f = {
             getAll: function(){
@@ -35,12 +35,22 @@ define(['angular'], function(angular) {
                 };
             },
             create: function(cat){
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
+                delete cat.id;
+                $http.post('api/categories', cat).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
+                    }
+                );
+                return deferred.promise;
             },
             read: function(id){
                 //grab data from the local array
-                var results = $.grep(localData.categories, function(e){
+                var results = $.grep(localData, function(e){
                     return e.id === id;
                 });
                 if(results.length)
@@ -50,34 +60,30 @@ define(['angular'], function(angular) {
                 return false;
             },
             update: function(cat){
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
-                var results = $.grep(localData.categories, function(e){
-                    return e.id === cat.id;
-                });
-                if(results){
-                    var index = localData.categories.indexOf(results[0]);
-                    if(index >= 0){
-                        localData.categories[index] = cat;
-                        return true;
+                $http.put('api/categories', cat).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
                     }
-                }
-                return false;
+                );
+                return deferred.promise;
             },
             delete: function(id){
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
-                var results = $.grep(localData.categories, function(e){
-                    return e.id === id;
-                });
-                if(results){
-                    var index = localData.categories.indexOf(results[0]);
-                    if(index >= 0){
-                        localData.categories.splice(index, 1);
-                        return true;
+                $http.delete('api/categories/'+id).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
                     }
-                }
-                return false;
+                );
+                return deferred.promise;
             }
         };
         return f;

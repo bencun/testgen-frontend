@@ -53,6 +53,9 @@ define([
             load: function(dir){
                 //prepare stuff
                 var deferred = $q.defer();
+                if(dir == 'refresh'){
+                    pagingArray = [];
+                }
                 //check if f.targetLoader is even set
                 if(f.targetLoader == undefined){
                     deferred.reject("No targetLoader set.");
