@@ -170,6 +170,7 @@ node_modules/
 logs/
 .sass-cache/
 .vscode/
+.vscode
 src/vendor/
 src/vendor
 coverage
