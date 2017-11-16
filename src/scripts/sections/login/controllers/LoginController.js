@@ -9,6 +9,7 @@ define([
         $rootScope.UI.searchVisible = false;
         $rootScope.UI.navigationVisible = false;
         $rootScope.UI.logoutVisible = false;
+        $rootScope.UI.goBackVisible = false;
 
         $scope.userData = {
             username: "",
@@ -49,6 +50,7 @@ define([
             }
             //else check for the existing auth
             else{
+                console.debug("Trying to login checking for auth...");
                 //check for existing auth
                 AuthFactory.checkAuth().then(
                     //success
@@ -68,6 +70,7 @@ define([
             }
         };
         //check if user is already authenticated
+        console.debug("Trying to login...");
         $scope.tryLogin(false);
     };
     LoginController.$inject = ['$rootScope', '$scope', '$state', 'AuthFactory', 'Notification'];
