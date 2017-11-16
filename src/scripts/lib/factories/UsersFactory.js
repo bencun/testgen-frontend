@@ -55,6 +55,7 @@ define(['angular'], function(angular) {
             },
             create: function(u){
                 var deferred = $q.defer();
+                u = f.stripProperties(angular.copy(u, {}));
                 //create remote
                 delete u.id;
                 $http.post('api/users', u).then(
