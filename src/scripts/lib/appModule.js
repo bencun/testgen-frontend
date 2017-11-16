@@ -169,6 +169,7 @@ define([
                 var AuthFactory = transition.injector().get('AuthFactory');
                 AuthFactory.checkAuthAdmin().then(
                     function(response){
+                        $rootScope.UI.goBackVisible = true;
                         console.log("[app.admin] Admin auth OK.");
                     },
                     function(response){
