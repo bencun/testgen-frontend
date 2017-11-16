@@ -12,13 +12,27 @@ define([
                 
         DataFactory.setTarget(DataFactory.targets.userTests);
 
+        $scope.data = {
+            items: []
+        };
         $scope.pager = function(dir){
-            var currentData = DataFactory.load(dir);
-            $rootScope.UI.pager.currentPage = currentData.currentPage;
-            $rootScope.UI.pager.totalPages = currentData.totalPages;
-            $scope.data = {
-                items: currentData.items
-            };
+            DataFactory.load(dir).then(
+                function(currentData){
+                    $rootScope.UI.pager.currentPage = currentData.currentPage;
+                    $rootScope.UI.pager.totalPages = currentData.totalPages;
+                    $scope.data = {
+                        items: currentData.items
+                    };
+
+                    $rootScope.UI.pagerVisible = true;
+                    $rootScope.UI.searchVisible = true;
+                    $rootScope.UI.navigationVisible = true;
+                },
+                function(response){
+                    console.debug("Fetching user templates from DataFactory has failed miserably.");
+                    $state.go("login");
+                }
+            );
             
         };
 

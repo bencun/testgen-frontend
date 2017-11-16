@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var UserTestController = function($scope, $timeout, $interval, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
+    var UserTestController = function($scope, $timeout, $interval, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended, $transitions){
         console.log("User test controller is alive.");
 
         $rootScope.UI.pagerVisible = false;
@@ -11,14 +11,24 @@ define([
         $rootScope.UI.navigationVisible = false;
 
         var testId = parseInt($stateParams.testId, 10);
-        
+        if(!testId) $state.go("login");
+
+
         $scope.data = {
-            testData: DataFactory.userTests.read(testId),
             currentQuestion: null,
             totalTimeLeft: 0,
             questionTimeLeft: 0
         };
-        
+
+        DataFactory.userTests.generate(testId).then(
+            function(data){
+                $scope.data.testData = data;
+            },
+            function(data){
+                //TODO
+            }
+        );
+
         var totalTimeExpired = function(){
             $scope.actions.stopTest();
         };
@@ -83,7 +93,7 @@ define([
             }
         );
     };
-    UserTestController.$inject = ['$scope', '$timeout', '$interval', '$rootScope', '$state','$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
+    UserTestController.$inject = ['$scope', '$timeout', '$interval', '$rootScope', '$state','$stateParams', 'DataFactory', 'Notification', 'NotificationExtended', '$transitions'];
 
     angular.module('app').controller('UserTestController', UserTestController);
 });
