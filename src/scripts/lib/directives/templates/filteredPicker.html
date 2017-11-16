@@ -3,7 +3,7 @@
         <h4 ng-bind="fpTitle"></h4>
         <input type="text" class="form-control" placeholder="Search by typing..." ng-model="query">
         <p class="filtered-picker-subtext">(displaying top 10 results only)</p>
-        <div ng-repeat="item in fpArray | orderBy: [fpFilterProperty] | filter:query | limitTo: 10" class="filtered-picker-item">
+        <div ng-repeat="item in fpArray | orderBy: [fpFilterProperty] | filter:query | limitTo: 10" class="filtered-picker-item" ng-if="item[fpIdProperty]">
             <button class="btn btn-sm btn-primary" ng-click="pushItem(item);">
                 <span ng-bind="item[fpFilterProperty]"></span>
                 <span class="fa fa-plus"></span>
