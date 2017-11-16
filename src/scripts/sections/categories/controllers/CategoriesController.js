@@ -27,6 +27,7 @@ define([
                 },
                 function(response){
                     console.debug("Fetching categories from DataFactory failed miserably.");
+                    $state.go("login");
                 }
             );
             
@@ -41,10 +42,15 @@ define([
                 });
             },
             viewCategory : function(cat){
-                $state.go('app.admin.questions', {categoryId: cat.id, categoryName: cat.name});
+                $state.go('app.admin.questions', {
+                    categoryId: cat.id,
+                    categoryName: cat.name
+                });
             },        
             editCategory : function(cat){
-                $state.go('app.admin.category', {categoryId: cat.id});
+                $state.go('app.admin.category', {
+                    categoryId: cat.id
+                });
             },
             deleteCategory : function(cat){
                 DataFactory.categories.delete(cat.id).then(

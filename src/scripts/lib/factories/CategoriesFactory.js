@@ -36,7 +36,7 @@ define(['angular'], function(angular) {
             },
             create: function(cat){
                 var deferred = $q.defer();
-                //update remote
+                //create remote
                 delete cat.id;
                 $http.post('api/categories', cat).then(
                     function(response){
@@ -49,15 +49,33 @@ define(['angular'], function(angular) {
                 return deferred.promise;
             },
             read: function(id){
-                //grab data from the local array
-                var results = $.grep(localData, function(e){
-                    return e.id === id;
-                });
-                if(results.length)
-                    if(results.length > 0)
-                        return angular.copy(results[0], {});
-                //otherwise return false
-                return false;
+                var deferred = $q.defer();
+                //grab data from the local array if available
+                if(localData.length > 0){
+                    var results = $.grep(localData, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length){
+                        if(results.length > 0){
+                            deferred.resolve(angular.copy(results[0], {}));
+                        }
+                    }
+                    deferred.reject();
+                }
+                //otherwise load it from the server
+                else{
+                    $http.get('api/categories/'+id).then(
+                        function(response){
+                            deferred.resolve(response.data);
+                            return localData;
+                        },
+                        function(response){
+                            deferred.reject(response);
+                            return response;
+                        }
+                    );
+                }
+                return deferred.promise;
             },
             update: function(cat){
                 var deferred = $q.defer();

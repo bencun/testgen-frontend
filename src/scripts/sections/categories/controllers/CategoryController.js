@@ -10,9 +10,27 @@ define([
         $rootScope.UI.searchVisible = false;
         var categoryId = parseInt($stateParams.categoryId, 10);
         
-        $scope.data = {
-            catData: (categoryId > 0) ? DataFactory.categories.read(categoryId) : DataFactory.categories.new()
-        };
+        console.debug(DataFactory.categories.read(categoryId));
+
+        if(categoryId > 0){
+            DataFactory.categories.read(categoryId).then(
+                function(data){
+                    console.debug('Load category returned:');
+                    console.debug(data);
+                    $scope.data = {
+                        catData: data
+                    };
+                },
+                function(response){
+                    console.debug('Load category has failed:');
+                    console.debug(response);
+                }
+            );
+        }
+        else{
+            DataFactory.categories.new();
+        }
+
         $scope.actions = {
             create: function(){
                 DataFactory.categories.create($scope.data.catData).then(
