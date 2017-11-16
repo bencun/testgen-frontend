@@ -42,7 +42,7 @@ define([
                     f.targetLoader = f.users.getAll;
                 }
                 if(t == f.targets.userTests){
-                    f.targetLoader = f.userTests.getAll;
+                    f.targetLoader = f.userTests.getAllTemplates;
                 }
             },
             targets:{
@@ -224,17 +224,29 @@ define([
                 }
             },
             userTests:{
-                getAll: function(){
-                    return UserTestsFactory.getAll();
-                },
                 search: function(query, count){
                     return UserTestsFactory.search(query, count);
                 },
-                read: function(id){
-                    return UserTestsFactory.read(id);
+                getAllTemplates: function(){
+                    return UserTestsFactory.getAllTemplates();
                 },
-                update: function(t){
-                    return UserTestsFactory.update(t);
+                getTemplate: function(id){
+                    return UserTestsFactory.getTemplate(id);
+                },
+                getAllGraded: function(){
+                    return UserTestsFactory.getAllGraded();
+                },
+                getGraded: function(id){
+                    return UserTestsFactory.getGraded(id);
+                },
+                updateFull: function(t){
+                    return UserTestsFactory.updateFull(t);
+                },
+                updateQuestion: function(t){
+                    return UserTestsFactory.updateQuestion(t);
+                },
+                generate: function(id){
+                    return UserTestsFactory.generate(id);
                 }
             }
         };
