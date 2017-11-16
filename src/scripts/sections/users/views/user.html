@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <form class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 form-horizontal">
+        <form class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 form-horizontal" ng-if="data.userData">
             <h2>Edit the user account</h2>
 
             <div class="form-group">
@@ -61,7 +61,8 @@
 
             
             <div class="form-group">
-                <button class="btn btn-primary" ng-click="actions.update()">Update</button>
+                <button class="btn btn-primary" ng-click="actions.create()" ng-if="!data.userData.id">Create</button>
+                <button class="btn btn-primary" ng-click="actions.update()" ng-if="data.userData.id > 0">Update</button>
                 <button class="btn btn-warning" ng-click="actions.cancel()">Cancel</button>
             </div>
         </form>

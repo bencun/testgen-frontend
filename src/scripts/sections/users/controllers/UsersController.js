@@ -6,19 +6,30 @@ define([
     var UsersController = function($scope, $rootScope, $state, $stateParams, DataFactory){
         console.log("Users controller is alive.");
 
-        $rootScope.UI.pagerVisible = true;
-        $rootScope.UI.searchVisible = true;
-        $rootScope.UI.navigationVisible = true;
-                
+        
         DataFactory.setTarget(DataFactory.targets.users);
-
+        
+        $scope.data = {
+            items: []
+        };
         $scope.pager = function(dir){
-            var currentData = DataFactory.load(dir);
-            $rootScope.UI.pager.currentPage = currentData.currentPage;
-            $rootScope.UI.pager.totalPages = currentData.totalPages;
-            $scope.data = {
-                items: currentData.items
-            };
+            DataFactory.load(dir).then(
+                function(currentData){
+                    $rootScope.UI.pager.currentPage = currentData.currentPage;
+                    $rootScope.UI.pager.totalPages = currentData.totalPages;
+                    $scope.data = {
+                        items: currentData.items
+                    };
+
+                    $rootScope.UI.pagerVisible = true;
+                    $rootScope.UI.searchVisible = true;
+                    $rootScope.UI.navigationVisible = true;
+                },
+                function(response){
+                    console.debug("Fetching users from DataFactory failed miserably.");
+                    $state.go("login");
+                }
+            );
             
         };
 
@@ -36,9 +47,15 @@ define([
                 });
             },
             deleteUser: function(user){
-                DataFactory.users.delete(user.id);
-                $scope.pager('refresh');
-                $scope.$broadcast('searchStart');
+                DataFactory.users.delete(user.id).then(
+                    function(response){
+                        $scope.pager('refresh');
+                        $scope.actions.closeSearch();
+                    },
+                    function(response){
+                        
+                    }
+                );
             },
             closeSearch: function(){
                 $state.go('app.admin.users');
