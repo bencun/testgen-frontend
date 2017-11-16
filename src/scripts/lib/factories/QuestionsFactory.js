@@ -2,68 +2,27 @@ define(['angular'], function(angular) {
     
     var createFactory = function($q, $http, $filter){
         //fake data for testing purposes
-        var fakeData = {
-            questions:[
-                {
-                    id: 1,
-                    categoryId: 1,
-                    difficulty: 2,
-                    question: "What are the opening and the closing tag of the PHP file?",
-                    note: "There are multiple correct answers.",
-                    multiselect: true,
-                    options:[
-                        {
-                            option: "<!php",
-                            correct: false
-                        },
-                        {
-                            option: "<?php",
-                            correct: true
-                        },
-                        {
-                            option: "?>",
-                            correct: true
-                        },
-                        {
-                            option: ">>",
-                            correct: false
-                        }
-                    ]
-                }
-            ]
-        };
-        for(i=2; i<=15; i++){
-            fakeData.questions.push({
-                id: i,
-                categoryId: 1,
-                difficulty: i % 10,
-                question: "Dummy question #" + i,
-                note: "There are multiple correct answers.",
-                multiselect: true,
-                options: [
-                    {
-                        option: "Option 1",
-                        correct: false
-                    },
-                    {
-                        option: "Option 2",
-                        correct: true
-                    },
-                    {
-                        option: "Option 3",
-                        correct: true
-                    }
-                ]
-            });
-        }
+        var localData = [];
         
         //an actual factory
         var f = {
-            getAll: function(){
-                return fakeData.questions;
+            getAll: function(catId){
+                var deferred = $q.defer();
+                $http.get('api/questions/all/'+catId).then(
+                    function(response){
+                        localData = response.data;
+                        deferred.resolve(localData);
+                        return localData;
+                    },
+                    function(response){
+                        deferred.reject(response);
+                        return response;
+                    }
+                );
+                return deferred.promise;
             },
             search: function(query, count){
-                var filtered = $filter('filter')(fakeData.questions, query);
+                var filtered = $filter('filter')(localData, query);
                 filtered = $filter('orderBy')(filtered, '+question');
                 filtered = $filter('limitTo')(filtered, count);
                 return filtered;
@@ -72,7 +31,7 @@ define(['angular'], function(angular) {
             new: function(categoryId){
                 return {
                     id: 0,
-                    categoryId: categoryId,
+                    category_id: categoryId,
                     difficulty: 5,
                     question: "",
                     note: "",
@@ -81,49 +40,73 @@ define(['angular'], function(angular) {
                 };
             },
             create: function(q){
-                //update remote
-                //if remote update successful update local
+                var deferred = $q.defer();
+                //create remote
+                delete q.id;
+                $http.post('api/questions', q).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
+                    }
+                );
+                return deferred.promise;
             },
             read: function(id){
-                //grab data from the local array
-                var results = $.grep(fakeData.questions, function(e){
-                    return e.id === id;
-                });
-                if(results.length)
-                    if(results.length > 0)
-                        return angular.copy(results[0], {});
-                //otherwise return false
-                return false;
+                var deferred = $q.defer();
+                //grab data from the local array if available
+                if(localData.length > 0){
+                    var results = $.grep(localData, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length){
+                        if(results.length > 0){
+                            deferred.resolve(angular.copy(results[0], {}));
+                        }
+                    }
+                    deferred.reject();
+                }
+                //otherwise load it from the server
+                else{
+                    $http.get('api/questions/'+id).then(
+                        function(response){
+                            deferred.resolve(response.data);
+                            return localData;
+                        },
+                        function(response){
+                            deferred.reject(response);
+                            return response;
+                        }
+                    );
+                }
+                return deferred.promise;
             },
             update: function(q){
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
-                var results = $.grep(fakeData.questions, function(e){
-                    return e.id === q.id;
-                });
-                if(results){
-                    var index = fakeData.questions.indexOf(results[0]);
-                    if(index >= 0){
-                        fakeData.questions[index] = q;
-                        return true;
+                $http.put('api/questions', q).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
                     }
-                }
-                return false;
+                );
+                return deferred.promise;
             },
             delete: function(id){
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
-                var results = $.grep(fakeData.questions, function(e){
-                    return e.id === id;
-                });
-                if(results){
-                    var index = fakeData.questions.indexOf(results[0]);
-                    if(index >= 0){
-                        fakeData.questions.splice(index, 1);
-                        return true;
+                $http.delete('api/questions/'+id).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
                     }
-                }
-                return false;
+                );
+                return deferred.promise;
             }
         };
         return f;

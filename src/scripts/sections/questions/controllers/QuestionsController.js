@@ -5,23 +5,40 @@ define([
 
     var QuestionsController = function($scope, $rootScope, $state, $stateParams, DataFactory){
         console.log("Questions controller is alive.");
-
-        $rootScope.UI.pagerVisible = true;
-        $rootScope.UI.searchVisible = true;
-        $rootScope.UI.navigationVisible = true;
         
         var categoryId = parseInt($stateParams.categoryId, 10);
+        DataFactory.setTarget(DataFactory.targets.questions, categoryId);
         
-        DataFactory.setTarget(DataFactory.targets.questions);
-
+        $scope.data = {
+            items: []
+        };
         $scope.pager = function(dir){
-            var currentData = DataFactory.load(dir);
-            $rootScope.UI.pager.currentPage = currentData.currentPage;
-            $rootScope.UI.pager.totalPages = currentData.totalPages;
-            $scope.data = {
-                catData: DataFactory.categories.read(categoryId),
-                items: currentData.items
-            };
+            DataFactory.load(dir).then(
+                function(currentData){
+                    $rootScope.UI.pager.currentPage = currentData.currentPage;
+                    $rootScope.UI.pager.totalPages = currentData.totalPages;
+                    $scope.data = {
+                        items: currentData.items
+                    };
+
+                    DataFactory.categories.read(categoryId).then(
+                        function(data){
+                            $scope.data.catData = data;
+                        },
+                        function(response){
+
+                        }
+                    );
+
+                    $rootScope.UI.pagerVisible = true;
+                    $rootScope.UI.searchVisible = true;
+                    $rootScope.UI.navigationVisible = true;
+                },
+                function(response){
+                    console.debug("Fetching questions from DataFactory failed miserably.");
+                    $state.go("login");
+                }
+            );
             
         };
 
@@ -41,9 +58,15 @@ define([
                 });
             },
             deleteQuestion: function(q){
-                DataFactory.questions.delete(q.id);
-                $scope.pager('refresh');
-                $scope.$broadcast('searchStart');
+                DataFactory.questions.delete(q.id).then(
+                    function(response){
+                        $scope.pager('refresh');
+                        $scope.actions.closeSearch();
+                    },
+                    function(response){
+                        
+                    }
+                );
             },
             closeSearch: function(){
                 $state.go('app.admin.questions');
