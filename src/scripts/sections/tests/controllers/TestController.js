@@ -9,18 +9,72 @@ define([
         $rootScope.UI.pagerVisible = false;
         $rootScope.UI.searchVisible = false;
         var testId = parseInt($stateParams.testId, 10);
-        
+
         $scope.data = {
-            testData: (testId > 0) ? DataFactory.tests.read(testId) : DataFactory.tests.new(),
-            allCategories: DataFactory.categories.getAll(),
             difficultyScale: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             questionCount: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         };
-        //get categories, merge the simple ones with the real ones
-        for(var i=0; i<$scope.data.testData.categories.length; i++){
-            angular.merge($scope.data.testData.categories[i],
-                DataFactory.categories.read($scope.data.testData.categories[i].id));
-        }
+        
+
+        //get all of the real categories
+        DataFactory.categories.getAll().then(
+            function(realCategories){
+                //put them on the scope
+                $scope.data.allCategories = realCategories;
+                //check if id > 0
+                if(testId > 0){
+                    //get the test
+                    DataFactory.tests.read(testId).then(
+                        function(td){
+                            //filter and merge
+                            for (var i = 0; i < realCategories.length; i++) {
+                                for (var j = 0; j < td.categories.length; j++) {
+                                    if(realCategories[i].id == td.categories[j].id){
+                                        //used for verification
+                                        td.categories[j].categoryExists = true;
+                                        angular.merge(
+                                            td.categories[j],
+                                            realCategories[i]
+                                        );
+                                    }
+                                }
+                            }
+                            console.log(td.categories);
+                            //remove the categories that don't exist anymore
+                            var k = 0;
+                            while (td.categories[k]) {
+                                if(!td.categories[k].categoryExists){
+                                    td.categories.splice(k, 1);
+                                }
+                                else{
+                                    k++;
+                                }
+
+                            }
+                            console.log(td.categories);
+                            //put it on scope
+                            $scope.data.testData = td;
+                        },
+                        function(response){
+                            console.debug("Failed to load the test.");
+                            $state.go("login");
+                        }
+                    );
+                }
+                //if id <= 0
+                else{
+                    //get an empty template
+                    $scope.data.testData = DataFactory.tests.new();
+                }
+            },
+            function(){
+                //fail
+                console.debug("Failed to load categories.");
+                $state.go("login");                            
+            }
+        );
+
+
         $scope.actions = {
             addCategory: function(cat){
                 //TODO
@@ -33,8 +87,25 @@ define([
                 $scope.data.testData.categories.splice(
                     $scope.data.testData.categories.indexOf(cat), 1);
             },
+            create: function(){
+                DataFactory.tests.create($scope.data.testData).then(
+                    function(){
+                        $scope.actions.cancel();
+                    },
+                    function(){
+                        
+                    }
+                );
+            },
             update: function(){
-                DataFactory.tests.update($scope.data.testData);
+                DataFactory.tests.update($scope.data.testData).then(
+                    function(){
+                        
+                    },
+                    function(){
+                        
+                    }
+                );
             },
             cancel: function(){
                 $rootScope.UI.goBack();

@@ -2,68 +2,45 @@ define(['angular'], function(angular) {
     
     var createFactory = function($q, $http, $filter){
         //fake data for testing purposes
-        var fakeData = {
-            tests:[
-                {
-                    id: 1,
-                    name: "Junior full stack developer",
-                    description: "This template is used during the full stack developer interview.",
-                    timed: true,
-                    timedTotal: true,
-                    timedTotalTime: 45,
-                    timedPerQuestion: true,
-                    timedPerQuestionTime: 60,
-                    categories:[
-                        {
-                            id: 1,
-                            minDiff: 2,
-                            maxDiff: 7,
-                            count: 3
-                        },
-                        {
-                            id: 2,
-                            minDiff: 3,
-                            maxDiff: 8,
-                            count: 2
-                        }
-                    ]
-                }
-            ]
-        };
-        for(i=2; i<=15; i++){
-            fakeData.tests.push({
-                id: i,
-                name: "Dummy test template #" + i,
-                description: "This template is a dummy template.",
-                timed: true,
-                timedTotal: false,
-                timedTotalTime: i*3,
-                timedPerQuestion: true,
-                timedPerQuestionTime: (i*10)%60,
-                categories:[
-                    {
-                        id: 1,
-                        minDiff: 2,
-                        maxDiff: 7,
-                        count: i % 5
-                    },
-                    {
-                        id: 2,
-                        minDiff: 3,
-                        maxDiff: 8,
-                        count: i % 5
-                    }
-                ]
-            });
-        }
+        var localData = [];
 
         //an actual factory
         var f = {
+            stripProperties: function(t){
+                //strip unnecessary stuff
+                var oldCats = t.categories; //save reference
+                var newCats = [];
+                t.categories = newCats; //new reference
+                for(var i = 0; i < oldCats.length; i++){
+                    newCats.push({
+                        id: oldCats[i].id,
+                        minDiff: oldCats[i].minDiff,
+                        maxDiff: oldCats[i].maxDiff,
+                        count: oldCats[i].count
+                    });
+                }
+                console.log(oldCats);
+                console.log(t.categories);
+                return t;
+            },
             getAll: function(){
-                return fakeData.tests;
+                var deferred = $q.defer();
+                $http.get('api/templates').then(
+                    function(response){
+                        localData = response.data;
+                        deferred.resolve(localData);
+                        console.debug(localData);
+                        return localData;
+                    },
+                    function(response){
+                        deferred.reject(response);
+                        return response;
+                    }
+                );
+                return deferred.promise;
             },
             search: function(query, count){
-                var filtered = $filter('filter')(fakeData.tests, query);
+                var filtered = $filter('filter')(localData, query);
                 filtered = $filter('orderBy')(filtered, '+name');
                 filtered = $filter('limitTo')(filtered, count);
                 return filtered;
@@ -83,49 +60,74 @@ define(['angular'], function(angular) {
                 };
             },
             create: function(t){
-                //update remote
-                //if remote update successful update local
+                var deferred = $q.defer();
+                //create remote
+                delete t.id;
+                $http.post('api/templates', t).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
+                    }
+                );
+                return deferred.promise;
             },
             read: function(id){
-                //grab data from the local array
-                var results = $.grep(fakeData.tests, function(e){
-                    return e.id === id;
-                });
-                if(results.length)
-                    if(results.length > 0)
-                        return angular.copy(results[0], {});
-                //otherwise return false
-                return false;
+                var deferred = $q.defer();
+                //grab data from the local array if available
+                if(localData.length > 0){
+                    var results = $.grep(localData, function(e){
+                        return e.id === id;
+                    });
+                    if(results.length){
+                        if(results.length > 0){
+                            deferred.resolve(angular.copy(results[0], {}));
+                        }
+                    }
+                    deferred.reject();
+                }
+                //otherwise load it from the server
+                else{
+                    $http.get('api/templates/'+id).then(
+                        function(response){
+                            deferred.resolve(response.data);
+                            return localData;
+                        },
+                        function(response){
+                            deferred.reject(response);
+                            return response;
+                        }
+                    );
+                }
+                return deferred.promise;
             },
             update: function(t){
+                t = f.stripProperties(angular.copy(t, {}));
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
-                var results = $.grep(fakeData.tests, function(e){
-                    return e.id === t.id;
-                });
-                if(results){
-                    var index = fakeData.tests.indexOf(results[0]);
-                    if(index >= 0){
-                        fakeData.tests[index] = t;
-                        return true;
+                $http.put('api/templates', t).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
                     }
-                }
-                return false;
+                );
+                return deferred.promise;
             },
             delete: function(id){
+                var deferred = $q.defer();
                 //update remote
-                //if remote update successful update local
-                var results = $.grep(fakeData.tests, function(e){
-                    return e.id === id;
-                });
-                if(results){
-                    var index = fakeData.tests.indexOf(results[0]);
-                    if(index >= 0){
-                        fakeData.tests.splice(index, 1);
-                        return true;
+                $http.delete('api/templates/'+id).then(
+                    function(response){
+                        deferred.resolve();
+                    },
+                    function(response){
+                        deferred.reject(response.data);
                     }
-                }
-                return false;
+                );
+                return deferred.promise;
             }
         };
         return f;

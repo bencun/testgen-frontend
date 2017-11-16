@@ -6,19 +6,30 @@ define([
     var TestsController = function($scope, $rootScope, $state, $stateParams, DataFactory){
         console.log("Tests controller is alive.");
 
-        $rootScope.UI.pagerVisible = true;
-        $rootScope.UI.searchVisible = true;
-        $rootScope.UI.navigationVisible = true;
-                
+        
         DataFactory.setTarget(DataFactory.targets.tests);
-
+        
+        $scope.data = {
+            items: []
+        };
         $scope.pager = function(dir){
-            var currentData = DataFactory.load(dir);
-            $rootScope.UI.pager.currentPage = currentData.currentPage;
-            $rootScope.UI.pager.totalPages = currentData.totalPages;
-            $scope.data = {
-                items: currentData.items
-            };
+            DataFactory.load(dir).then(
+                function(currentData){
+                    $rootScope.UI.pager.currentPage = currentData.currentPage;
+                    $rootScope.UI.pager.totalPages = currentData.totalPages;
+                    $scope.data = {
+                        items: currentData.items
+                    };
+
+                    $rootScope.UI.pagerVisible = true;
+                    $rootScope.UI.searchVisible = true;
+                    $rootScope.UI.navigationVisible = true;
+                },
+                function(response){
+                    console.debug("Fetching templates from DataFactory failed miserably.");
+                    $state.go("login");
+                }
+            );
             
         };
 
@@ -36,9 +47,15 @@ define([
                 });
             },
             deleteTest: function(test){
-                DataFactory.tests.delete(test.id);
-                $scope.pager('refresh');
-                $scope.$broadcast('searchStart');
+                DataFactory.tests.delete(test.id).then(
+                    function(response){
+                        $scope.pager('refresh');
+                        $scope.actions.closeSearch();
+                    },
+                    function(response){
+                        
+                    }
+                );
             },
             closeSearch: function(){
                 $state.go('app.admin.tests');
