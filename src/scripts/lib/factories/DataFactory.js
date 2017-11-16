@@ -201,6 +201,9 @@ define([
                 }
             },
             users:{
+                getAll: function(){
+                    return UsersFactory.getAll();
+                },
                 search: function(query, count){
                     return UsersFactory.search(query, count);
                 },
