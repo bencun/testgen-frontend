@@ -28,7 +28,9 @@ define([
             );
         }
         else{
-            DataFactory.categories.new();
+            $scope.data = {
+                catData: DataFactory.categories.new()
+            };
         }
 
         $scope.actions = {
