@@ -23,10 +23,12 @@ define([
             totalPages: 0,
             target: '',
             targetLoader: undefined,
-            setTarget: function(t){
+            targetLoaderParam: null,
+            setTarget: function(t, tlp){
                 //empty the data array - next load function will fill it
                 pagingArray = [];
                 f.target = t;
+                f.targetLoaderParam = tlp;
                 if(t == f.targets.categories){
                     f.targetLoader = f.categories.getAll;
                 }
@@ -111,7 +113,7 @@ define([
                 if(pagingArray.length < 1){
                     //all potential targetLoaders tie in to the other factories' functions...
                     //...and all of those return a promise
-                    f.targetLoader().then(
+                    f.targetLoader(f.targetLoaderParam).then(
                         function(response){
                             pagingArray = response;
                             pagerLogic();
@@ -153,6 +155,9 @@ define([
                 }
             },
             questions:{
+                getAll: function(catId){
+                    return QuestionsFactory.getAll(catId);
+                },
                 search: function(query, count){
                     return QuestionsFactory.search(query, count);
                 },
