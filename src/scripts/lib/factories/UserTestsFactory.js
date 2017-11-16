@@ -108,7 +108,7 @@ define(['angular'], function(angular) {
                 //update remote
                 $http.post('api/test', t).then(
                     function(response){
-                        deferred.resolve();
+                        deferred.resolve(response.data);
                     },
                     function(response){
                         deferred.reject(response.data);
@@ -121,7 +121,7 @@ define(['angular'], function(angular) {
                 //update remote
                 $http.put('api/test/question', t).then(
                     function(response){
-                        deferred.resolve();
+                        deferred.resolve(response.data);
                     },
                     function(response){
                         deferred.reject(response.data);

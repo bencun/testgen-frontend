@@ -3,7 +3,7 @@
     <!-- timedTotal timer -->
     <div class="total-time-block bg-success"
     ng-class="{'bg-success': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) > 0.2, 'bg-danger': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) <= 0.2}"
-    ng-if="data.totalTimeLeft > 0"
+    ng-if="data.totalTimeLeft > 0 && data.testData.timedTotal == true && data.testData.timed == true"
     ng-style="{'left': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%', 'right': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%'}">
         <span ng-if="data.totalTimeLeft > 3600">{{ data.totalTimeLeft | timefilter:'h' }}h</span>
         <span ng-if="data.totalTimeLeft > 60">{{ data.totalTimeLeft | timefilter:'m' }}m</span>
@@ -12,7 +12,7 @@
 
     <div class="row">
         <!-- timedPerQuestion timer -->
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-if="data.testData.timedPerQuestion == true && data.testData.timed == true">
             Time left:
             <span>{{ data.questionTimeLeft }}</span>
         </div>
@@ -46,6 +46,7 @@
                 <button ng-if="question.multiselect === true && data.testData.timedPerQuestion === true" class="btn btn-block btn-lg btn-success btn-next" ng-click="actions.nextQuestion();">Next</button>
                 </div>
             </div>
+            <button ng-if="data.testData.timedPerQuestion == false" class="btn btn-block btn-lg btn-success btn-next" ng-click="actions.stopTest();">Finish</button>
         </div>
     </div>
 </div>
