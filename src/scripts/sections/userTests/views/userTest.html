@@ -1,26 +1,62 @@
 <div class="container-fluid">
-    
-    <!-- timedTotal timer -->
-    <div class="total-time-block bg-success"
-    ng-class="{'bg-success': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) > 0.2, 'bg-danger': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) <= 0.2}"
-    ng-if="data.totalTimeLeft > 0 && data.testData.timedTotal == true && data.testData.timed == true"
-    ng-style="{'left': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%', 'right': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%'}">
-        <span ng-if="data.totalTimeLeft > 3600">{{ data.totalTimeLeft | timefilter:'h' }}h</span>
-        <span ng-if="data.totalTimeLeft > 60">{{ data.totalTimeLeft | timefilter:'m' }}m</span>
-        <span ng-if="data.totalTimeLeft > 0">{{ data.totalTimeLeft | timefilter:'s' }}s</span>
-    </div>
 
-    <div class="row">
-        <!-- timedPerQuestion timer -->
-        <div class="col-xs-12" ng-if="data.testData.timedPerQuestion == true && data.testData.timed == true">
-            Time left:
-            <span>{{ data.questionTimeLeft }}</span>
+    <!-- Test information -->
+    <div class="row" ng-if="data.testActive == false && data.originalTemplate">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row row-v-center">
+                        <div class="col-xs-12 text-left">
+                            Test information
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="question-question" ng-if="data.originalTemplate.timed == true">
+                        This test is timed.
+                    </p>
+                    <p class="question-question" ng-if="data.originalTemplate.timed == false">
+                        This test is not timed.
+                    </p>
+                    <p class="question-note" ng-if="data.originalTemplate.timed == true && data.originalTemplate.timedTotal == true">
+                        Total time available:&nbsp;
+                        <span ng-bind="data.originalTemplate.timedTotalTime"></span>
+                    </p>
+                    <p class="question-note" ng-if="data.originalTemplate.timed == true && data.originalTemplate.timedPerQuestion == true">
+                        Time available per question:&nbsp;
+                        <span ng-bind="data.originalTemplate.timedPerQuestionTime"></span>
+                    </p>
+                    <p class="question-question">
+                        Total questions:&nbsp;
+                        <span ng-bind="data.totalQuestions"></span>
+                    </p>
+                </div>
+            </div>
+            <button class="btn btn-block btn-lg btn-success btn-next" ng-click="actions.confirmTest();">Start the test</button>
         </div>
-
+    </div>
+    
+    
+    <div class="row" ng-if="data.testActive == true">
+        <!-- timedTotal timer -->
+        <div class="total-time-block bg-success"
+        ng-class="{'bg-success': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) > 0.2, 'bg-danger': (data.totalTimeLeft / (data.testData.timedTotalTime*60)) <= 0.2}"
+        ng-if="data.totalTimeLeft > 0 && data.testData.timedTotal == true && data.testData.timed == true"
+        ng-style="{'left': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%', 'right': (50-((data.totalTimeLeft / (data.testData.timedTotalTime*60))*50))+'%'}">
+            <span ng-if="data.totalTimeLeft > 3600">{{ data.totalTimeLeft | timefilter:'h' }}h</span>
+            <span ng-if="data.totalTimeLeft > 60">{{ data.totalTimeLeft | timefilter:'m' }}m</span>
+            <span ng-if="data.totalTimeLeft > 0">{{ data.totalTimeLeft | timefilter:'s' }}s</span>
+        </div>
+        
         <!-- Question -->
         <div ng-if="data.currentQuestion != null" class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
             <div class="panel panel-info question" ng-repeat="question in data.testData.questions" ng-if="(question == data.currentQuestion) || data.testData.timedPerQuestion === false">
                 <div class="panel-heading">
+                    <!-- timedPerQuestion timer -->
+                    <div class="question-time-block col-xs-12 bg-info panel-info"
+                    ng-if="data.testData.timedPerQuestion == true && data.testData.timed == true">
+                        <span>{{ data.questionTimeLeft }}s</span>
+                    </div>
                     <div class="row row-v-center">
                         <div class="col-xs-12 text-left">
                             {{ 'Question #' + ($index+1) + ' of ' + data.testData.questions.length}}
@@ -31,7 +67,10 @@
                     <p class="question-question" ng-bind="question.question"></p>
                     <p class="question-note" ng-bind="question.note"></p>
                     <div class="list-group">
-                        <div class="list-group-item" ng-repeat="option in question.options" ng-click="actions.selectOption(option);" ng-class="{'question-option-selected' : option.correct}">
+                        <div class="list-group-item"
+                        ng-repeat="option in question.options"
+                        ng-click="actions.selectOption(option);"
+                        ng-class="{'question-option-selected' : option.selected, 'question-option-correct' : option.isCorrect === true, 'question-option-incorrect' : option.isCorrect === false}">
                             <div class="row row-v-center">
                                 <div class="col-xs-9">
                                     <p ng-bind="option.option"></p>
