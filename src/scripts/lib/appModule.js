@@ -125,6 +125,7 @@ define([
             $trace.enable('TRANSITION');
             //ui settings
             $rootScope.UI = {
+                showNavbar: true,
                 pagerVisible: false,
                 searchVisible: false,
                 navigationVisible: false,
@@ -170,6 +171,7 @@ define([
                 AuthFactory.checkAuthAdmin().then(
                     function(response){
                         $rootScope.UI.goBackVisible = true;
+                        $rootScope.UI.showNavbar = true;
                         console.log("[app.admin] Admin auth OK.");
                     },
                     function(response){
@@ -185,6 +187,8 @@ define([
                 var AuthFactory = transition.injector().get('AuthFactory');
                 return AuthFactory.checkAuthUser().then(
                     function(response){
+                        $rootScope.UI.goBackVisible = true;
+                        $rootScope.UI.showNavbar = true;
                         console.log("[app.user] User auth OK.");
                     },
                     function(response){
@@ -194,6 +198,11 @@ define([
                         return false;
                     }
                 );
+              });
+              $transitions.onBefore( { to: 'app.user.userTest' }, function(transition) {
+                var AuthFactory = transition.injector().get('AuthFactory');
+                    $rootScope.UI.showNavbar = false;
+                    return true;
               });
     }]);
 
