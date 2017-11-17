@@ -5,11 +5,11 @@
 
             <div class="form-group">
                 <label for="question">Question</label>
-                <input type="text" class="form-control" placeholder="Name" id="question" ng-model="data.questionData.question">
+                <input type="text" class="form-control" placeholder="Name" id="question" ng-model="data.questionData.question" required>
             </div>
             <div class="form-group">
                 <label for="note">Note</label>
-                <input type="text" class="form-control" placeholder="Name" id="note" ng-model="data.questionData.note">
+                <input type="text" class="form-control" placeholder="Name" id="note" ng-model="data.questionData.note" required>
             </div>
             <div class="form-group">
                 <label for="difficulty">Question difficulty [1-10]</label>
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group" ng-repeat="option in data.questionData.options">
                 <div class="col-xs-8 col-sm-10">
-                    <input type="text" class="form-control" placeholder="Answer" ng-model="option.option">
+                    <input type="text" class="form-control" placeholder="Answer" ng-model="option.option" required>
                 </div>
                 <div class="col-xs-1 col-sm-1">
                     <div class="checkbox">
