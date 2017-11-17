@@ -44,13 +44,17 @@ define([
                 if(t == f.targets.userTests){
                     f.targetLoader = f.userTests.getAllTemplates;
                 }
+                if(t == f.targets.userTestsGraded){
+                    f.targetLoader = f.userTests.getAllGraded;
+                }
             },
             targets:{
                 categories: 'categories',
                 questions: 'questions',
                 tests: 'tests',
                 users: 'users',
-                userTests: 'userTests'
+                userTests: 'userTests',
+                userTestsGraded: 'userTestsGraded'
             },
             load: function(dir){
                 //prepare stuff
