@@ -1,23 +1,25 @@
 define([
     'angular',
-    'lib/appModule', //critical to include
+    //'lib/appBootstrap', //critical to exclude
+    'lib/app', //critical to include
     'angular-mocks'
 ], function(angular){
     describe('A test factory', function(){
-        /*var tmpTestFactory;
+        /*var tmpDataFactory;
         
         beforeEach(angular.mock.module('app'));
 
         beforeEach(
             inject(
-                function(_TestFactory_){
-                    tmpTestFactory = _TestFactory_;
+                function(_DataFactory_){
+                    tmpDataFactory = _DataFactory_;
                 }
             )
         );
-
+        
+        
         it('should be defined', function(){
-            expect(tmpTestFactory).toBeDefined();
+            expect(tmpDataFactory).toBeDefined();
         });
         it('should have a testMethod', function(){
             expect(tmpTestFactory.testMethod).toBeDefined();

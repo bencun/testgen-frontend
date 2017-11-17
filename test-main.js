@@ -1,5 +1,5 @@
 var allTestFiles = []
-var TEST_REGEXP = /(spec|test)\.js$/i
+var TEST_REGEXP = /(spec)\.js$/i
 
 // Get a list of all the test files to include
 Object.keys(window.__karma__.files).forEach(function (file) {
@@ -17,25 +17,22 @@ require.config({
   baseUrl: '/base/src',
 
   paths: {
-    //folders
-    'lib' : 'scripts/lib',
-    'tests' : '../tests',
-
+    
     //libraries
-    'jquery' : 'vendor/jquery/dist/jquery.min',
-    'bootstrap' : 'vendor/bootstrap/dist/js/bootstrap.min',
-    'angular' : 'vendor/angular/angular.min',
-    'angular-ui-router' : 'vendor/angular-ui-router/release/angular-ui-router.min',
-    'angular-animate' : 'vendor/angular-animate/angular-animate.min',
+    'jquery' : 'vendor/jquery/dist/jquery',
+    'bootstrap' : 'vendor/bootstrap/dist/js/bootstrap',
+    'angular' : 'vendor/angular/angular',
+    'angular-ui-router' : 'vendor/angular-ui-router/release/angular-ui-router',
+    'angular-animate' : 'vendor/angular-animate/angular-animate',
     'angular-ui-notification' : 'vendor/angular-ui-notification/dist/angular-ui-notification',
     'ngStorage' : 'vendor/ngstorage/ngStorage',
     'angular-loading-bar' : 'vendor/angular-loading-bar/build/loading-bar',
-
-    'angular-mocks' : '../node_modules/angular-mocks/angular-mocks'
-
-    //app files
-
     
+    'angular-mocks' : '../node_modules/angular-mocks/angular-mocks',
+    
+    //folders
+    'lib' : 'scripts/lib',
+    'tests' : '../tests'
   },
 
   shim: {
@@ -48,7 +45,11 @@ require.config({
     },
     'bootstrap' : ['jquery'],
     'angular-ui-router' : ['angular'],
-    'angular-mocks' : ['angular', 'angular-ui-router']
+    'angular-animate' : ['angular'],
+    'angular-ui-notification' : ['angular'],
+    'ngStorage' : ['angular'],
+    'angular-loading-bar' : ['angular'],
+    'angular-mocks' : ['angular']
   },
 
   // dynamically load all test files

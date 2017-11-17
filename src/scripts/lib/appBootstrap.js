@@ -4,11 +4,13 @@ require.config({
     paths: {
         'lib' : 'scripts/lib',
 
-        'jquery' : 'vendor/jquery/dist/jquery.min',
-        'bootstrap' : 'vendor/bootstrap/dist/js/bootstrap.min',
-        'angular' : 'vendor/angular/angular.min',
-        'angular-ui-router' : 'vendor/angular-ui-router/release/angular-ui-router.min',
-        'angular-animate' : 'vendor/angular-animate/angular-animate.min',
+        'app' : 'scripts/lib/app',
+
+        'jquery' : 'vendor/jquery/dist/jquery',
+        'bootstrap' : 'vendor/bootstrap/dist/js/bootstrap',
+        'angular' : 'vendor/angular/angular',
+        'angular-ui-router' : 'vendor/angular-ui-router/release/angular-ui-router',
+        'angular-animate' : 'vendor/angular-animate/angular-animate',
         'angular-ui-notification' : 'vendor/angular-ui-notification/dist/angular-ui-notification',
         'ngStorage' : 'vendor/ngstorage/ngStorage',
         'angular-loading-bar' : 'vendor/angular-loading-bar/build/loading-bar'
@@ -23,21 +25,12 @@ require.config({
             exports: '$'
         },
         'bootstrap' : ['jquery'],
-        'angular-ui-router' : ['angular']
-    }
-});
+        'angular-ui-router' : ['angular'],
+        'angular-animate' : ['angular'],
+        'angular-ui-notification' : ['angular'],
+        'ngStorage' : ['angular'],
+        'angular-loading-bar' : ['angular']
+    },
 
-
-//the actual app bootstrapping
-require(['lib/appVendorLibs'], function(){
-    /*
-    If we're wrapping the top-level angular app dependencies into a module then this can be used,
-    afterwards we just inject the ['lazyOverride', 'app'] when bootstrapping.
-    var app = {'lazy': angular.module('lazyOverride', ['ui.router'])};
-    */
-    require([
-        'lib/appModule'
-    ], function(appModule) {
-        return angular.bootstrap(document, [appModule.name]);
-    });
+    deps: ['app']
 });

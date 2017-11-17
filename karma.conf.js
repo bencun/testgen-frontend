@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: './',
 
 
     // frameworks to use
@@ -17,18 +17,22 @@ module.exports = function(config) {
     files: [
       'test-main.js',
       //vendor files
-      {pattern : 'src/vendor/jquery/dist/jquery.min.js', included : false},
-      {pattern : 'src/vendor/bootstrap/dist/js/bootstrap.min.js', included : false},
-      {pattern : 'src/vendor/angular/angular.min.js', included : false},
+      {pattern : 'src/vendor/jquery/dist/jquery.js', included : false},
+      {pattern : 'src/vendor/bootstrap/dist/js/bootstrap.js', included : false},
+      {pattern : 'src/vendor/angular/angular.js', included : false},
       {pattern : 'node_modules/angular-mocks/angular-mocks.js', included : false},
-      {pattern : 'src/vendor/angular-ui-router/release/angular-ui-router.min.js', included : false},
+      {pattern : 'src/vendor/angular-ui-router/release/angular-ui-router.js', included : false},
+      {pattern : 'src/vendor/angular-animate/angular-animate.js', included: false},
+      {pattern : 'src/vendor/angular-ui-notification/dist/angular-ui-notification.js', included : false},
+      {pattern : 'src/vendor/ngstorage/ngStorage.js', included : false},
+      {pattern : 'src/vendor/angular-loading-bar/build/loading-bar.js', included : false},
 
       //application files
       {pattern : 'src/scripts/lib/appVendorLibs.js', included: false},
-      {pattern : 'src/scripts/lib/appBootstrap.js', included: false},
+      //{pattern : 'src/scripts/lib/appBootstrap.js', included: false},
       {pattern : 'src/scripts/lib/appModule.js', included: false},
-      {pattern : 'src/scripts/lib/*.js', included: false},
       {pattern : 'src/scripts/lib/**/*.js', included: false},
+      {pattern : 'src/scripts/lib/*.js', included: false},
       {pattern : 'src/scripts/**/*.js', included: false},
 
       //tests
@@ -38,6 +42,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
+      'src/scripts/lib/appBootstrap.js'
     ],
 
 
