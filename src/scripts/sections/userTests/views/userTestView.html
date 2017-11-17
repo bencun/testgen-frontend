@@ -1,0 +1,76 @@
+<div class="container-fluid">
+
+    <!-- Test information -->
+    <div class="row" ng-if="data.testData">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row row-v-center">
+                        <div class="col-xs-12 text-left">
+                            Test information
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="question-question" ng-if="data.testData.timed == true">
+                        This test was timed.
+                    </p>
+                    <p class="question-question" ng-if="data.testData.timed == false">
+                        This test was not timed.
+                    </p>
+                    <p class="question-note" ng-if="data.testData.timed == true && data.testData.timedTotal == true">
+                        Total time available:&nbsp;
+                        <span ng-bind="data.testData.timedTotalTime"></span>
+                    </p>
+                    <p class="question-note" ng-if="data.testData.timed == true && data.testData.timedPerQuestion == true">
+                        Time available per question:&nbsp;
+                        <span ng-bind="data.testData.timedPerQuestionTime"></span>
+                    </p>
+                    <p class="question-question">
+                        Total questions:&nbsp;
+                        <span ng-bind="data.totalQuestions"></span>
+                    </p>
+                    <p class="question-question">
+                        Your score:&nbsp;
+                        <span ng-bind="data.testScore"></span>
+                        /
+                        <span ng-bind="data.testMaxScore"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <!-- Question -->
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <div class="panel panel-info question" ng-repeat="question in data.testData.questions">
+                <div class="panel-heading">
+                    <div class="row row-v-center">
+                        <div class="col-xs-12 text-left">
+                            {{ 'Question #' + ($index+1) + ' of ' + data.testData.questions.length}}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="question-question" ng-bind="question.question"></p>
+                    <p class="question-note" ng-bind="question.note"></p>
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="option in question.options" ng-class="{'question-option-correct' : option.correct === true, 'question-option-incorrect' : option.correct === false}">
+                            <div class="row row-v-center">
+                                <div class="col-xs-9">
+                                    <p ng-bind="option.option"></p>
+                                </div>
+                                <div class="col-xs-3 text-center question-check">
+                                    <span class="fa fa-circle-o" ng-if="!option.selected"></span>
+                                    <span class="fa fa-check-circle-o" ng-if="option.selected"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
