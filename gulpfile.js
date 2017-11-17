@@ -126,7 +126,8 @@ gulp.task('buildminify', ['buildcore', 'buildrequire'], function(){
             ext:{
                 src: '.js',
                 min: '.js'
-            }
+            },
+            noSource: true
         }))
         .pipe(gulp.dest('./'));
 });
