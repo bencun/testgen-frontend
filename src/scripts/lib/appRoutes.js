@@ -132,6 +132,15 @@ define([], function() {
                 module: 'userTests',
                 controller: 'UserTestController'
             },
+            'app.user.userTestView': {
+                templateUrl: '/scripts/sections/userTests/views/userTestView.html',
+                url: '/userTestView/:testId',
+                params: {
+                    testId: null
+                },
+                module: 'userTests',
+                controller: 'UserTestViewController'
+            },
         }
     };
 });
