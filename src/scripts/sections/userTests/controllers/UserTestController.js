@@ -105,14 +105,17 @@ define([
                 $scope.data.testActive = false;
                 $interval.cancel(updateUIInterval);
                 console.debug($scope.data.testData);
+                Notification.info("Sending data...");
                 DataFactory.userTests.updateFull($scope.data.testData).then(
                     function(data){
+                        Notification.info("Completed. Wait for your results...");
                         $state.go('app.user.userTestView', {
                             testId: $scope.data.testData.id
                         });
                         console.debug(data);
                     },
                     function(data){
+                        Notification.error("Server rejected the data.");
                         console.debug(data);
                     }
                 );

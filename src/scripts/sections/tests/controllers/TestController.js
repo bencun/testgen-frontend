@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var TestController = function($scope, $rootScope, $state, $stateParams, DataFactory, NotificationExtended){
+    var TestController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Question controller is alive.");
 
         $rootScope.UI.pagerVisible = false;
@@ -90,20 +90,21 @@ define([
             create: function(){
                 DataFactory.tests.create($scope.data.testData).then(
                     function(){
+                        Notification.success("Test created!");
                         $scope.actions.cancel();
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Creation failed! Server message: " + data.message);
                     }
                 );
             },
             update: function(){
                 DataFactory.tests.update($scope.data.testData).then(
                     function(){
-                        
+                        Notification.success("Test updated!");
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Update failed! Server message: " + data.message);
                     }
                 );
             },
@@ -112,7 +113,7 @@ define([
             }
         };
     };
-    TestController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'NotificationExtended'];
+    TestController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('TestController', TestController);
 });

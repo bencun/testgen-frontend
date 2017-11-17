@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var CategoryController = function($scope, $rootScope, $state, $stateParams, DataFactory){
+    var CategoryController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Category controller is alive.");
 
         $rootScope.UI.pagerVisible = false;
@@ -37,20 +37,21 @@ define([
             create: function(){
                 DataFactory.categories.create($scope.data.catData).then(
                     function(){
+                        Notification.success("Category created!");
                         $scope.actions.cancel();
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Creation failed! Server message: " + data.message);
                     }
                 );
             },
             update: function(){
                 DataFactory.categories.update($scope.data.catData).then(
                     function(){
-                        
+                        Notification.success("Category updated!");
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Update failed! Server message: " + data.message);
                     }
                 );
             },
@@ -59,7 +60,7 @@ define([
             }
         };
     };
-    CategoryController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'DataFactory'];
+    CategoryController.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('CategoryController', CategoryController);
 });

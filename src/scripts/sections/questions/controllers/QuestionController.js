@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var QuestionController = function($scope, $rootScope, $state, $stateParams, DataFactory){
+    var QuestionController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Question controller is alive.");
 
         $rootScope.UI.pagerVisible = false;
@@ -52,20 +52,21 @@ define([
                 console.debug($scope.data.questionData);
                 DataFactory.questions.create($scope.data.questionData).then(
                     function(){
+                        Notification.success("Question created!");
                         $scope.actions.cancel();
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Creation failed! Server message: " + data.message);
                     }
                 );
             },
             update: function(){
                 DataFactory.questions.update($scope.data.questionData).then(
                     function(){
-                        
+                        Notification.success("Question updated!");
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Update failed! Server message: " + data.message);
                     }
                 );
             },
@@ -74,7 +75,7 @@ define([
             }
         };
     };
-    QuestionController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory'];
+    QuestionController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('QuestionController', QuestionController);
 });

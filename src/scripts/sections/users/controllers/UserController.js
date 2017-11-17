@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var UserController = function($scope, $rootScope, $state, $stateParams, DataFactory, NotificationExtended){
+    var UserController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Question controller is alive.");
 
         $rootScope.UI.pagerVisible = false;
@@ -82,20 +82,21 @@ define([
             create: function(){
                 DataFactory.users.create($scope.data.userData).then(
                     function(){
+                        Notification.success("User created!");
                         $scope.actions.cancel();
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Creation failed! Server message: " + data.message);
                     }
                 );
             },
             update: function(){
                 DataFactory.users.update($scope.data.userData).then(
                     function(){
-                        
+                        Notification.success("User updated!");
                     },
-                    function(){
-                        
+                    function(data){
+                        Notification.error("Update failed! Server message: " + data.message);
                     }
                 );
             },
@@ -104,7 +105,7 @@ define([
             }
         };
     };
-    UserController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'NotificationExtended'];
+    UserController.$inject = ['$scope', '$rootScope', '$state','$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('UserController', UserController);
 });
