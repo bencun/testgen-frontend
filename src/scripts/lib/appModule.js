@@ -4,7 +4,8 @@ define([
     'lib/services/dependencyResolverFor',
     'lib/factories/module',
     'lib/directives/module',
-    'lib/filters/module'
+    'lib/filters/module',
+    'lib/appVendorLibs'
 ], function(angular, routeConfig, dependencyResolverFor) {
     var app = angular.module('app', [
         'ui.router',

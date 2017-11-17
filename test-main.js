@@ -17,6 +17,11 @@ require.config({
   baseUrl: '/base/src',
 
   paths: {
+    //folders
+    'lib' : 'scripts/lib',
+    'tests' : '../tests',
+
+    'app' : 'scripts/lib/app',
     
     //libraries
     'jquery' : 'vendor/jquery/dist/jquery',
@@ -30,9 +35,6 @@ require.config({
     
     'angular-mocks' : '../node_modules/angular-mocks/angular-mocks',
     
-    //folders
-    'lib' : 'scripts/lib',
-    'tests' : '../tests'
   },
 
   shim: {
