@@ -6,6 +6,9 @@ define([
     'lib/directives/module',
     'lib/filters/module',
     'lib/appVendorLibs'
+    //appVendorLibs had to be included because of Karma testing...
+    //...app.js already includes this dependency but Karma needs it...
+    //...as all tests directly include this file (appModule) and skip the app.js one
 ], function(angular, routeConfig, dependencyResolverFor) {
     var app = angular.module('app', [
         'ui.router',
