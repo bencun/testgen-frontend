@@ -1,7 +1,8 @@
 <div class="container-fluid">
     <div class="row">
         <form class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 form-horizontal" ng-if="data.testData">
-            <h2>Edit the test</h2>
+            <h2 ng-show="data.testData.id > 0">Edit the test template</h2>
+            <h2 ng-show="!data.testData.id">Create a test template</h2>
 
             <div class="form-group">
                 <label for="name">Test name</label>

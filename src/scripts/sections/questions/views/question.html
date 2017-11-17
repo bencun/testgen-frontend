@@ -1,7 +1,8 @@
 <div class="container-fluid">
     <div class="row">
         <form class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 form-horizontal" ng-if="data.questionData">
-            <h2>Edit the question</h2>
+            <h2 ng-show="data.questionData.id > 0">Edit the question</h2>
+            <h2 ng-show="!data.questionData.id">Create a question</h2>
 
             <div class="form-group">
                 <label for="question">Question</label>

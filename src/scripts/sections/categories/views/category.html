@@ -1,7 +1,8 @@
 <div class="container-fluid">
     <div class="row">
         <form class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 form-horizontal" ng-if="data.catData">
-            <h2>Edit the category</h2>
+            <h2 ng-show="data.catData.id > 0">Edit the category</h2>
+            <h2 ng-show="!data.catData.id">Create a category</h2>
 
             <div class="form-group">
                 <label for="catName">Category Name</label>
