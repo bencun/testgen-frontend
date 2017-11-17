@@ -10,10 +10,11 @@ var gulp = require('gulp'),
 
 var paths = {
     css: [
-        "tmp/vendor/bootstrap/dist/css/bootstrap.min.css",
+        //"tmp/vendor/bootstrap/dist/css/bootstrap.min.css",
         "tmp/vendor/fontawesome/css/font-awesome.min.css",
         "tmp/vendor/angular-ui-notification/dist/angular-ui-notification.min.css",
         "tmp/vendor/angular-loading-bar/build/loading-bar.css",
+        "tmp/styles/bootstrap.theme.min.css",
         "tmp/styles/app.css",
         "tmp/styles/**/*.css"
     ],
