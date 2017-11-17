@@ -13,7 +13,7 @@
 
 <body ng-cloak="" id="bs-override">
     <!-- Top navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" ng-show="UI.showNavbar">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-target" aria-expanded="false">
@@ -30,9 +30,9 @@
                     <button class="btn btn-default navbar-btn" ng-click="UI.pagerTrigger('prev');">
                         <span class="fa fa-chevron-left"></span>
                     </button>
-                    <span ng-bind="UI.pager.currentPage"></span>
-                    <span>/</span>
-                    <span ng-bind="UI.pager.totalPages"></span>
+                    <span class="pager-text" ng-bind="UI.pager.currentPage"></span>
+                    <span class="pager-text">/</span>
+                    <span class="pager-text" ng-bind="UI.pager.totalPages"></span>
                     <button class="btn btn-default navbar-btn" ng-click="UI.pagerTrigger('next');">
                         <span class="fa fa-chevron-right"></span>
                     </button>
