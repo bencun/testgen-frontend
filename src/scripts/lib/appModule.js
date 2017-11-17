@@ -132,6 +132,7 @@ define([
                 goBackVisible: false,
                 adminMode: true,
                 logoutVisible: true,
+                defaultState: '*',
                 pager:{
                     currentPage: 0,
                     totalPages: 0
@@ -149,6 +150,9 @@ define([
             };
             $rootScope.UI.goBack = function(){
                 window.history.back();
+            };
+            $rootScope.UI.goHome = function(){
+                $state.go($rootScope.UI.defaultState);
             };
             $rootScope.UI.logout = function(){
                 AuthFactory.logout().then(
@@ -172,6 +176,7 @@ define([
                     function(response){
                         $rootScope.UI.goBackVisible = true;
                         $rootScope.UI.showNavbar = true;
+                        $rootScope.UI.defaultState = 'app.admin.users';
                         console.log("[app.admin] Admin auth OK.");
                     },
                     function(response){
@@ -189,6 +194,7 @@ define([
                     function(response){
                         $rootScope.UI.goBackVisible = true;
                         $rootScope.UI.showNavbar = true;
+                        $rootScope.UI.defaultState = 'app.user.userTests';
                         console.log("[app.user] User auth OK.");
                     },
                     function(response){
