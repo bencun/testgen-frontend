@@ -69,31 +69,16 @@ define(['angular'], function(angular) {
             },
             getGraded: function(id){
                 var deferred = $q.defer();
-                //grab data from the local array if available
-                if(localData.length > 0){
-                    var results = $.grep(localData, function(e){
-                        return e.id === id;
-                    });
-                    if(results.length){
-                        if(results.length > 0){
-                            deferred.resolve(angular.copy(results[0], {}));
-                        }
+                $http.get('api/test/'+id).then(
+                    function(response){
+                        deferred.resolve(response.data);
+                        return localData;
+                    },
+                    function(response){
+                        deferred.reject(response);
+                        return response;
                     }
-                    deferred.reject();
-                }
-                //otherwise load it from the server
-                else{
-                    $http.get('api/test/'+id).then(
-                        function(response){
-                            deferred.resolve(response.data);
-                            return localData;
-                        },
-                        function(response){
-                            deferred.reject(response);
-                            return response;
-                        }
-                    );
-                }
+                );
                 return deferred.promise;
             },
             search: function(query, count){
