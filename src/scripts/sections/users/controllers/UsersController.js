@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var UsersController = function($scope, $rootScope, $state, $stateParams, DataFactory){
+    var UsersController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Users controller is alive.");
 
         
@@ -47,13 +47,20 @@ define([
                 });
             },
             deleteUser: function(user){
-                DataFactory.users.delete(user.id).then(
+                NotificationExtended.confirmationDialog("Are you sure you want to delete user" + user.name + "?").then(
                     function(response){
-                        $scope.pager('refresh');
-                        $scope.actions.closeSearch();
+                        DataFactory.users.delete(user.id).then(
+                            function(response){
+                                $scope.pager('refresh');
+                                $scope.actions.closeSearch();
+                            },
+                            function(response){
+                                Notification.error("User wasn't deleted! Server message: " + response.message);
+                            }
+                        );
                     },
                     function(response){
-                        
+                        //nothing
                     }
                 );
             },
@@ -83,7 +90,7 @@ define([
             else $scope.actions.closeSearch();
         });
     };
-    UsersController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];
+    UsersController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('UsersController', UsersController);
 });

@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var CategoriesController = function($scope, $rootScope, $state, DataFactory){
+    var CategoriesController = function($scope, $rootScope, $state, DataFactory, Notification, NotificationExtended){
         console.log("Categories controller is alive.");
 
         
@@ -53,13 +53,20 @@ define([
                 });
             },
             deleteCategory : function(cat){
-                DataFactory.categories.delete(cat.id).then(
+                NotificationExtended.confirmationDialog("Are you sure? This will also delete all questions belonging to this category: " + cat.name).then(
                     function(response){
-                        $scope.pager('refresh');
-                        $scope.actions.closeSearch();
+                        DataFactory.categories.delete(cat.id).then(
+                            function(response){
+                                $scope.pager('refresh');
+                                $scope.actions.closeSearch();
+                            },
+                            function(response){
+                                Notification.error("Category wasn't deleted! Server message: " + response.message);
+                            }
+                        );
                     },
                     function(response){
-                        
+                        //nothing
                     }
                 );
             },
@@ -88,7 +95,7 @@ define([
             else $scope.actions.closeSearch();
         });
     };
-    CategoriesController.$inject = ['$scope', '$rootScope', '$state', 'DataFactory'];
+    CategoriesController.$inject = ['$scope', '$rootScope', '$state', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('CategoriesController', CategoriesController);
 });

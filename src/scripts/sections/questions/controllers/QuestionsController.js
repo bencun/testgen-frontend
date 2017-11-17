@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var QuestionsController = function($scope, $rootScope, $state, $stateParams, DataFactory){
+    var QuestionsController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Questions controller is alive.");
         
         var categoryId = parseInt($stateParams.categoryId, 10);
@@ -58,13 +58,20 @@ define([
                 });
             },
             deleteQuestion: function(q){
-                DataFactory.questions.delete(q.id).then(
+                NotificationExtended.confirmationDialog("Are you sure you want to delete this question?").then(
                     function(response){
-                        $scope.pager('refresh');
-                        $scope.actions.closeSearch();
+                        DataFactory.questions.delete(q.id).then(
+                            function(response){
+                                $scope.pager('refresh');
+                                $scope.actions.closeSearch();
+                            },
+                            function(response){
+                                Notification.error("Question wasn't deleted! Server message: " + response.message);
+                            }
+                        );
                     },
                     function(response){
-                        
+                        //nothing
                     }
                 );
             },
@@ -94,7 +101,7 @@ define([
             else $scope.actions.closeSearch();
         });
     };
-    QuestionsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];
+    QuestionsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('QuestionsController', QuestionsController);
 });

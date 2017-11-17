@@ -3,7 +3,7 @@ define([
 ], function(
     angular) {
 
-    var TestsController = function($scope, $rootScope, $state, $stateParams, DataFactory){
+    var TestsController = function($scope, $rootScope, $state, $stateParams, DataFactory, Notification, NotificationExtended){
         console.log("Tests controller is alive.");
 
         
@@ -47,13 +47,20 @@ define([
                 });
             },
             deleteTest: function(test){
-                DataFactory.tests.delete(test.id).then(
+                NotificationExtended.confirmationDialog("Are you sure you want to delete test template " + test.name + "?").then(
                     function(response){
-                        $scope.pager('refresh');
-                        $scope.actions.closeSearch();
+                        DataFactory.tests.delete(test.id).then(
+                            function(response){
+                                $scope.pager('refresh');
+                                $scope.actions.closeSearch();
+                            },
+                            function(response){
+                                Notification.error("Template wasn't deleted! Server message: " + response.message);
+                            }
+                        );
                     },
                     function(response){
-                        
+                        //nothing
                     }
                 );
             },
@@ -83,7 +90,7 @@ define([
             else $scope.actions.closeSearch();
         });
     };
-    TestsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory'];
+    TestsController.$inject = ['$scope', '$rootScope', '$state' ,'$stateParams', 'DataFactory', 'Notification', 'NotificationExtended'];
 
     angular.module('app').controller('TestsController', TestsController);
 });
