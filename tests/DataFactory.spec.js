@@ -5,35 +5,44 @@ define([
     'lib/appModule',
     'angular-mocks'
 ], function(angular){
-    describe('A test factory', function(){
-        var tmpDataFactory;
+    describe('DataFactory for paging and CRUD delegation', function(){
+        var DataFactory;
         
         beforeEach(angular.mock.module('app'));
 
         beforeEach(
             inject(
                 function(_DataFactory_){
-                    tmpDataFactory = _DataFactory_;
+                    DataFactory = _DataFactory_;
                 }
             )
         );
         
         
         it('should be defined', function(){
-            expect(tmpDataFactory).toBeDefined();
+            expect(DataFactory).toBeDefined();
+        });
+        
+        it('should have these properties', function(){
+            expect(DataFactory.targets).toBeDefined();
+            expect(DataFactory.currentArray).toBeDefined();
+            expect(DataFactory.perPage).toBeDefined();
+            expect(DataFactory.currentPage).toBeDefined();
+            expect(DataFactory.totalPages).toBeDefined();
+            expect(DataFactory.target).toBeDefined();
+            expect(DataFactory.targetLoader).toBeUndefined();
+            expect(DataFactory.targetLoaderParam).toBeNull();
+            expect(DataFactory.setTarget).toBeDefined();
         });
         /*
-        it('should have a testMethod', function(){
-            expect(tmpTestFactory.testMethod).toBeDefined();
-        });
         it('should not return anything', function(){
-            expect(tmpTestFactory.testMethod()).toBeUndefined();
+            expect(DataFactory.testMethod()).toBeUndefined();
         });
         it('should have a returnMethod', function(){
-            expect(tmpTestFactory.returnMethod).toBeDefined();
+            expect(DataFactory.returnMethod).toBeDefined();
         });
         it('should return "ok" when calling the returnMethod', function(){
-            expect(tmpTestFactory.returnMethod()).toEqual("ok");
+            expect(DataFactory.returnMethod()).toEqual("ok");
         });*/
     });
 });
