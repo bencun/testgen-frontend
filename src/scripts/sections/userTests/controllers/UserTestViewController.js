@@ -9,6 +9,7 @@ define([
         $rootScope.UI.pagerVisible = false;
         $rootScope.UI.searchVisible = false;
         $rootScope.UI.navigationVisible = false;
+        $rootScope.UI.goBackVisible = false;
 
         var testId = parseInt($stateParams.testId, 10);
         if(!testId) $state.go("login");
@@ -46,6 +47,7 @@ define([
                 }
             },
             function(response){
+                Notification.error("Something went wrong...");
                 $state.go("app.user.userTests");
 
             }
