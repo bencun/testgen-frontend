@@ -9,6 +9,10 @@ define([
         $rootScope.UI.pagerVisible = true;
         $rootScope.UI.searchVisible = true;
         $rootScope.UI.navigationVisible = false;
+        $scope.tabs = {
+            activeTab: "templates", // templates||tests
+            enabled: true
+        };
                 
         DataFactory.setTarget(DataFactory.targets.userTests);
 
@@ -26,7 +30,8 @@ define([
 
                     $rootScope.UI.pagerVisible = true;
                     $rootScope.UI.searchVisible = true;
-                    $rootScope.UI.navigationVisible = true;
+                    $rootScope.UI.navigationVisible = false;
+                    $scope.tabs.enabled = true;
                 },
                 function(response){
                     console.debug("Fetching user templates from DataFactory has failed miserably.");
@@ -44,8 +49,27 @@ define([
                     testId: test.id
                 });
             },
+            viewTest: function(test){
+                $state.go('app.user.userTestView', {
+                    testId: test.id
+                });
+            },
             closeSearch: function(){
                 $state.go('app.user.userTests');
+            },
+            switchTab: function(t){
+                if($scope.tabs.enabled){
+                    if(t == 'templates'){
+                        DataFactory.setTarget(DataFactory.targets.userTests);
+                    }
+                    if(t == 'tests'){
+                        DataFactory.setTarget(DataFactory.targets.userTestsGraded);
+                    }
+                    $scope.data.items = [];
+                    $scope.tabs.enabled = false;
+                    $scope.pager();
+                    $scope.tabs.activeTab = t;
+                }
             }
         };
 

@@ -3,14 +3,22 @@
     <ui-view></ui-view>
     <!-- normal view -->
     <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{'active': tabs.activeTab == 'templates'}">
+                <a href="#" ng-click="actions.switchTab('templates')">Assigned tests</a>
+            </li>
+            <li role="presentation" ng-class="{'active': tabs.activeTab == 'tests'}">
+                <a href="#" ng-click="actions.switchTab('tests')">Completed tests</a>
+            </li>
+        </ul>
+        <div class="panel panel-default" ng-if="tabs.activeTab == 'templates'">
+            <!-- <div class="panel-heading">
                 <div class="row row-v-center">
                     <div class="col-xs-12 text-left">
                         Tests assigned to you
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="panel-body">
                 <table class="table table-hover table-v-center">
                     <thead>
@@ -35,6 +43,38 @@
                 </table>
             </div>
         </div>
+        <div class="panel panel-default" ng-if="tabs.activeTab == 'tests'">
+                <!-- <div class="panel-heading">
+                    <div class="row row-v-center">
+                        <div class="col-xs-12 text-left">
+                            Tests assigned to you
+                        </div>
+                    </div>
+                </div> -->
+                <div class="panel-body">
+                    <table class="table table-hover table-v-center">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in data.items">
+                                <td ng-bind="item.name"></td>
+                                <td ng-bind="item.description"></td>
+                                <td class="text-nowrap">
+                                    <button class="btn btn-primary hidden-xs" ng-click="actions.viewTest(item);">View results</button>
+                                    <button class="btn btn-primary visible-xs-inline" ng-click="actions.viewTest(item);">
+                                        <span class="fa fa-eye"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
     </div>
 
 </div>
