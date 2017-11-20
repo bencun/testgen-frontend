@@ -176,13 +176,9 @@ define([
             var userAdmin = false;
             AuthFactory.checkAuthAdmin().then(
                 function(data){
-                    console.debug(data);
-                    console.debug("checkAuthAdmin() -> resolved");
                     userAdmin = true;
                 },
                 function(data){
-                    console.debug(data);
-                    console.debug("checkAuthAdmin() -> resolved");
                     userAdmin = false;
                 }
             );
@@ -240,13 +236,9 @@ define([
             var userLimited = false;
             AuthFactory.checkAuthUser().then(
                 function(data){
-                    console.debug(data);
-                    console.debug("checkAuthUser() -> resolved");
                     userLimited = true;
                 },
                 function(data){
-                    console.debug(data);
-                    console.debug("checkAuthUser() -> resolved");
                     userLimited = false;
                 }
             );
