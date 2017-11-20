@@ -28,18 +28,18 @@ define(['angular'], function(angular) {
                 var deferred = $q.defer();
                 f.checkAuth().then(
                     function(response){
-                        console.debug("[DataFactory] checkAuthAdmin: checkAuth resolved.");
+                        console.debug("[AuthFactory] checkAuthAdmin: checkAuth resolved.");
                         if(response.permAdmin === true){
-                            console.debug("[DataFactory] permAdmin is true.");
+                            console.debug("[AuthFactory] permAdmin is true.");
                             deferred.resolve();
                         }
                         else{
-                            console.debug("[DataFactory] permAdmin is false.");
+                            console.debug("[AuthFactory] permAdmin is false.");
                             deferred.reject();
                         }
                     },
                     function(error){
-                        console.debug("[DataFactory] checkAuthAdmin: checkAuth rejected.");
+                        console.debug("[AuthFactory] checkAuthAdmin: checkAuth rejected.");
                         deferred.reject();
                     });
                 return deferred.promise;
@@ -49,18 +49,18 @@ define(['angular'], function(angular) {
                 var deferred = $q.defer();
                 f.checkAuth().then(
                     function(response){
-                        console.debug("[DataFactory] checkAuthUser: checkAuth resolved.");
+                        console.debug("[AuthFactory] checkAuthUser: checkAuth resolved.");
                         if(response.permAdmin === false){
-                            console.debug("[DataFactory] permAdmin is false.");
+                            console.debug("[AuthFactory] permAdmin is false.");
                             deferred.resolve();
                         }
                         else{
-                            console.debug("[DataFactory] permAdmin is true.");
+                            console.debug("[AuthFactory] permAdmin is true.");
                             deferred.reject();
                         }
                     },
                     function(error){
-                        console.debug("[DataFactory] checkAuthUser: checkAuth rejected.");
+                        console.debug("[AuthFactory] checkAuthUser: checkAuth rejected.");
                         deferred.reject();
                     });
                 return deferred.promise;
