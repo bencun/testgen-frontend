@@ -26,6 +26,7 @@ module.exports = function(config) {
       {pattern : 'src/vendor/angular-ui-notification/dist/angular-ui-notification.js', included : false},
       {pattern : 'src/vendor/ngstorage/ngStorage.js', included : false},
       {pattern : 'src/vendor/angular-loading-bar/build/loading-bar.js', included : false},
+      {pattern : 'src/vendor/karma-read-json/karma-read-json.js'},
 
       //application files
       {pattern : 'src/scripts/lib/appVendorLibs.js', included: false},
@@ -37,6 +38,9 @@ module.exports = function(config) {
 
       //tests
       {pattern : 'tests/**/*.js', included: false},
+      
+      //json API mock data
+      {pattern: 'tests/json/**/*.json', included: false}
     ],
 
 

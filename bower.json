@@ -29,6 +29,7 @@
     "requirejs": "2.3.5",
     "angular-ui-notification": "0.3.6",
     "ngstorage": "0.3.11",
-    "angular-loading-bar": "0.9.0"
+    "angular-loading-bar": "0.9.0",
+    "karma-read-json": "^1.1.0"
   }
 }
