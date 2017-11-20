@@ -66,13 +66,13 @@ define(['angular'], function(angular) {
                 return deferred.promise;
             },
             login: function(n, p){
-                console.debug("[DataFactory] Returning login promise...");
+                console.debug("[AuthFactory] Returning login promise...");
                 var deferred = $q.defer();
                 //returning $http.post(...).then(...); does not work...
                 //...because that line of code doesn't return the actual promise but only the state of the proimse!
                 $http.post('api/login',{name: n, password: p}).then(
                     function(response){
-                        console.debug("[DataFactory] Login OK");
+                        console.debug("[AuthFactory] Login OK");
                         $localStorage.authToken = response.data.token;
                         f.loggedIn = true;
                         f.permAdmin = response.data.admin;
@@ -80,7 +80,7 @@ define(['angular'], function(angular) {
                         return response.data;
                     },
                     function(response){
-                        console.debug("[DataFactory] Login failed");
+                        console.debug("[AuthFactory] Login failed");
                         delete $localStorage.authToken;
                         f.loggedIn = false;
                         f.permAdmin = false;
