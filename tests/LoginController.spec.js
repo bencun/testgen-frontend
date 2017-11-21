@@ -4,9 +4,8 @@ define([
     //'lib/app', //should be excluded because of bootstrapping
     'lib/appModule', //critical to include
     'lib/appRoutes',
-    'angular-mocks',
-    'lib/services/dependencyResolverFor'
-], function(angular, appModule, appRoutes, ngMocks, dependencyResolverFor){
+    'angular-mocks'
+], function(angular, appModule, appRoutes, ngMocks){
     //require(['scripts/sections/login/controllers/LoginController'], function(){
         describe('LoginController for the login page', function(){
             //modules, services etc.
