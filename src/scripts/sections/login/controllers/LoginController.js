@@ -64,11 +64,11 @@ define([
                         console.debug("[LoginController] Auth check OK...");
                         if(response.permAdmin === true){
                             console.debug("[LoginController] User has admin privileges...");
-                            redirectAdmin();
+                            self.redirectAdmin();
                         }
                         else{
                             console.debug("[LoginController] User has user privileges...");
-                            redirectUser();
+                            self.redirectUser();
                         }
                     },
                     //failure
