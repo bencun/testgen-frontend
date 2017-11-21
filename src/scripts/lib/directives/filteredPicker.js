@@ -23,11 +23,9 @@ define([
                         return e[scope.fpIdProperty] === item[scope.fpIdProperty];
                     });
                     //if the results array exists and isn't empty then we got a match
-                    if(results != undefined){
-                        if(results.length > 0){
-                            Notification.error('Item already exists!');
-                            return false;
-                        }
+                    if(results.length > 0){
+                        Notification.error('Item already exists!');
+                        return false;
                     }
                     //if no match then push it
                     var newItem = angular.copy(item, {});
