@@ -27,9 +27,10 @@ define([
                 createController,
                 LoginController;
             
+            //modules
             beforeEach(module('app.templates'));
             beforeEach(module('app'));
-
+            //injections
             beforeEach(inject(function($injector){
                 $q = $injector.get('$q');
                 $http = $injector.get('$http');
@@ -40,54 +41,20 @@ define([
                 $state = $injector.get('$state');
                 AuthFactory = $injector.get('AuthFactory');
                 Notification = $injector.get('Notification');
-
-            }))
-    
-            /*
-            THIS DOES NOT WORK AND IT'S INCOMPLETE
-            beforeEach(inject(function($injector){
-                $q = $injector.get('$q');
-                $http = $injector.get('$http');
-                $httpBackend = $injector.get('$httpBackend');
-                $controller = $injector.get('$controller');
-                $templateCache = $injector.get('$templateCache');
-                $rootScope = $injector.get('$rootScope');
-                $state = $injector.get('$state');
-                AuthFactory = $injector.get('AuthFactory');
-                Notification = $injector.get('Notification');
-
-                var $compile = $injector.get('$compile');
-                
-                
-                //$templateCache.removeAll();
-                //$templateCache.put(appRoutes.routes['login'].templateUrl, data);
-                
-                //for template view
-                //console.debug("TEMPLATE:");;
-                //console.debug($templateCache.get('/scripts/sections/login/views/login.html'));
-                scope = $rootScope.$new();
-                var stateDetails = $state.get('login');
-                var html = $templateCache.get(appRoutes.routes['login'].templateUrl);
-                $rootScope.$apply();
-                var compileFn = $compile(angular.element().html(html));
-                var element = compileFn(scope);
-                $rootScope.$apply();
-                //var ctrl = $controller('LoginController', {'$scope': scope});
-
             }));
-            */
-
+            //setup (async with done();)
             beforeEach(function(done){
                 //get state info
                 state = $state.get('login');
-                controllerName = state.controller;    
+                controllerName = state.controller;
+                //create a new scope for the controller
                 scope = $rootScope.$new();
                 createController = function(){
                     return $controller(controllerName, {'$scope' : scope});
                 };
                 //remember to undefine the controller prior to reloading - this is unique to requirejs
                 requirejs.undef('scripts/sections/login/controllers/LoginController');
-                //async require for the controller we're testing
+                //async require for the module in which the controller we're testing is in
                 require(['scripts/sections/login/controllers/LoginController'], function(){
                     LoginController = createController();
                     done();
@@ -115,6 +82,34 @@ define([
                 expect(scope.tryLogin).toBeDefined();
                 expect(scope.tryLogin).toEqual(jasmine.any(Function));
             });
+
+            it('should have a redirectUser method', function(){
+                expect(LoginController.redirectUser).toBeDefined();
+                expect(LoginController.redirectUser).toEqual(jasmine.any(Function));
+            });
+
+            it('should have a redirectAdmin method', function(){
+                expect(LoginController.redirectAdmin).toBeDefined();
+                expect(LoginController.redirectAdmin).toEqual(jasmine.any(Function));
+            });
+
+            it('should have a redirectUser method that sets UI flags and redirects to app.user.userTests', function(){
+                spyOn($state, 'go');
+                LoginController.redirectUser();
+
+                expect($rootScope.UI.goBackVisible).toBeTruthy();
+                expect($rootScope.UI.logoutVisible).toBeTruthy();
+                expect($state.go).toHaveBeenCalledWith('app.user.userTests');
+            });
+
+            it('should have a redirectAdmin method that sets UI flags and redirects to app.admin.tests', function(){
+                spyOn($state, 'go');
+                LoginController.redirectAdmin();
+
+                expect($rootScope.UI.goBackVisible).toBeTruthy();
+                expect($rootScope.UI.logoutVisible).toBeTruthy();
+                expect($state.go).toHaveBeenCalledWith('app.admin.tests');
+            });
             
             it('should fail to login any user when calling tryLogin(true) when using bad credentials', function(){
                 //spy the related functions
@@ -124,7 +119,6 @@ define([
                     return deferred.promise;
                 });
                 spyOn($state, 'go');
-                spyOn(Notification, 'warning');
                 spyOn(scope, 'tryLogin').and.callThrough();
                 spyOn(LoginController, 'redirectUser');
                 spyOn(LoginController, 'redirectAdmin');
@@ -142,7 +136,6 @@ define([
                 expect(LoginController.redirectUser).not.toHaveBeenCalled();
                 expect(LoginController.redirectAdmin).not.toHaveBeenCalled();
                 expect($state.go).not.toHaveBeenCalled();
-                expect(Notification.warning).toHaveBeenCalled();
             });
             it('should succeed logging in the admin user when calling tryLogin(true) with good credentials', function(){
                 //spy the related functions
@@ -151,8 +144,6 @@ define([
                     deferred.resolve({admin:true});
                     return deferred.promise;
                 });
-                spyOn($state, 'go');
-                spyOn(Notification, 'warning');
                 spyOn(scope, 'tryLogin').and.callThrough();
                 spyOn(LoginController, 'redirectUser');
                 spyOn(LoginController, 'redirectAdmin');
@@ -169,13 +160,105 @@ define([
                 expect(scope.tryLogin).toHaveBeenCalled();
                 expect(LoginController.redirectUser).not.toHaveBeenCalled();
                 expect(LoginController.redirectAdmin).toHaveBeenCalled();
-                expect($state.go).not.toHaveBeenCalled();
-                expect(Notification.warning).toHaveBeenCalled();
-                
             });
-            it('should succeed logging in the regular user when calling tryLogin(true) with good credentials', function(){});
-            it('should fail logging in the user when calling tryLogin() with bad auth', function(){});
-            it('should fail logging in the user when calling tryLogin() with good auth', function(){});
+            it('should succeed logging in the regular user when calling tryLogin(true) with good credentials', function(){
+                //spy the related functions
+                spyOn(AuthFactory, 'login').and.callFake(function(){
+                    var deferred = $q.defer();
+                    deferred.resolve({admin:false});
+                    return deferred.promise;
+                });
+                spyOn(scope, 'tryLogin').and.callThrough();
+                spyOn(LoginController, 'redirectUser');
+                spyOn(LoginController, 'redirectAdmin');
+                //mock some user data
+                scope.userData = {
+                    username: "abc",
+                    password: "def"
+                };
+                //call the function
+                scope.tryLogin(true);
+                
+                
+                $rootScope.$apply(); //NEVER FORGET, PROMISES NEED THIS
+                expect(scope.tryLogin).toHaveBeenCalled();
+                expect(LoginController.redirectUser).toHaveBeenCalled();
+                expect(LoginController.redirectAdmin).not.toHaveBeenCalled();
+            });
+            it('should fail logging in the user when calling tryLogin() with bad auth', function(){
+                //spy the related functions
+                spyOn(AuthFactory, 'checkAuth').and.callFake(function(){
+                    var deferred = $q.defer();
+                    deferred.reject();
+                    return deferred.promise;
+                });
+                spyOn(scope, 'tryLogin').and.callThrough();
+                spyOn(LoginController, 'redirectUser');
+                spyOn(LoginController, 'redirectAdmin');
+                spyOn($state, 'go');
+                //mock some user data
+                scope.userData = {
+                    username: "abc",
+                    password: "def"
+                };
+                //call the function
+                scope.tryLogin(false);
+                
+                
+                $rootScope.$apply(); //NEVER FORGET, PROMISES NEED THIS
+                expect(scope.tryLogin).toHaveBeenCalled();
+                expect(LoginController.redirectUser).not.toHaveBeenCalled();
+                expect(LoginController.redirectAdmin).not.toHaveBeenCalled();
+                expect($state.go).not.toHaveBeenCalled();
+            });
+            it('should succeed logging in the user as admin when calling tryLogin() with good auth', function(){
+                //spy the related functions
+                spyOn(AuthFactory, 'checkAuth').and.callFake(function(){
+                    var deferred = $q.defer();
+                    deferred.resolve({permAdmin: true});
+                    return deferred.promise;
+                });
+                spyOn(scope, 'tryLogin').and.callThrough();
+                spyOn(LoginController, 'redirectUser');
+                spyOn(LoginController, 'redirectAdmin');
+                //mock some user data
+                scope.userData = {
+                    username: "abc",
+                    password: "def"
+                };
+                //call the function
+                scope.tryLogin(false);
+                
+                
+                $rootScope.$apply(); //NEVER FORGET, PROMISES NEED THIS
+                expect(scope.tryLogin).toHaveBeenCalled();
+                expect(LoginController.redirectUser).not.toHaveBeenCalled();
+                expect(LoginController.redirectAdmin).toHaveBeenCalled();
+            });
+            it('should succeed logging in the user as limited user when calling tryLogin() with good auth', function(){
+                //spy the related functions
+                spyOn(AuthFactory, 'checkAuth').and.callFake(function(){
+                    var deferred = $q.defer();
+                    deferred.resolve({permAdmin: false});
+                    return deferred.promise;
+                });
+                spyOn(scope, 'tryLogin').and.callThrough();
+                spyOn(LoginController, 'redirectUser');
+                spyOn(LoginController, 'redirectAdmin');
+                //mock some user data
+                scope.userData = {
+                    username: "abc",
+                    password: "def"
+                };
+                //call the function
+                scope.tryLogin(false);
+                
+                
+                $rootScope.$apply(); //NEVER FORGET, PROMISES NEED THIS
+                expect(scope.tryLogin).toHaveBeenCalled();
+                expect(LoginController.redirectUser).toHaveBeenCalled();
+                expect(LoginController.redirectAdmin).not.toHaveBeenCalled();
+            });
         });//describe
     //});
 });//define
