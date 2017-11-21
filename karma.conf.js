@@ -27,8 +27,10 @@ module.exports = function(config) {
       {pattern : 'src/vendor/ngstorage/ngStorage.js', included : false},
       {pattern : 'src/vendor/angular-loading-bar/build/loading-bar.js', included : false},
       {pattern : 'src/vendor/karma-read-json/karma-read-json.js'},
-
+      
       //application files
+      {pattern : 'src/scripts/**/*.html'},
+      {pattern : 'src/**/*.css'},
       {pattern : 'src/scripts/lib/appVendorLibs.js', included: false},
       //{pattern : 'src/scripts/lib/appBootstrap.js', included: false},
       {pattern : 'src/scripts/lib/appModule.js', included: false},
@@ -54,9 +56,21 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/scripts/lib/**/*.js' : ['coverage'],
-      'src/scripts/**/*.js' : ['coverage']
+      'src/scripts/**/*.js' : ['coverage'],
+      'src/scripts/**/*.html': ['ng-html2js', 'requirejs-wrapper']
     },
 
+    ngHtml2JsPreprocessor: {
+      // If your build process changes the path to your templates,
+      // use stripPrefix and prependPrefix to adjust it.
+      stripPrefix: "src",
+  
+      // the name of the Angular module to create
+      moduleName: "app.templates"
+    },
+    requireJsWrapper: {
+      dependencies: [ 'angular' ]
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
