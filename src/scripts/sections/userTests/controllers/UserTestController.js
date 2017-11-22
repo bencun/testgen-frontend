@@ -22,6 +22,7 @@ define([
             questionTimeLeft: 0
         };
         $scope.data.testActive = false;
+        $scope.data.infoVisible = true;
         $scope.data.questionActive = true;
 
         var totalTimeExpired = function(){
@@ -43,7 +44,8 @@ define([
             }
             
             $scope.data.totalTimeLeft -= 1;
-            $scope.data.questionTimeLeft -= 1;
+            if($scope.data.questionActive == true)
+                $scope.data.questionTimeLeft -= 1;
         };
         var updateUIInterval;
 
@@ -74,7 +76,7 @@ define([
                                 Notification.info("Go, go, go!");
                                 $scope.actions.startTest();
                 
-                                $transitions.onStart({ }, function(trans) {
+                                $transitions.onBefore({to: 'app.**' }, function(trans) {
                                     if($scope.data.testActive)
                                         return false;
                                     else
@@ -96,6 +98,7 @@ define([
             },
             startTest: function(){
                 $scope.data.testActive = true;
+                $scope.data.infoVisible = false;
                 $scope.data.totalTimeLeft = $scope.data.testData.timedTotalTime*60;
                 $scope.data.questionTimeLeft = $scope.data.testData.timedPerQuestionTime;
                 $scope.data.currentQuestion = $scope.data.testData.questions[0];
@@ -196,14 +199,33 @@ define([
                     }
                 );
             },
-            selectOption: function(option){
+            selectOption: function(option, question){
                 if($scope.data.questionActive == true){
-                    option.selected = !option.selected;
-                    if($scope.data.currentQuestion.multiselect != true &&
+                    //if multiselect == false then allow only one option to be selected
+                    if(question.multiselect == false){
+                        console.debug("marking only one answer");
+                        var optArray = question.options;
+                        for(var i=0; i<optArray.length; i++){
+                            if(optArray[i] == option){
+                                optArray[i].selected = true;
+                            }
+                            else{
+                                optArray[i].selected = false;
+                            }
+                        }
+                    }
+                    //if multiselect == true allow any number of options to be selected
+                    if(question.multiselect == true){
+                        console.debug("marking the answer");
+                        option.selected = !option.selected;
+                    }
+                    //if !multiselect and timed per question grade the question
+                    if(question.multiselect != true &&
                         $scope.data.testData.timedPerQuestion == true){
+                            console.debug("grading the question");
                             //go to the next one
                             $scope.actions.nextQuestion();
-                    }
+                        }
                 }
             }
         };
