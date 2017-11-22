@@ -192,7 +192,7 @@ define([
                 );
               });
               //user restriction
-              $transitions.onBefore( { to: 'app.user.**' }, function(transition) {
+              $transitions.onStart( { to: 'app.user.**' }, function(transition) {
                 var AuthFactory = transition.injector().get('AuthFactory');
                 return AuthFactory.checkAuthUser().then(
                     function(response){
@@ -209,7 +209,7 @@ define([
                     }
                 );
               });
-              $transitions.onBefore( { to: 'app.user.userTest' }, function(transition) {
+              $transitions.onStart( { to: 'app.user.userTest' }, function(transition) {
                 var AuthFactory = transition.injector().get('AuthFactory');
                     $rootScope.UI.showNavbar = false;
                     return true;
