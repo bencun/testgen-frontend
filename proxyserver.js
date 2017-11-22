@@ -13,6 +13,7 @@ var lport = Config.lport;
 // proxy base rules
 app.use(vhost('localhost', express.static(__dirname +  rootPath )));
 app.use(vhost('127.0.0.1', express.static(__dirname +  rootPath )));
+app.use(vhost('10.0.91.110', express.static(__dirname +  rootPath )));
 
 //proxy config
 var proxyOptions = {
