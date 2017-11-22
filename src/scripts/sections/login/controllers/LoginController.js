@@ -22,13 +22,13 @@ define([
             $rootScope.UI.goBackVisible = true;
             $rootScope.UI.logoutVisible = true;
             $state.go('app.user.userTests');
-        };;
+        };
         self.redirectAdmin = function(){
             console.debug("[LoginController] Redirecting to admin state...");
             $rootScope.UI.goBackVisible = true;
             $rootScope.UI.logoutVisible = true;
             $state.go('app.admin.tests');
-        };;
+        };
         //login the user
         $scope.tryLogin = function(useCredentials){
             console.debug("[LoginController] Trying to login...");
