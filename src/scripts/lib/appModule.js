@@ -92,7 +92,12 @@ define([
             });
 
             //config the loading bar
-            $cfpLoadingBarProvider.includeSpinner = false;
+            $cfpLoadingBarProvider.includeSpinner = true;
+            $cfpLoadingBarProvider.spinnerTemplate = '<div class="loading-spinner">'+
+                '<span class="fa fa-spin fa-circle-o-notch">'+
+                '</span>'+
+            '</div>';
+            $cfpLoadingBarProvider.includeBar = false;
             
             //add the $http interceptor for the auth purposes
             $httpProvider.interceptors.push([
