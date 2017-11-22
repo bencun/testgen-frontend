@@ -1,34 +1,35 @@
 <div class="container-fluid">
 
     <!-- Test information -->
-    <div class="row" ng-if="data.testActive == false && data.originalTemplate">
+    <div class="row" ng-if="data.testActive == false && data.originalTemplate && data.infoVisible">
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <div class="row row-v-center">
                         <div class="col-xs-12 text-left">
-                            Test information
+                            Test information:&nbsp;
+                            <span ng-bind="data.originalTemplate.name"></span>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p class="question-question" ng-if="data.originalTemplate.timed == true">
+                    <p class="question-info">
+                        This test contains up to&nbsp;
+                        <span ng-bind="data.totalQuestions"></span>&nbsp;questions.
+                    </p>
+                    <p class="question-info" ng-if="data.originalTemplate.timed == true">
                         This test is timed.
                     </p>
-                    <p class="question-question" ng-if="data.originalTemplate.timed == false">
+                    <p class="question-info" ng-if="data.originalTemplate.timed == false">
                         This test is not timed.
                     </p>
-                    <p class="question-note" ng-if="data.originalTemplate.timed == true && data.originalTemplate.timedTotal == true">
+                    <p class="question-info-note" ng-if="data.originalTemplate.timed == true && data.originalTemplate.timedTotal == true">
                         Total time available:&nbsp;
-                        <span ng-bind="data.originalTemplate.timedTotalTime"></span>
+                        <span ng-bind="data.originalTemplate.timedTotalTime"></span>&nbsp;minutes
                     </p>
-                    <p class="question-note" ng-if="data.originalTemplate.timed == true && data.originalTemplate.timedPerQuestion == true">
+                    <p class="question-info-note" ng-if="data.originalTemplate.timed == true && data.originalTemplate.timedPerQuestion == true">
                         Time available per question:&nbsp;
-                        <span ng-bind="data.originalTemplate.timedPerQuestionTime"></span>
-                    </p>
-                    <p class="question-question">
-                        Total questions:&nbsp;
-                        <span ng-bind="data.totalQuestions"></span>
+                        <span ng-bind="data.originalTemplate.timedPerQuestionTime"></span>&nbsp;seconds
                     </p>
                 </div>
             </div>
@@ -69,7 +70,7 @@
                     <div class="list-group">
                         <div class="list-group-item"
                         ng-repeat="option in question.options"
-                        ng-click="actions.selectOption(option);"
+                        ng-click="actions.selectOption(option, question);"
                         ng-class="{'question-option-selected' : option.selected, 'question-option-correct' : option.isCorrect === true, 'question-option-incorrect' : option.isCorrect === false}">
                             <div class="row row-v-center">
                                 <div class="col-xs-9">
