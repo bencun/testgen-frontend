@@ -95,6 +95,23 @@ body{
 	}
 }
 
+@keyframes pop-in-down{
+	0%{
+        top: -40px;
+	}
+	100%{
+        top: 80px;
+	}
+}
+@keyframes pop-out-up{
+	0%{
+        top: 80px;
+    }
+	100%{
+        top: -40px;
+	}
+}
+
 .container{
     position: relative;
 }
@@ -218,4 +235,39 @@ ui-view.ng-enter,
 #bs-override .question-info-note{
     font-size: 16px;
     font-style: italic;
+}
+
+.loading-spinner.ng-enter{
+    animation: 0.25s pop-in-down;
+}
+.loading-spinner.ng-leave{
+    animation: 0.25s pop-out-up;
+}
+
+.loading-spinner{
+    position: fixed;
+    display: block;
+    margin: 0;
+    padding: 0;
+    
+    top: 80px;
+    left: calc(50% - 16px);
+
+    border-radius: 50% 50%;
+    box-shadow: 0px 4px 2px #8f8f8f;
+    color: black;
+    background-color: white;
+    
+    width: 32px;
+    height: 32px;
+
+    z-index: 1100;
+    
+    font-size: 20px;
+    line-height: 32px;
+    text-align: center;
+}
+.loading-spinner *{
+    margin: 0;
+    padding: 0;
 }
