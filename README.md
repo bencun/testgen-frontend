@@ -32,6 +32,26 @@ npm install karma -g
 npm install karma-cli -g
 ```
 
+### Building
+
+Simply run:
+```
+gulp build
+```
+
+The build will be located in the `/tmp` directory.
+
+To build without minifying the files and running the tests (much faster build process) run:
+
+```
+gulp buildnominify
+```
+
+To invoke the file watcher that runs tests and builds when any of the files are modified run:
+```
+gulp watcher
+```
+
 ### Running the app
 Included server is set up to run on the `localhost:3000`, more vhosts can be added easily.
 All the requests directed to the API are proxied to the server running on `localhost:8000` by default.
