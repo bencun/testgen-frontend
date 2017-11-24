@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     jshint = require('gulp-jshint'),
     minifyJS = require('gulp-minify'),
+    karmaServer = require('karma').Server,
     requirejs = require('requirejs');
 
 var paths = {
@@ -133,14 +134,21 @@ gulp.task('buildminify', ['buildcore', 'buildrequire'], function(){
 });
 
 //TODO karma-jasmine unit tests
+gulp.task('test', function(done){
+    console.log("Running the tests...")
+    new karmaServer({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
 
-gulp.task('build', ['buildcore', 'buildrequire', 'buildhtml', 'buildless', 'buildcss', 'deletecssless', 'buildjshint', 'buildminify', 'buildfonts'], function(){
+gulp.task('build', ['test', 'buildcore', 'buildrequire', 'buildhtml', 'buildless', 'buildcss', 'deletecssless', 'buildjshint', 'buildminify', 'buildfonts'], function(){
     //remove the vendor folder
     console.log("Removing the tmp/vendor folder...")
     del('tmp/vendor');
 });
 
-gulp.task('builddist', ['build'], function(){
+gulp.task('builddist', ['test', 'build'], function(){
     console.log('Build done. Moving to dist...');
 });
 
@@ -160,4 +168,6 @@ gulp.task('watcher', function(){
     gulp.watch('src/**/*.less', ['buildless', 'buildcss', 'buildfonts']);
     console.log('Watching html files...');
     gulp.watch('src/**/*.html', ['buildnominify']);
+    console.log('Watching test files...');
+    gulp.watch('tests/**/*.js', ['test']);
 });
